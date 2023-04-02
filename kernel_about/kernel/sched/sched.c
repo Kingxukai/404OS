@@ -2,7 +2,7 @@
 
 //2023-04-02 12:45:46 
 
-extern void switch_to(struct PCB* next);
+struct PCB *task_struct[MAX_TASK] = {INIT_TASK,};
 
 void schedule()
 {
