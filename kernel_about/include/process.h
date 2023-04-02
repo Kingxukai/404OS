@@ -1,0 +1,4 @@
+struct PCB
+{
+	int pid;
+}

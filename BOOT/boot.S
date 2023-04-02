@@ -9,6 +9,7 @@
 _start:
 	csrr t0,mhartid
 	bnez t0,park
+	
 	slli t0,t0,10
 	la sp,stack + STACK_SIZE
 	add sp,t0
