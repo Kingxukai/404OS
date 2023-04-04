@@ -1,1 +1,1 @@
-extern void switch_to(struct PCB* next);
+void switch_to(struct PCB* next);

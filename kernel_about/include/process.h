@@ -30,5 +30,5 @@ LOW,\						//priority = LOW
 LOW,\						//counter = priority
 }
 
-extern struct PCB *task_struct[MAX_TASK];
-extern struct PCB *current;
+struct PCB *task_struct[MAX_TASK];
+struct PCB *current;
