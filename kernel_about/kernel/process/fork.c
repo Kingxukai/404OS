@@ -24,6 +24,7 @@ u8 fork()
 		p->pid = new_id;
 		p->father_id = current->pid;
 		p->state = TASK_READY;
+		p->start_time = jiffies;
 		p->time = 0;
 		p->priority = current->priority;
 		p->priority = p->counter;
@@ -35,5 +36,6 @@ u8 fork()
 void task0()
 {
 	printf("task0 is created\n");
+	printf("task0 is running\n");
 	schedule();
 }

@@ -16,6 +16,7 @@ struct PCB
 	u16 pid;				//process id
 	uc16 father_id;	
 	u8 state;				//process state
+	u64 start_time;	//start time
 	u64 time;				//time of existing in system
 	u8 priority;
 	u8 counter;
@@ -62,6 +63,7 @@ struct reg {
 0,\							//pid = 0
 0,\	
 TASK_READY,\		//state = TASK_READY
+jiffies,\
 0,\							//time = 0
 LOW,\						//priority = LOW
 LOW,\						//counter = priority
