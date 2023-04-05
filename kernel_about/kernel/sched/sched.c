@@ -4,10 +4,12 @@
 
 struct PCB *task_struct[MAX_TASK] = {&INIT_TASK,};
 struct PCB *current = &INIT_TASK;
+u16 task_stack[MAX_TASK][STACK_SIEZE];
 
 void schedule()
 {
 	struct PCB ** p =&task_struct[MAX_TASK];
+	struct PCB *next;
 
 	u8 MAX_priority = LOW;
 	int i = MAX_TASK;
@@ -26,9 +28,6 @@ void schedule()
 
 void init_sched()
 {
-	struct PCB * next = &task_struct[0];
 	asm volatile("csrw mscratch, %0" : : "r" (x));
-	
-	current = next;
-	switch_to(next);
+	struct PCB * next = &task_struct[0];
 }
