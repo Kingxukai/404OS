@@ -26,6 +26,8 @@ void schedule()
 	switch_to(&(next->context));
 }
 
+extern void w_mscratch(reg64 reg);
+
 void init_sched()
 {
 	w_mscratch(0);
