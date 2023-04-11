@@ -1,6 +1,8 @@
-#include "../include/platform.h"
+#include "trap.h"
 
-void trap_init()
+extern void trap_vector(void);
+
+void Init_trap()
 {
 	w_mtevc((reg64)trap_vector);
 }

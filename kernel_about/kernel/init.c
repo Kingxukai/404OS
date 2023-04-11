@@ -1,5 +1,8 @@
 #include "include/kernel.h"
 
+extern Init_trap();
+extern Init_uart();
+
 void Init()
 {
 	Init_uart();

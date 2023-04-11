@@ -9,3 +9,8 @@ void uart_puts(char *str)
 {
 	
 }
+
+void Init_uart()
+{
+	
+}
