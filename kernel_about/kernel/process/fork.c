@@ -10,14 +10,18 @@ u16 get_newpid()
 	return MAX_TASK;
 }
 
-u8 fork()
+int fork()
 {
 	u16 new_id = 0;
-	if( (new_id = get_newpid()) == MAX_TASK )printf("No free task id to create!\n");
+	if( (new_id = get_newpid()) == MAX_TASK )
+	{	
+		printf("No free task id to create!\n");
+		return -1;
+	}
 	else
 	{
-		struct PCB *p = (struct * PCB)get_free_page();
-		if(!p) return 																//something wrong in page alloc
+		struct PCB *p = (struct * PCB)malloc(sizeof(struct PCB));
+		if(!p) return -1;																//something wrong in page alloc
 		task_struct[new_id] = p;
 		
 		*p = *current;
@@ -31,11 +35,4 @@ u8 fork()
 		p->context = {0};															//not eventually value
 	}
 	return 0;
-}
-
-void task0()
-{
-	printf("task0 is created\n");
-	printf("task0 is running\n");
-	schedule();
 }

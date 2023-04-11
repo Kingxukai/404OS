@@ -1,9 +1,7 @@
 #include<stdarg.h>
-/*
- * ref: https://github.com/cccriscv/mini-riscv-os/blob/master/05-Preemptive/lib.c
- */
+#include "uart.h"
 
-static int _vsnprintf(char * out, size_t n, const char* s, va_list vl)
+static int _vsnprintf(char * out, size_t n, const char* s, va_list vl)//ref: https://github.com/cccriscv/mini-riscv-os/blob/master/05-Preemptive/lib.c
 {
 	int format = 0;
 	int longarg = 0;
