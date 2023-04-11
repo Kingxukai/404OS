@@ -28,4 +28,19 @@ static inline w_mtevc(reg64 reg)
 	asm volatile("csrw mtevc, %0" : : "r" (reg));
 }
 
+static inline r_mtevc(reg64 reg)
+{
+	asm volatile("csrr %0,mtevc" : "=r" (reg));
+}
+
+static inline w_mcause(reg64 reg)							
+{
+	asm volatile("csrw mcause, %0" : : "r" (reg));
+}
+
+static inline r_mcause(reg64 reg)
+{
+	asm volatile("csrr %0,mcause" : "=r" (reg));
+}
+
 #endif

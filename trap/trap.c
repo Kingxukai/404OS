@@ -5,6 +5,7 @@ extern void trap_vector(void);
 void Init_trap()
 {
 	w_mtevc((reg64)trap_vector);
+	w_mcause(0);
 }
 
 reg64 trap_hander(reg64 cause,reg64 epc)
