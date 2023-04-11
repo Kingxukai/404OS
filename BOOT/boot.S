@@ -1,5 +1,4 @@
-#include<include/platform.h>
-#include<include/uart0.h>
+#include<../include/platform.h>
 
 .equ STACK_SIZE 1024
 .global _start
