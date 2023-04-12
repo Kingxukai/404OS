@@ -1,4 +1,4 @@
-#include "uart.h"
+#include "../include/uart.h"
 
 void uart_putc(char c)
 {

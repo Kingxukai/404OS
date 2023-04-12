@@ -1,5 +1,5 @@
-#include "../kernel_about/include/sched.h"
-#include "trap.h"
+#include "../include/sched.h"
+#include "../include/trap.h"
 
 .global trap_vector
 .allign 4

@@ -1,4 +1,4 @@
-#include "trap.h"
+#include "../include/trap.h"
 
 extern void trap_vector(void);
 
