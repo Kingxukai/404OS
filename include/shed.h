@@ -1,7 +1,7 @@
 #ifndef _SCHED_H__
 #define _SCHED_H__
 
-#include "../../include/platform.h"
+#include "platform.h"
 #include "process.h"
 
 void switch_to(struct PCB* next);

@@ -1,7 +1,7 @@
 #ifndef _TRAP_H__
 #define _TRAP_H__
 
-#include "../include/platform.h"
+#include "platform.h"
 
 static inline w_mscratch(reg64 reg)							
 {
