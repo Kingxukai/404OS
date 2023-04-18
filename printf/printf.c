@@ -1,7 +1,8 @@
 #include<stdarg.h>
-#include "../include/uart.h"
+#include "include/uart.h"
 
-static int _vsnprintf(char * out, size_t n, const char* s, va_list vl)//ref: https://github.com/cccriscv/mini-riscv-os/blob/master/05-Preemptive/lib.c
+//ref: https://github.com/cccriscv/mini-riscv-os/blob/master/05-Preemptive/lib.c
+static int _vsnprintf(char * out, size_t n, const char* s, va_list vl)
 {
 	int format = 0;
 	int longarg = 0;
@@ -124,12 +125,4 @@ int printf(const char* s, ...)
 	res = _vprintf(s, vl);
 	va_end(vl);
 	return res;
-}
-
-void panic(char *s)
-{
-	printf("panic: ");
-	printf(s);
-	printf("\n");
-	while(1){};
 }

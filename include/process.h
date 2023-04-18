@@ -14,7 +14,7 @@
 #define MAX_TASK 64
 #define STACK_SIZE 1024
 
-struct PCB
+struct task_struct
 {
 	u16 pid;				//process id
 	uc16 father_id;	
@@ -58,6 +58,8 @@ struct reg {
 	reg64 t4;
 	reg64 t5;
 	reg64 t6;
+	
+	reg64 epc;//to save the pc the task can switch to
 };
 
 #define INIT_TASK \
@@ -70,12 +72,18 @@ jiffies,\
 LOW,\						//priority = LOW
 LOW,\						//counter = priority
 {\
-	(reg64)task0,\//point to task0
+	0,\//point to task0
 	(reg64)&task_stack[0],\
+	0,0,0,0,0,0,0,\//initial all
+	0,0,0,0,0,0,0,\
+	0,0,0,0,0,0,0,\
+	0,0,0,0,0,0,0,\
+	0,0,\
+	(reg64)task0,\
 },\
 }
 
-struct PCB *task_struct[MAX_TASK];
-struct PCB *current;
+struct task_struct *task_struct[MAX_TASK];
+struct task_struct *current;
 
 #endif

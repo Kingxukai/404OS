@@ -3,44 +3,75 @@
 
 #include "platform.h"
 
-static inline w_mscratch(reg64 reg)							
+trap_Init();
+uint64_t claim();
+void complete(uint64_t irq);
+
+static inline reg64 r_mhartid()
 {
-	asm volatile("csrw mscratch, %0" : : "r" (reg));
+	reg64 reg;
+	asm volatile("csrr %0, mhartid" : "=r" (reg) );
+	return reg;
 }
 
-static inline r_mscratch(reg64 reg)
+static inline void w_mscratch(reg64 reg)
 {
-	asm volatile("csrr %0,mscratch" : "=r" (reg));
+	asm volatile("csrw mscratch,%0"::"r"(reg));
 }
 
-static inline w_mepc(reg64 reg)							
+static inline	reg64 r_msctrach()
 {
-	asm volatile("csrw mepc, %0" : : "r" (reg));
+	reg64 reg;
+	asm volatile("csrr %0,mscratch":"=r"(reg));
+	return reg;
 }
 
-static inline r_mepc(reg64 reg)
+static inline	void w_mepc(reg64 reg)
 {
-	asm volatile("csrr %0,mepc" : "=r" (reg));
+	asm volatile("csrw mepc,%0"::"r"(reg));
 }
 
-static inline w_mtevc(reg64 reg)							
+static inline void w_mtvec(reg64 reg)
 {
-	asm volatile("csrw mtevc, %0" : : "r" (reg));
+	asm volatile("csrw mtvec,%0"::"r"(reg));
 }
 
-static inline r_mtevc(reg64 reg)
+static inline void w_mie(reg64 reg)
 {
-	asm volatile("csrr %0,mtevc" : "=r" (reg));
+	asm volatile("csrw mie,%0"::"r"(reg));
 }
 
-static inline w_mcause(reg64 reg)							
+static inline	reg64 r_mie()
 {
-	asm volatile("csrw mcause, %0" : : "r" (reg));
+	reg64 reg;
+	asm volatile("csrr %0,mie":"=r"(reg));
+	return reg;
 }
 
-static inline r_mcause(reg64 reg)
+static inline void w_mstatus(reg64 reg)
 {
-	asm volatile("csrr %0,mcause" : "=r" (reg));
+	asm volatile("csrw mstatus,%0"::"r"(reg));
+}
+
+static inline	reg64 r_mstatus()
+{
+	reg64 reg;
+	asm volatile("csrr %0,mstatus":"=r"(reg));
+	return reg;
+}
+
+static inline reg64 r_tp()
+{
+	reg64 reg;
+	asm volatile("mv %0, tp" : "=r"(reg));
+	return reg;
+}
+
+static inline reg64 r_mip()
+{
+	reg64 reg;
+	asm volatile("csrr %0, mip" : "=r"(reg));
+	return reg;
 }
 
 #endif

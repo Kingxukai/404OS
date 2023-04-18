@@ -2,6 +2,6 @@
 #define _KERNEL_H__
 
 #include "platform.h"
-#include "printf.h"
+#include "sched.h"
 
 #endif

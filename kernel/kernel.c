@@ -2,9 +2,10 @@
 
 void kernel_start()
 {
-	Init();
-	while(1)	//loop here
+	Init();				//exceve task0
+	schedule();		//schedule to run task0 in free time
+	while(1)
 	{
-	
+		
 	}
 }

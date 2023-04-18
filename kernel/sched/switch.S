@@ -1,5 +1,3 @@
-#include "../../include/sched.h"
-
 .macro reg_save base
 	sd ra, 0(\base)
 	sd sp, 8(\base)
@@ -72,20 +70,15 @@
 .text
 
 switch_to:
-	csrrw t6,mscratch,r6
-	beqz t6,second_process
-	
-	reg_save t6
-	mv t5,t6
-	csrr t6,mscratch
-	sd t6,120(t5)
-	
-second_process:
 	csrw mscratch,a0
-	mv t6,a0
+	
+	csrr t6,mscratch
+	ld t5,248(t6)
+	csrw mepc,t5
+	
 	reg_restore t6
 	
-	ret
+	mret
 	
 .end
 		

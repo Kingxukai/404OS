@@ -1,7 +1,7 @@
 u16 get_newpid()
 {
 	u16 i = 0;
-	struct PCB** p = &task_struct[0];
+	struct task_struct ** p = &task_struct[0];
 	while(++i<MAX_TASK)
 	{
 		if(*++p)continue;
@@ -20,7 +20,7 @@ int fork()
 	}
 	else
 	{
-		struct PCB *p = (struct * PCB)malloc(sizeof(struct PCB));
+		struct task_struct *p = (struct * task_struct)malloc(sizeof(struct task_struct));
 		if(!p) return -1;																//something wrong in page alloc
 		task_struct[new_id] = p;
 		
@@ -35,4 +35,15 @@ int fork()
 		p->context = {0};															//not eventually value
 	}
 	return 0;
+}
+
+int execve()
+{
+	
+}
+
+void task0()
+{
+	while(1)
+	{}
 }

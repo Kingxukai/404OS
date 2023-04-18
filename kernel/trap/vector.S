@@ -1,5 +1,4 @@
-#include "../include/sched.h"
-#include "../include/trap.h"
+
 
 .global trap_vector
 .allign 4

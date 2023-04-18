@@ -1,4 +1,4 @@
-#include "../include/trap.h"
+#include "include/trap.h"
 
 extern void trap_vector(void);
 
@@ -8,21 +8,38 @@ void Init_trap()
 	w_mcause(0);
 }
 
-reg64 trap_hander(reg64 cause,reg64 epc)
+void machine_interrupt_handler()	//handler the char from keyboard
+{
+	uint64_t irq = claim();  
+	if(irq == UART0_IRQ)
+	{
+		uart_console();
+	}
+	else if(irq)printf("unknown interrupt\n");
+	
+	if(irq)complete(irq);
+]
+
+reg64 trap_handler(reg64 cause,reg64 epc)
 {
 	if(cause & 0x8000000000000000)		//interrupt
 	{
-		switch(cause & 0xffff)
+		switch(cause & 0xfff)
 		{
 			case 3:printf("Machine software interrupt\n");break;
 			case 7:printf("Machine timer interrupt\n");break;
-			case 11:printf("Machine external interrupt\n");break;
+			case 11:
+				{
+					printf("Machine external interrupt\n");
+					machine_interrupt_handler();
+					break;
+				}
 			default:printf("unknown interrupt\n");
 		}
 	}
 	else														//exception
 	{
-		switch(cause & 0xffff)
+		switch(cause & 0xfff)
 		{
 			case 0:printf("Instruction address misalligned\n");break;
 			case 1:printf("Instruction acess fault\n");break;

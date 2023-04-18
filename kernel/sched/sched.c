@@ -1,15 +1,15 @@
-#include "../../include/sched.h"
+#include "inlcude/sched.h"
 
 //2023-04-02 12:45:46 
 
-struct PCB *task_struct[MAX_TASK] = {&INIT_TASK,};
-struct PCB *current = &INIT_TASK;
+struct task_struct *task_struct[MAX_TASK] = {&INIT_TASK,};
+struct task_struct *current = &INIT_TASK;
 u16 task_stack[MAX_TASK][STACK_SIEZE];
 
 void schedule()
 {
-	struct PCB ** p =&task_struct[MAX_TASK];
-	struct PCB *next;
+	struct task_struct ** p =&task_struct[MAX_TASK];
+	struct task_struct *next;
 
 	u16 MAX_priority = LOW;
 	int i = MAX_TASK;
@@ -23,12 +23,12 @@ void schedule()
 		}
 	}
 	current = next;
+	timer_selfadd();
 	switch_to(&(next->context));
 }
 
-extern void w_mscratch(reg64 reg);
-
-void init_sched()
+void Init_sched()
 {
 	w_mscratch(0);
+	
 }
