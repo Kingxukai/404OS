@@ -16,13 +16,13 @@
 
 struct task_struct
 {
-	u16 pid;				//process id
-	uc16 father_id;	
-	u16 state;				//process state
-	u64 start_time;	//start time
-	u64 time;				//time of existing in system
-	u16 priority;
-	u16 counter;
+	uin16_t pid;				//process id
+	uin16_t father_id;	
+	uin16_t state;				//process state
+	uin64_t start_time;	//start time
+	uin64_t time;				//time of existing in system
+	uin16_t priority;
+	uin16_t counter;
 	struct reg context;
 };
 

@@ -1,7 +1,8 @@
-
+#include "../include/sched.h"
+#include "../include/trap.h"
 
 .global trap_vector
-.allign 4
+.align 4
 .text
 
 trap_vector:
@@ -14,6 +15,8 @@ trap_vector:
 	csrr t6,mscratch
 	
 	sd t6,240(t5);
+	csrr t6,mepc
+	sd t6,248(t5)
 	
 	csrw mscratch,t5
 	

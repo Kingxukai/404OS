@@ -3,6 +3,7 @@
 
 #include "platform.h"
 #include "process.h"
+#include "kernel.h"
 
 void switch_to(struct task_struct* next);
 void reg_save(reg64 base);

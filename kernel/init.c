@@ -1,4 +1,4 @@
-#include "include/kernel.h"
+#include "../include/kernel.h"
 
 extern void Init_trap();
 extern void Init_uart();

@@ -1,4 +1,4 @@
-#include "printf.h"
+#include "../include/printf.h"
 
 void panic(char *s)
 {
