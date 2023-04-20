@@ -2,10 +2,13 @@
 #define _TRAP_H__
 
 #include "platform.h"
+#include "type.h"
 
 void trap_Init();
 uint64_t claim();
 void complete(uint64_t irq);
+extern void trap_vector();
+extern reg64_t trap_handler(reg64_t cause,reg64_t epc);
 
 static inline reg64_t r_mhartid()
 {

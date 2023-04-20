@@ -2,13 +2,14 @@
 
 //2023-04-02 12:45:46 
 
-struct task_struct *task_struct[MAX_TASK] = {&INIT_TASK,};
+void switch_to(struct reg* next);
+
+struct task_struct *TASK[MAX_TASK] = {&INIT_TASK,};
 struct task_struct *current = &INIT_TASK;
-uint16_t task_stack[MAX_TASK][STACK_SIEZ];
 
 void schedule()
 {
-	struct task_struct ** p =&task_struct[MAX_TASK];
+	struct task_struct ** p =&TASK[MAX_TASK];
 	struct task_struct *next;
 
 	uint16_t MAX_priority = LOW;

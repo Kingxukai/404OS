@@ -1,11 +1,11 @@
 #include "../../include/trap.h"
+#include "../../include/printf.h"
 
 extern void trap_vector(void);
 
 void Init_trap()
 {
-	w_mtevc((reg64)trap_vector);
-	w_mcause(0);
+	w_mtvec((reg64_t)trap_vector);
 }
 
 void machine_interrupt_handler()	//handler the char from keyboard
@@ -18,9 +18,9 @@ void machine_interrupt_handler()	//handler the char from keyboard
 	else if(irq)printf("unknown interrupt\n");
 	
 	if(irq)complete(irq);
-]
+}
 
-reg64 trap_handler(reg64 cause,reg64 epc)
+reg64_t trap_handler(reg64_t cause,reg64_t epc)
 {
 	if(cause & 0x8000000000000000)		//interrupt
 	{
@@ -59,4 +59,5 @@ reg64 trap_handler(reg64 cause,reg64 epc)
 		}
 		epc += 4;												//make epc point to next 4 address to avoid infinte loop
 	}
+	return epc;
 }

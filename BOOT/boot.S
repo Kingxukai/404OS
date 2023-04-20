@@ -7,12 +7,15 @@
 
 _start:
 	csrr t0, mhartid	
-	mv tp, t0
+	mv tp, t0									//save in tp of hartid
 	bnez t0, park
 	
-	slli t0,t0,10
+	slli t0,t0,10							//hartid * 1024
 	la sp, stack + STACK_SIZE
-	add sp, sp, t0
+	add sp, sp, t0						//alloc stacksize and stack pointer to every hart
+	
+	csrw satp,x0							//cancel the virtual memory
+	
 	j kernel_start
 	
 park:

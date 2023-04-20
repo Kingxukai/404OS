@@ -10,12 +10,15 @@ SRCS_C = \
 	kernel/init.c \
 	printf/uart.c \
 	printf/printf.c \
+	printf/panic.c \
 	kernel/sched/sched.c \
+	kernel/sched/fork.c \
+	kernel/sched/exit.c \
 	kernel/trap/trap.c \
-	kernel/plic/plic.c \
+	kernel/trap/plic.c \
 	kernel/timer/timer.c \
-	kernel/process/fork.c \
-	kernel/process/exit.c \
+	mm/malloc.c \
+	mm/page.c \
 
 OBJS = $(SRCS_ASM:.S=.o)
 OBJS += $(SRCS_C:.c=.o)

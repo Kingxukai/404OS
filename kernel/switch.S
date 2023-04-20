@@ -101,7 +101,7 @@ trap_vector:
 	
 	csrr a0,mcause
 	csrr a1,mepc
-	call trap_hander
+	call trap_hanlder
 	
 	csrw mepc,a0
 	
