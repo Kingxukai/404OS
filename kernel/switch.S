@@ -1,5 +1,3 @@
-//#include "../include/sched.h"
-
 .macro reg_save base
 	sd ra, 0(\base)
 	sd sp, 8(\base)

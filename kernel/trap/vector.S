@@ -1,34 +1,4 @@
-#include "../include/sched.h"
-#include "../include/trap.h"
+//#include "../include/sched.h"
+//#include "../include/trap.h"
 
-.global trap_vector
-.align 4
-.text
 
-trap_vector:
-	csrrw t6,mscratch,t6
-	
-	reg_save t6
-	
-	mv t5,t6
-	
-	csrr t6,mscratch
-	
-	sd t6,240(t5);
-	csrr t6,mepc
-	sd t6,248(t5)
-	
-	csrw mscratch,t5
-	
-	csrr a0,mcause
-	csrr a1,mepc
-	call trap_hander
-	
-	csrw mepc,a0
-	
-	csrr t6,mscratch
-	reg_restore t6
-	
-	mret
-
-.end

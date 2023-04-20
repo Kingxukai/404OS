@@ -1,4 +1,3 @@
-#include "../include/kernel.h"
 .section .rodata
 .global HEAP_START
 HEAP_START: .word _heap_start

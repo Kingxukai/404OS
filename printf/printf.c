@@ -1,4 +1,5 @@
 #include<stdarg.h>
+#include<stddef.h>
 #include "../include/uart.h"
 
 //ref: https://github.com/cccriscv/mini-riscv-os/blob/master/05-Preemptive/lib.c

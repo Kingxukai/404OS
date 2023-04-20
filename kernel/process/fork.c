@@ -1,4 +1,4 @@
-#include "../include/process.h"
+#include "../../include/process.h"
 u16 get_newpid()
 {
 	u16 i = 0;

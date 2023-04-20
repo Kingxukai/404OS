@@ -1,6 +1,9 @@
 #ifndef _PROCESS_H__
 #define _PROCESS_H__
 
+#include "kernel.h"
+#include "type.h"
+
 #define TASK_CREATE 0		//process state value
 #define TASK_RUNNING 1
 #define TASK_READY 2
@@ -27,63 +30,62 @@ struct task_struct
 };
 
 struct reg {
-	reg64 ra;
-	reg64 sp;
-	reg64 gp;
-	reg64 tp;
-	reg64 t0;
-	reg64 t1;
-	reg64 t2;
-	reg64 s0;
-	reg64 s1;
-	reg64 a0;
-	reg64 a1;
-	reg64 a2;
-	reg64 a3;
-	reg64 a4;
-	reg64 a5;
-	reg64 a6;
-	reg64 a7;
-	reg64 s2;
-	reg64 s3;
-	reg64 s4;
-	reg64 s5;
-	reg64 s6;
-	reg64 s7;
-	reg64 s8;
-	reg64 s9;
-	reg64 s10;
-	reg64 s11;
-	reg64 t3;
-	reg64 t4;
-	reg64 t5;
-	reg64 t6;
+	reg64_t ra;
+	reg64_t sp;
+	reg64_t gp;
+	reg64_t tp;
+	reg64_t t0;
+	reg64_t t1;
+	reg64_t t2;
+	reg64_t s0;
+	reg64_t s1;
+	reg64_t a0;
+	reg64_t a1;
+	reg64_t a2;
+	reg64_t a3;
+	reg64_t a4;
+	reg64_t a5;
+	reg64_t a6;
+	reg64_t a7;
+	reg64_t s2;
+	reg64_t s3;
+	reg64_t s4;
+	reg64_t s5;
+	reg64_t s6;
+	reg64_t s7;
+	reg64_t s8;
+	reg64_t s9;
+	reg64_t s10;
+	reg64_t s11;
+	reg64_t t3;
+	reg64_t t4;
+	reg64_t t5;
+	reg64_t t6;
 	
-	reg64 epc;//to save the pc the task can switch to
+	reg64_t epc;//to save the pc the task can switch to
 };
 
-#define INIT_TASK \
-{
-0,\							//pid = 0
-0,\	
-TASK_READY,\		//state = TASK_READY
-jiffies,\
-0,\							//time = 0
-LOW,\						//priority = LOW
-LOW,\						//counter = priority
-{\
-	0,\//point to task0
-	(reg64)&task_stack[0],\
-	0,0,0,0,0,0,0,\//initial all
-	0,0,0,0,0,0,0,\
-	0,0,0,0,0,0,0,\
-	0,0,0,0,0,0,0,\
-	0,0,\
-	(reg64)task0,\
-},\
+#define INIT_TASK	{\
+/*pid*/										0,\
+/*father pid*/    				0,\
+/*state*/			    				TASK_READY,\
+/*start time*/    				jiffies,\
+/*running time*/  				0,\
+/*priority*/	    				LOW,\
+/*counter*/		    				LOW,\
+/*countext*/	    				{\
+/*return address of function*/0,\
+/*task stack pointer*/				(reg64_t)&task_stack[0],\
+/*here are 32-2*/							0,0,0,0,0,0,0,\
+/*=30 registers*/							0,0,0,0,0,0,0,\
+															0,0,0,0,0,0,0,\
+															0,0,0,0,0,0,0,\
+															0,0,\
+/*return address of task*/		(reg64_t)task0,\
+		  										},\
 }
 
-struct task_struct *task_struct[MAX_TASK];
-struct task_struct *current;
+extern struct task_struct *task_struct[MAX_TASK];
+extern struct task_struct *current;
 
 #endif

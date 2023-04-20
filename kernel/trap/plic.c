@@ -1,4 +1,4 @@
-#include "../include/type.h"
+#include "../../include/type.h"
 
 uint64_t claim()
 {

@@ -3,11 +3,11 @@
 
 #include "platform.h"
 #include "process.h"
-#include "kernel.h"
+#include "type.h"
 
 void switch_to(struct task_struct* next);
-void reg_save(reg64 base);
-void reg_restore(reg64 base);
+void reg_save(reg64_t base);
+void reg_restore(reg64_t base);
 void schedule();
 void Init_sched();
 

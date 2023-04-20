@@ -2,8 +2,7 @@ include common.mk
 
 SRCS_ASM = \
 	BOOT/boot.S \
-	kernel/sched/switch.S \
-	kernel/trap/vector.S \
+	kernel/switch.S \
 	mm/mem.S \
 
 SRCS_C = \
