@@ -75,24 +75,27 @@ struct task_struct
 	struct reg context;
 };
 
-static struct task_struct INIT_TASK = {
-	0,
-	0,
-	TASK_READY,
-	0,
-	0,
-	LOW,
-	LOW,
-	{
-		0,
-		(reg64_t)&task_stack[0],
-		0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,
-		0,0,0,0,0,0,0,
-		0,
-		(reg64_t)task0
-	}
-};
+#define INIT_TASK \
+{ \
+/*pid*/									   0, \
+/*father pid*/    				 0, \
+/*state*/			    				 TASK_READY, \
+/*start time*/    				 0, \
+/*running time*/  				 0, \
+/*priority*/	    				 LOW, \
+/*counter*/		    				 LOW, \
+/*register initialization*/{ \
+/*return address of function*/0, \
+/*task stack pointer*/				(reg64_t)&task_stack[0], \
+/*here are 32-2*/							0,0,0,0,0,0,0, \
+/*=30 registers*/							0,0,0,0,0,0,0, \
+															0,0,0,0,0,0,0, \
+															0,0,0,0,0,0,0, \
+															0, \
+/*return address of task*/		(reg64_t)task0 \
+		  										 } \
+}
+
+struct task_struct init_task = INIT_TASK;
 
 #endif

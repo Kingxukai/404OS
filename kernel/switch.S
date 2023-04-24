@@ -1,4 +1,4 @@
-.macro reg_save base
+	.macro reg_save base
 	sd ra, 0(\base)
 	sd sp, 8(\base)
 	sd gp, 16(\base)
@@ -29,9 +29,9 @@
 	sd t3, 216(\base)
 	sd t4, 224(\base)
 	sd t5, 232(\base)
-.endm
+	.endm
 
-.macro reg_restore base
+	.macro reg_restore base
 	ld ra, 0(\base)
 	ld sp, 8(\base)
 	ld gp, 16(\base)
@@ -63,11 +63,11 @@
 	ld t4, 224(\base)
 	ld t5, 232(\base)
 	ld t6, 240(\base)
-.endm
+	.endm
 
-.global switch_to
-.align 4
-.text
+	.global switch_to
+	.align 4
+	.text
 
 switch_to:
 	csrw mscratch,a0
@@ -80,9 +80,9 @@ switch_to:
 	
 	mret
 
-.global trap_vector
-.align 4
-.text
+	.global trap_vector
+	.align 4
+	.text
 
 trap_vector:
 	csrrw t6,mscratch,t6
@@ -110,5 +110,5 @@ trap_vector:
 	
 	mret
 
-.end
+	.end
 		

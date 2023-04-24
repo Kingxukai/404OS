@@ -16,7 +16,6 @@ _start:
 	
 	csrw satp,x0							//cancel the virtual memory
 	
-	j kernel_start
 	
 park:
 	wfi

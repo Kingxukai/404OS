@@ -76,7 +76,7 @@ static inline uint32_t _align_page(uint32_t address)
 	return (address + order) & (~order);
 }
 
-void page_init()
+void Init_page()
 {
 	/* 
 	 * We reserved 8 Page (8 x 4096) to hold the Page structures.

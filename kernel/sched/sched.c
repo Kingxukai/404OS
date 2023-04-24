@@ -4,8 +4,8 @@
 
 void switch_to(struct reg* next);
 
-struct task_struct *TASK[MAX_TASK] = {&INIT_TASK,};
-struct task_struct *current = &INIT_TASK;
+struct task_struct *TASK[MAX_TASK] = {&init_task,};
+struct task_struct *current = &init_task;
 
 void schedule()
 {
@@ -24,7 +24,6 @@ void schedule()
 		}
 	}
 	current = next;
-	timer_selfadd();
 	switch_to(&(next->context));
 }
 
