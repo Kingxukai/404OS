@@ -1,14 +1,16 @@
-#include "../../include/trap.h"
-#include "../../include/printf.h"
+#include "../include/trap.h"
+#include "../include/printf.h"
+#include "../include/timer.h"
 
 extern void trap_vector(void);
 
 void Init_trap()
 {
 	w_mtvec((reg64_t)trap_vector);
+	w_mstatus((reg64_t)0x1800);			//here we temporarily set next privilege as 11(machine)
 }
 
-void machine_interrupt_handler()	//handler the char from keyboard
+void machine_interrupt_handler()	//handle the char from keyboard
 {
 	uint64_t irq = claim();  
 	if(irq == UART0_IRQ)
@@ -27,7 +29,12 @@ reg64_t trap_handler(reg64_t cause,reg64_t epc)
 		switch(cause & 0xfff)
 		{
 			case 3:printf("Machine software interrupt\n");break;
-			case 7:printf("Machine timer interrupt\n");break;
+			case 7:
+				{
+					printf("Machine timer interrupt\n");
+					timer_interrupt_hanlder();
+					break;
+				}
 			case 11:
 				{
 					printf("Machine external interrupt\n");
@@ -57,7 +64,9 @@ reg64_t trap_handler(reg64_t cause,reg64_t epc)
 			case 15:printf("Store/AMO page fault\n");break;
 			default:printf("unknow fault\n");break;
 		}
+		printf("mcause:%x\nmepc:%x\n",cause,epc);
 		epc += 4;												//make epc point to next 4 address to avoid infinte loop
+		panic("encounter wrong\n");
 	}
 	return epc;
 }

@@ -1,5 +1,5 @@
-#include "../../include/type.h"
-#include "../../include/trap.h"
+#include "../include/type.h"
+#include "../include/trap.h"
 
 uint64_t claim()
 {

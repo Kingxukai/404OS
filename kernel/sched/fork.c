@@ -1,4 +1,5 @@
 #include "../../include/sched.h"
+#include "../../include/kernel.h"
 
 uint16_t task_stack[MAX_TASK][STACK_SIZE];
 
@@ -16,7 +17,7 @@ uint16_t get_newpid()
 	return MAX_TASK;
 }
 
-int fork()
+int copy_process()
 {
 	uint16_t new_id = 0;
 	if( (new_id = get_newpid()) >= MAX_TASK )
@@ -29,7 +30,7 @@ int fork()
 		if(!p) return -1;																//something wrong in page alloc
 		TASK[new_id] = p;
 		
-		*p = *current;
+		p = current;
 		p->pid = new_id;
 		p->father_id = current->pid;
 		p->state = TASK_READY;
@@ -37,7 +38,6 @@ int fork()
 		p->time = 0;
 		p->priority = current->priority;
 		p->priority = p->counter;
-		p->context = current->context;															//not eventually value
 		p->context.sp = (reg64_t)task_stack[p->pid];
 	}
 	return 0;
@@ -51,5 +51,7 @@ int fork()
 void task0()
 {
 	while(1)
-	{}
+	{
+		//printf("task0 running\n");
+	}
 }

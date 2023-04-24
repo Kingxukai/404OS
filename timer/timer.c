@@ -1,6 +1,6 @@
-#include "../../include/timer.h"
-#include "../../include/sched.h"
-#include "../../include/trap.h"
+#include "../include/timer.h"
+#include "../include/sched.h"
+#include "../include/trap.h"
 
 void timer_selfadd()
 {
@@ -18,7 +18,7 @@ void Init_timer()
 
 }
 
-void timer_interrupt_hander()
+void timer_interrupt_hanlder()
 {
 	current->time++;
 	timer_selfadd();
@@ -28,7 +28,7 @@ void timer_interrupt_hander()
 		{
 			return;
 		}
-		task_exit();
+		do_exit();
 	}
 	else return;
 	schedule();

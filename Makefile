@@ -8,17 +8,17 @@ SRCS_ASM = \
 SRCS_C = \
 	kernel/kernel.c \
 	kernel/init.c \
-	printf/uart.c \
-	printf/printf.c \
-	printf/panic.c \
 	kernel/sched/sched.c \
 	kernel/sched/fork.c \
 	kernel/sched/exit.c \
-	kernel/trap/trap.c \
-	kernel/trap/plic.c \
-	kernel/timer/timer.c \
+	printf/uart.c \
+	printf/printf.c \
+	printf/panic.c \
+	timer/timer.c \
 	mm/malloc.c \
 	mm/page.c \
+	trap/trap.c \
+	trap/plic.c \
 
 OBJS = $(SRCS_ASM:.S=.o)
 OBJS += $(SRCS_C:.c=.o)
@@ -48,7 +48,7 @@ debug: all
 	@echo "Press Ctrl-C and then input 'quit' to exit GDB and QEMU"
 	@echo "-------------------------------------------------------"
 	@${QEMU} ${QFLAGS} -kernel 404OS.elf -s -S &
-	@${GDB} 404OS.elf -q -x ../gdbinit
+	@${GDB} 404OS.elf -q -x gdbinit
 
 .PHONY : code
 code: all

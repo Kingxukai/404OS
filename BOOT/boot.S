@@ -14,8 +14,7 @@ _start:
 	la sp, stack + STACK_SIZE
 	add sp, sp, t0						//alloc stacksize and stack pointer to every hart
 	
-	csrw satp,x0							//cancel the virtual memory
-	
+	j kernel_start
 	
 park:
 	wfi

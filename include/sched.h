@@ -19,7 +19,7 @@
 #define STACK_SIZE 1024
 
 void schedule();
-void task_exit();
+void do_exit();
 void Init_sched();
 void task0();
 
@@ -95,7 +95,5 @@ struct task_struct
 /*return address of task*/		(reg64_t)task0 \
 		  										 } \
 }
-
-struct task_struct init_task = INIT_TASK;
 
 #endif

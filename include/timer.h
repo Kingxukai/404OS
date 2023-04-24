@@ -6,6 +6,6 @@
 #define CLOCK_PER_SEC 1000 * 100		//CLOCK=10us
 
 void Init_timer();
-void timer_interrupt_hander();
+void timer_interrupt_hanlder();
 
 #endif

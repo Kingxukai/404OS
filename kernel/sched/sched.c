@@ -4,27 +4,32 @@
 
 void switch_to(struct reg* next);
 
+
+static struct task_struct init_task = INIT_TASK;
+
 struct task_struct *TASK[MAX_TASK] = {&init_task,};
 struct task_struct *current = &init_task;
 
 void schedule()
 {
-	struct task_struct ** p =&TASK[MAX_TASK];
-	struct task_struct *next;
-
-	uint16_t MAX_priority = LOW;
+	int max_priority = -1;
+	int flag = 0;
+	struct task_struct **p = &TASK[MAX_TASK];
 	int i = MAX_TASK;
+	
 	while(--i)
 	{
-		if(!(*--p))continue;
-		if((*p)->priority > current->priority && (*p)->priority >= MAX_priority)
+		if(!*--p)continue;
+		if((*p)->state == TASK_READY && (*p)->priority > max_priority)
 		{
-			next = *p;
-			MAX_priority = (*p)->priority;
+			max_priority = (*p)->priority;
+			current = *p;
+			flag = 1;
 		}
 	}
-	current = next;
-	switch_to(&(next->context));
+	if(!flag)current = &init_task;
+	struct reg *next = &(current->context);
+	switch_to(next);
 }
 
 void Init_sched()

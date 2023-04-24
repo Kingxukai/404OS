@@ -2,7 +2,7 @@
 
 extern struct task_struct *current;
 
-void task_exit()
+void do_exit()
 {
 	struct task_struct *p = current;
 	if(p->pid)
