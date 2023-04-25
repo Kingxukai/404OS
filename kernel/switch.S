@@ -74,17 +74,15 @@ switch_to:
 	
 	ld t5,248(t6)
 	csrw mepc,t5
-	
+
 	reg_restore t6
-	
+
 	mret
 
 .global trap_vector
 .align 4
 trap_vector:
 	csrrw t6,mscratch,t6
-	
-	beqz t6,1f
 	
 	reg_save t6
 	mv t5,t6

@@ -51,7 +51,6 @@ void uart_console()
 		else
 		{
 			uart_putc((char)c);
-			uart_putc('\n');
 		}
 	}
 }

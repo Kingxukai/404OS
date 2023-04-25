@@ -5,13 +5,14 @@ extern void Init_uart();
 extern void Init_timer();
 extern void Init_page();
 extern void Init_sched();
+extern void Init_plic();
 
 void Init()
 {
 	Init_page();
 	Init_uart();
 	Init_trap();
-	Init_timer();
+	Init_plic();
 	Init_sched();
 	/*other init*/
 }

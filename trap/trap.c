@@ -12,7 +12,7 @@ void Init_trap()
 
 void machine_interrupt_handler()	//handle the char from keyboard
 {
-	uint64_t irq = claim();  
+	uint32_t irq = claim();  
 	if(irq == UART0_IRQ)
 	{
 		uart_console();
@@ -28,16 +28,20 @@ reg64_t trap_handler(reg64_t cause,reg64_t epc)
 	{
 		switch(cause & 0xfff)
 		{
-			case 3:printf("Machine software interrupt\n");break;
+			case 3:
+				{
+					printf("Machine software interrupt\n");
+					break;
+				}
 			case 7:
 				{
-					printf("Machine timer interrupt\n");
-					timer_interrupt_hanlder();
+					//printf("Machine timer interrupt\n");
+					timer_interrupt_handler();
 					break;
 				}
 			case 11:
 				{
-					printf("Machine external interrupt\n");
+					//printf("Machine external interrupt\n");
 					machine_interrupt_handler();
 					break;
 				}

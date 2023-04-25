@@ -18,7 +18,7 @@ void Init_timer()
 
 }
 
-void timer_interrupt_hanlder()
+void timer_interrupt_handler()
 {
 	current->time++;
 	timer_selfadd();
@@ -30,7 +30,6 @@ void timer_interrupt_hanlder()
 		}
 		do_exit();
 	}
-	else return;
 	schedule();
 }
 

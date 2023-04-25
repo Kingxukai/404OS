@@ -14,15 +14,15 @@ void kernel_start()
 
 static void show_hello()
 {
-	printf("\t              __________\n");
-	printf("\t|         |  |                                        ________ \n");
-	printf("\t|         |  |                |          |           /        \\ \n");
-	printf("\t|         |  |                |          |          /          \\ \n");
-	printf("\t|_________|  |__________      |          |         |            | \n");
-	printf("\t|         |  |                |          |         |            | \n");
-	printf("\t|         |  |                |          |         |            | \n");
-	printf("\t|         |  |                |          |          \\          / \n");
-	printf("\t|         |  |__________      |________  |________   \\________/  \n\n\n");
+	printf("\t                __________\n");
+	printf("\t|           |  |                                        ________ \n");
+	printf("\t|           |  |              |           |            /        \\ \n");
+	printf("\t|           |  |              |           |           /          \\ \n");
+	printf("\t|___________|  |__________    |           |          |            | \n");
+	printf("\t|           |  |              |           |          |            | \n");
+	printf("\t|           |  |              |           |          |            | \n");
+	printf("\t|           |  |              |           |           \\          / \n");
+	printf("\t|           |  |__________    |_________  |_________   \\________/  \n\n\n");
 	
 	printf("\t\t\t            ________          \n");
 	printf("\t\t\t|       |  |        |  |       |\n");
