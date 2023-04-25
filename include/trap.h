@@ -10,6 +10,10 @@ void complete(uint64_t irq);
 extern void trap_vector();
 reg64_t trap_handler(reg64_t cause,reg64_t epc);
 
+#define EA (1<<3)				//control all interrupt
+#define MTIE (1<<7)			//control machine timer interrupt
+#define MEIE (1<<11)		//control machine externel interrupt
+
 static inline reg64_t r_mhartid()
 {
 	reg64_t reg;

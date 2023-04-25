@@ -1,3 +1,4 @@
+//ref  <https://www.bilibili.com/video/BV1Q5411w7z5>
 #include "../include/type.h"
 #include "../include/trap.h"
 #include "../include/platform.h"
@@ -27,6 +28,6 @@ void Init_plic()
 	
 	*(uint32_t *)PLIC_MTHRESHOLD(hart) = 0;
 
-	w_mie(r_mie() | 1 << 11);
-	w_mstatus(r_mstatus() | 1 << 3);
+	w_mie(r_mie() | MEIE);
+	w_mstatus(r_mstatus() | EA);
 }

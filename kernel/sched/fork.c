@@ -1,5 +1,6 @@
 #include "../../include/sched.h"
 #include "../../include/kernel.h"
+#include "../../include/timer.h"
 
 uint16_t task_stack[MAX_TASK][STACK_SIZE];
 
@@ -11,7 +12,7 @@ uint16_t get_newpid()
 	struct task_struct ** p = &TASK[0];
 	while(++i<MAX_TASK)
 	{
-		if(*++p)continue;
+		if(!(*++p))continue;
 		return i;
 	}
 	return MAX_TASK;
@@ -34,10 +35,10 @@ int copy_process()
 		p->pid = new_id;
 		p->father_id = current->pid;
 		p->state = TASK_READY;
-		p->start_time = 0;
+		p->start_time = jiffies;
 		p->time = 0;
 		p->priority = current->priority;
-		p->priority = p->counter;
+		p->counter = p->priority;
 		p->context.sp = (reg64_t)task_stack[p->pid];
 	}
 	return 0;

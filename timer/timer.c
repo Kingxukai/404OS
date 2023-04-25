@@ -2,18 +2,21 @@
 #include "../include/sched.h"
 #include "../include/trap.h"
 
+volatile uint64_t jiffies = 0;
+
 void timer_selfadd()
 {
+	jiffies++;
 	uint64_t hart = r_mhartid();
-	*(uint64_t*)CLIENT_MTIMERCMP(hart) = *(uint64_t*)CLIENT_MTIMER + CLOCK_PER_SEC;
+	*(uint64_t*)CLIENT_MTIMERCMP(hart) = *(uint64_t*)CLIENT_MTIMER + CLOCK_PIECE;
 }
 
 void Init_timer()
 {
 	printf("Initial timer...\n");
-	w_mstatus(r_mstatus() | 1 << 3);
+	w_mstatus(r_mstatus() | EA);
 	
-	w_mie(r_mie() | 1 << 7);
+	w_mie(r_mie() | MTIE);
 	
 	timer_selfadd();
 	printf("Initial All!\n");

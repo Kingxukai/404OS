@@ -3,9 +3,12 @@
 
 #include "type.h"
 
-#define CLOCK_PER_SEC 1000 * 100		//CLOCK=10us
+#define FREQUNCE (1000 * 1000 * 1000)					//1GHZ
+#define CLOCK_PIECE (FREQUNCE/(1000 * 10))			//1GHZ / (1000 * 10) = 100us
 
 void Init_timer();
 void timer_interrupt_handler();
+
+volatile uint64_t jiffies;
 
 #endif
