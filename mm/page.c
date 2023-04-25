@@ -78,6 +78,7 @@ static inline uint32_t _align_page(uint32_t address)
 
 void Init_page()
 {
+	printf("Initial memory...\n");
 	/* 
 	 * We reserved 8 Page (8 x 4096) to hold the Page structures.
 	 * It should be enough to manage at most 128 MB (8 x 4096 x 4096) 

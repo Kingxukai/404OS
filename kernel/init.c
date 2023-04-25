@@ -9,6 +9,7 @@ extern void Init_plic();
 
 void Init()
 {
+	printf("\nInitial...\n");
 	Init_page();
 	Init_uart();
 	Init_trap();

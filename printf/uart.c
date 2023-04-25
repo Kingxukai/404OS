@@ -2,6 +2,7 @@
 
 void Init_uart()
 {
+	printf("Initial uart...\n");
 	/* disable interrupts. */
 	uart_write_reg(IER, 0x00);
 

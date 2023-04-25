@@ -10,12 +10,13 @@ void timer_selfadd()
 
 void Init_timer()
 {
+	printf("Initial timer...\n");
 	w_mstatus(r_mstatus() | 1 << 3);
 	
 	w_mie(r_mie() | 1 << 7);
 	
 	timer_selfadd();
-
+	printf("Initial All!\n");
 }
 
 void timer_interrupt_handler()
@@ -28,7 +29,6 @@ void timer_interrupt_handler()
 		{
 			return;
 		}
-		do_exit();
 	}
 	schedule();
 }

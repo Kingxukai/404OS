@@ -23,6 +23,7 @@ void schedule()
 		if((*p)->state == TASK_READY && (*p)->priority > max_priority)
 		{
 			max_priority = (*p)->priority;
+			(*p)->counter = (*p)->priority;
 			current = *p;
 			flag = 1;
 		}
@@ -34,6 +35,7 @@ void schedule()
 
 void Init_sched()
 {
+	printf("Initial sched...\n");
 	w_mscratch(0);
 	
 }

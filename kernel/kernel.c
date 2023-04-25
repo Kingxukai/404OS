@@ -3,6 +3,7 @@ static void show_hello();
 
 void kernel_start()
 {
+	printf("Loading...\n");
 	show_hello();	// show hello 404
 	Init();				//exceve task0
 	schedule();		//schedule to run task0 in free time

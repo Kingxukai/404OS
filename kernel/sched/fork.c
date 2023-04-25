@@ -50,8 +50,9 @@ int copy_process()
 
 void task0()
 {
-	printf("task0 running\n");
 	Init_timer();
+	printf("task0 create\n");
+	printf("task0 running\n");
 	while(1)
 	{
 		

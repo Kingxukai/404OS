@@ -2,6 +2,7 @@
 #include "../include/trap.h"
 #include "../include/platform.h"
 #include "../include/uart.h"
+#include "../include/printf.h"
 
 uint64_t claim()
 {
@@ -18,6 +19,7 @@ void complete(uint64_t irq)
 
 void Init_plic()
 {
+	printf("Initial plic...\n");
 	uint64_t hart = r_tp();
 	*(uint32_t *)PLIC_PRIORITY(UART0_IRQ) = 1;
 	
