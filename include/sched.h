@@ -65,13 +65,13 @@ struct reg {
 
 struct task_struct
 {
-	uint16_t pid;				//process id
-	uint16_t father_id;	
-	uint16_t state;				//process state
+	int16_t pid;				//process id
+	int16_t father_id;	
+	int16_t state;				//process state
 	uint64_t start_time;	//start time
 	uint64_t time;				//time of existing in system
-	uint16_t priority;
-	uint16_t counter;
+	int16_t priority;
+	int16_t counter;
 	struct reg context;
 };
 
@@ -87,7 +87,7 @@ struct task_struct
 /*register initialization*/{ \
 /*return address of function*/0, \
 /*task stack pointer*/				(reg64_t)&task_stack[0][STACK_SIZE-1], \
-/*here are 32-2*/							0,0,0,0,0,0,0, \
+/*remain 31+1-2*/							0,0,0,0,0,0,0, \
 /*=30 registers*/							0,0,0,0,0,0,0, \
 															0,0,0,0,0,0,0, \
 															0,0,0,0,0,0,0, \

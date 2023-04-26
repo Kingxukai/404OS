@@ -16,6 +16,8 @@ typedef uint16_t reg16_t;					//register 16bit
 typedef uint32_t reg32_t;							//register 32bit
 typedef uint64_t reg64_t;						 //register 64bit
 
+typedef _Bool bool;								//bool type
+
 #define NULL (void *)(0)
 
 #endif

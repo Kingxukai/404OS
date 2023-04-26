@@ -20,7 +20,7 @@ uint16_t get_newpid()
 
 int copy_process()
 {
-	uint16_t new_id = 0;
+	int16_t new_id = 0;
 	if( (new_id = get_newpid()) >= MAX_TASK )
 	{	
 		panic("No free task_id to create!\n");
@@ -88,8 +88,9 @@ void task0()
 	Init_timer();
 	printf("task0 create\n");
 	printf("task0 running\n");
-	int pid;
-	if(pid = copy_process())printf("task%d create\n",pid);
+	int pid1,pid2;
+	if(pid1 = copy_process())printf("task%d create\n",pid1);
+	if(pid2 = copy_process())printf("task%d create\n",pid2);
 	while(1)
 	{
 		

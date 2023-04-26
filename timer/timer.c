@@ -19,14 +19,14 @@ void Init_timer()
 	w_mie(r_mie() | MTIE);
 	
 	timer_selfadd();
-	printf("Initial All!\n");
+	printf("Initialed All!\n");
 }
 
 void timer_interrupt_handler()
 {
 	current->time++;
 	timer_selfadd();
-	if(current->pid)
+	if(current->pid) 
 	{
 		if(--(current->counter) > 0)
 		{

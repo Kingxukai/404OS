@@ -4,7 +4,7 @@
 #include "type.h"
 
 #define FREQUNCE (1000 * 1000 * 1000)					//1GHZ
-#define CLOCK_PIECE (FREQUNCE/(1000 * 10))			//1GHZ / (1000 * 10) = 100us
+#define CLOCK_PIECE (FREQUNCE/1000)			//1GHZ / 1000 = 1ms
 
 void Init_timer();
 void timer_interrupt_handler();
