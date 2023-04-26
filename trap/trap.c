@@ -69,7 +69,7 @@ reg64_t trap_handler(reg64_t cause,reg64_t epc)
 			case 15:printf("Store/AMO page fault\n");break;
 			default:printf("unknow fault\n");break;
 		}
-		printf("mcause:%x\nmepc:%x\n",cause,epc);
+		printf("mcause:0x%x\nmepc:0x%x\n",cause,epc);
 		epc += 4;												//make epc point to next 4 address to avoid infinte loop
 		panic("encounter wrong\n");
 	}

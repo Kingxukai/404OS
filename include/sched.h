@@ -86,7 +86,7 @@ struct task_struct
 /*counter*/		    				 LOW, \
 /*register initialization*/{ \
 /*return address of function*/0, \
-/*task stack pointer*/				(reg64_t)&task_stack[0], \
+/*task stack pointer*/				(reg64_t)&task_stack[0][STACK_SIZE-1], \
 /*here are 32-2*/							0,0,0,0,0,0,0, \
 /*=30 registers*/							0,0,0,0,0,0,0, \
 															0,0,0,0,0,0,0, \
