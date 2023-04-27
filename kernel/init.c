@@ -15,5 +15,6 @@ void Init()
 	Init_trap();
 	Init_plic();
 	Init_sched();
+	Init_timer();
 	/*other init*/
 }

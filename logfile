@@ -1,0 +1,31 @@
+issue1:	"relocation truncated to fit:R RISCV_HI20 against ..."
+time:	2023-04-20 12:40:20 by wxk
+
+	solution:
+	add a instruction in common.mk "-mcmodel=medany"
+
+issue2:	"turn to trap while execute 'MRET' in machine mode and get a tips 'Illegal instruction'"
+time:	2023-04-27 20:40:38 by wxk
+	
+
+	solution:
+	add some instruction in BOOT/boot.s
+	"
+		li t0,MPIE						//defined in platfrom.h
+		csrr t1,mstatus	
+		or t0,t0,t1
+		csrw mstatus,t0						//set the MPIE
+	"
+	here I refer to "	
+		# https://lore.kernel.org/qemu-devel/20201223192553.332508-1-atish.patra@wdc.com/
+		# For qemu version >= 6.0, exception would be raised if no PMP enty is
+		# configured. So just configure one entny, which allows all the whole
+		# 32-bits physical address range is R/W/X.
+		# FIXME: I say it is a temporary workaroud due to I think the patch
+		# above contains bug, and I have raised new issue to qemu but it has not
+		# been rootcaused till now. Details please refer to
+		# https://gitlab.com/qemu-project/qemu/-/issues/585 or
+		# https://gitee.com/unicornx/riscv-operating-system-mooc/issues/I441IC (in chinese)
+		# So it's just a temporary workaround till now to not block people who
+		# want to try newer qemu (>= 6.0)."
+		thanks all

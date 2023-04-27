@@ -18,7 +18,6 @@ void Init_timer()
 	
 	w_mie(r_mie() | MTIE);
 	
-	timer_selfadd();
 	printf("Initialed All!\n");
 }
 
@@ -30,6 +29,7 @@ void timer_interrupt_handler()
 	{
 		if(--(current->counter) > 0)
 		{
+			timer_selfadd();
 			return;
 		}
 	}

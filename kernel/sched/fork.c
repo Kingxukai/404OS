@@ -85,7 +85,6 @@ int copy_process()
 
 void task0()
 {
-	Init_timer();
 	printf("task0 create\n");
 	printf("task0 running\n");
 	int pid1,pid2;
@@ -93,6 +92,6 @@ void task0()
 	if(pid2 = copy_process())printf("task%d create\n",pid2);
 	while(1)
 	{
-		
+		printf("task running\n");
 	}
 }

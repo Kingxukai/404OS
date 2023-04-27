@@ -8,7 +8,7 @@ void Init_trap()
 {
 	printf("Initial trap...\n");
 	w_mtvec((reg64_t)trap_vector);
-	w_mstatus((reg64_t)0x1800);			//here we temporarily set next privilege as 11(machine)
+	//w_mstatus((reg64_t)0x1800);			//here we temporarily set next privilege as 11(machine)
 }
 
 void machine_interrupt_handler()	//handle the char from keyboard

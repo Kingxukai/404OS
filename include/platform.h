@@ -3,6 +3,8 @@
 
 #define CPU_NUM 2
 
+#define MPIE (1<<7)			//control machine previous interrupt enable
+
 #define PLIC_BASE 0X0C000000L
 #define PLIC_PRIORITY(id) (PLIC_BASE + (id) * 4)
 #define PLIC_PENDING(id) (PLIC_BASE + 0x1000 + ((id) / 32) * 4)

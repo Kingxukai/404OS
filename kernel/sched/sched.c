@@ -30,6 +30,7 @@ void schedule()
 	}
 	if(!flag)current = TASK[0];
 	struct reg *next = &(current->context);
+	timer_selfadd();
 	switch_to(next);
 }
 
