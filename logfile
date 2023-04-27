@@ -17,7 +17,7 @@
 		or t0,t0,t1
 		csrw mstatus,t0						//set the MPIE
 	"
-	here I refer to "	
+	here refer "	
 		# https://lore.kernel.org/qemu-devel/20201223192553.332508-1-atish.patra@wdc.com/
 		# For qemu version >= 6.0, exception would be raised if no PMP enty is
 		# configured. So just configure one entny, which allows all the whole
