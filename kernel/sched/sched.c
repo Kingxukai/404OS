@@ -29,7 +29,6 @@ void schedule()
 		}
 	}
 	if(!flag)current = TASK[0];
-	printf("task%d running:counter=%d timer=%d\n",current->pid,current->counter,current->time);
 	struct reg *next = &(current->context);
 	switch_to(next);
 }
