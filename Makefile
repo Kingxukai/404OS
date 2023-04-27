@@ -11,6 +11,8 @@ SRCS_C = \
 	kernel/sched/sched.c \
 	kernel/sched/fork.c \
 	kernel/sched/exit.c \
+	kernel/sys.c \
+	kernel/system_call.s \
 	printf/uart.c \
 	printf/printf.c \
 	printf/panic.c \
