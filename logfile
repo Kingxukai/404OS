@@ -1,11 +1,12 @@
-issue1:	"relocation truncated to fit:R RISCV_HI20 against ..."
-time:	2023-04-20 12:40:20 by wxk
+1：
+	issue:	"relocation truncated to fit:R RISCV_HI20 against ..."
+	time:	2023-04-20 12:40:20 by wxk
 
 	solution:
 	add a instruction in common.mk "-mcmodel=medany"
-
-issue2:	"turn to trap while execute 'MRET' in machine mode and get a tips 'Illegal instruction'"
-time:	2023-04-27 20:40:38 by wxk
+2：
+	issue:	"turn to trap while execute 'MRET' in machine mode and get a tips 'Illegal instruction'"
+	time:	2023-04-27 20:40:38 by wxk
 	
 
 	solution:
@@ -29,3 +30,7 @@ time:	2023-04-27 20:40:38 by wxk
 		# So it's just a temporary workaround till now to not block people who
 		# want to try newer qemu (>= 6.0)."
 		thanks all
+		
+3:
+	add "user-mode"
+	time:	2023-04-27 20:40:38 by wxk
