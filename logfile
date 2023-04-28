@@ -3,14 +3,14 @@
 	time:	2023-04-20 12:40:20 by wxk
 
 	solution:
-	add a instruction in common.mk "-mcmodel=medany"
+	add a instruction to common.mk "-mcmodel=medany"
 2：
 	issue:	"turn to trap while execute 'MRET' in machine mode and get a tips 'Illegal instruction'"
 	time:	2023-04-27 20:40:38 by wxk
 	
 
 	solution:
-	add some instruction in BOOT/boot.s
+	add some instruction to BOOT/boot.s
 	"
 		li      t0, 0xffffffff
 		csrw    pmpaddr0, t0
@@ -29,7 +29,7 @@
 		# https://gitee.com/unicornx/riscv-operating-system-mooc/issues/I441IC (in chinese)
 		# So it's just a temporary workaround till now to not block people who
 		# want to try newer qemu (>= 6.0)."
-		thanks all
+		thanks all above
 		
 3:
 	add "user-mode"
@@ -40,10 +40,10 @@
 	time:2023-04-28 10:10:38 by wxk
 	comment:althougn maybe it not always get the right answer...
 	however I actually try to complete the syscall...
-	next step I'll try to correct it
+	In the next step I'll try to correct it
 	
 5:
 	issue: "the ret_num of syscall not right"
 	time:2023-04-28 11:18:38 by wxk
 	solution:
-	I ignored the *(fn)() and thought the ret_num = *(fn),which is the address of syscall function, and noticed it in GDB.
+	I ignored the *(fn)() and thought the ret_num = *(fn),which is the address of syscall function, and noticed it through GDB.
