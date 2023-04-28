@@ -8,6 +8,8 @@ void Init_trap();
 uint64_t claim();
 void complete(uint64_t irq);
 extern void trap_vector();
+void cli();
+void sti()
 
 #define EA (1<<3)				//control all interrupt
 #define MTIE (1<<7)			//control machine timer interrupt

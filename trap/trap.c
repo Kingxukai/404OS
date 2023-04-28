@@ -84,3 +84,13 @@ reg64_t trap_handler(reg64_t cause,reg64_t epc,struct reg *context)
 	}
 	return epc;
 }
+
+void cli()
+{
+	w_mstatus(r_mstatus() & ~EA);
+}
+
+void sti()
+{
+	w_mstatus(r_mstatus() | EA);
+}

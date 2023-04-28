@@ -5,6 +5,39 @@
 
 volatile uint64_t jiffies = 0;
 
+void add_timer(uint64_t jiffies, void (*fn)())
+{
+	if(!fn)return;
+	cli();//close interrupt
+	
+	struct timer_list * p = timer_head;
+	while(p->next)
+	{
+		p = p->next;
+	}
+	p->next = (struct timer_list *)page_alloc(1);				//temporarily we use 'page_alloc' to alloc, but lately we will use 'malloc' to alloc preciesely
+	p = p->next;
+	
+	p->jiffies = jiffies;
+	p->fn = fn;
+	
+	sti();//enable interrupt
+}
+
+void do_timer()
+{
+	current->time++;
+	if(current->pid) 
+	{
+		if(--(current->counter) > 0)
+		{
+			timer_selfadd();
+			return;
+		}
+	}
+	schedule();
+}
+
 void timer_selfadd()
 {
 	jiffies++;
@@ -24,16 +57,7 @@ void Init_timer()
 
 void timer_interrupt_handler()
 {
-	current->time++;
 	timer_selfadd();
-	if(current->pid) 
-	{
-		if(--(current->counter) > 0)
-		{
-			timer_selfadd();
-			return;
-		}
-	}
-	schedule();
+	do_timer();
 }
 
