@@ -12,10 +12,10 @@
 	solution:
 	add some instruction in BOOT/boot.s
 	"
-		li t0,MPIE						//defined in platfrom.h
-		csrr t1,mstatus	
-		or t0,t0,t1
-		csrw mstatus,t0						//set the MPIE
+		li      t0, 0xffffffff
+		csrw    pmpaddr0, t0
+		li      t0, 0xf
+		csrw    pmpcfg0, t0
 	"
 	here refer "	
 		# https://lore.kernel.org/qemu-devel/20201223192553.332508-1-atish.patra@wdc.com/
@@ -43,7 +43,7 @@
 	next step I'll try to correct it
 	
 5:
-	issue "the ret_num of syscall not right"
+	issue: "the ret_num of syscall not right"
 	time:2023-04-28 11:18:38 by wxk
 	solution:
 	I ignored the *(fn)() and thought the ret_num = *(fn),which is the address of syscall function, and noticed it in GDB.
