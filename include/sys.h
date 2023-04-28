@@ -3,10 +3,10 @@
 
 #include "type.h"
 
-extern int sys_gethid();		//just like syscall format in linux
+extern reg64_t sys_gethid();		//just like syscall format in linux
 
 sys_func sys_call_table[] = {//sys_func defined in include/type.h
-sys_gethid									//0
+sys_gethid,	//0
 };
 
 #endif

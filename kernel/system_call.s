@@ -1,5 +1,6 @@
 .global gethid
 
+.text
 .align 4
 gethid:
 	li a7,0

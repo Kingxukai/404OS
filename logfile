@@ -38,6 +38,12 @@
 4:
 	add "syscall"
 	time:2023-04-28 10:10:38 by wxk
-	althougn maybe it not always get the right answer...
+	comment:althougn maybe it not always get the right answer...
 	however I actually try to complete the syscall...
 	next step I'll try to correct it
+	
+5:
+	issue "the ret_num of syscall not right"
+	time:2023-04-28 11:18:38 by wxk
+	solution:
+	I ignored the *(fn)() and thought the ret_num = *(fn),which is the address of syscall function, and noticed it in GDB.

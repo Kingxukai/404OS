@@ -18,7 +18,7 @@ typedef uint64_t reg64_t;						 //register 64bit
 
 typedef _Bool bool;								//bool type
 
-typedef int (*sys_func)();				//sys_call function
+typedef reg64_t (*sys_func)();				//sys_call function
 
 #define NULL (void *)(0)
 
