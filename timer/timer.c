@@ -3,9 +3,15 @@
 #include "../include/trap.h"
 #include "../include/riscv64.h"
 
+extern void cli();				//defined in trap/trap.c
+extern void sti();
+
 volatile uint64_t jiffies = 0;
 
-void add_timer(uint64_t jiffies, void (*fn)())
+static struct timer_list time_head = {0,NULL,0,NULL};
+static struct timer_list *timer_head = &time_head;
+
+void add_timer(uint64_t _jiffies, void (*fn)())
 {
 	if(!fn)return;
 	cli();//close interrupt
@@ -19,13 +25,23 @@ void add_timer(uint64_t jiffies, void (*fn)())
 	p = p->next;
 	
 	p->jiffies = jiffies;
+	p->_jiffies = _jiffies;
 	p->fn = fn;
 	
 	sti();//enable interrupt
 }
 
+
 void do_timer()
 {
+	struct timer_list *p = timer_head;
+	while(p->next)
+	{
+		p = p->next;
+		if(!p->fn)continue;
+		if(p->jiffies + p->_jiffies <= jiffies)(*(p->fn))();
+	}
+									//sched
 	current->time++;
 	if(current->pid) 
 	{

@@ -11,11 +11,12 @@ void timer_interrupt_handler();
 
 volatile uint64_t jiffies;
 
-struct timer_list
+static struct timer_list
 {
 	uint64_t jiffies;
 	void (*fn)();
+	uint64_t _jiffies;
 	struct timer_list *next;
-}*timer_head = NULL;
+};
 
 #endif
