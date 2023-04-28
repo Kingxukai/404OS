@@ -96,6 +96,7 @@ trap_vector:
 	
 	csrr a0,mcause
 	csrr a1,mepc
+	csrr a2,mscratch
 	
 	call trap_handler
 	

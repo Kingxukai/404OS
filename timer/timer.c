@@ -1,6 +1,7 @@
 #include "../include/timer.h"
 #include "../include/sched.h"
 #include "../include/trap.h"
+#include "../include/riscv64.h"
 
 volatile uint64_t jiffies = 0;
 

@@ -8,11 +8,11 @@ SRCS_ASM = \
 SRCS_C = \
 	kernel/kernel.c \
 	kernel/init.c \
+	kernel/sys.c \
+	kernel/system_call.s \
 	kernel/sched/sched.c \
 	kernel/sched/fork.c \
 	kernel/sched/exit.c \
-	kernel/sys.c \
-	kernel/system_call.s \
 	printf/uart.c \
 	printf/printf.c \
 	printf/panic.c \
@@ -21,6 +21,7 @@ SRCS_C = \
 	mm/page.c \
 	trap/trap.c \
 	trap/plic.c \
+	user/user.c
 
 OBJS = $(SRCS_ASM:.S=.o)
 OBJS += $(SRCS_C:.c=.o)

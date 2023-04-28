@@ -1,7 +1,8 @@
-.global get_hid
+.global gethid
 
 .align 4
-get_hid:
+gethid:
+	li a7,0
 	ecall
 	ret
 

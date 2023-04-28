@@ -1,8 +1,11 @@
 #include "../include/trap.h"
 #include "../include/printf.h"
 #include "../include/timer.h"
+#include "../include/riscv64.h"
+#include "../include/sched.h"
 
 extern void trap_vector(void);
+extern int do_syscall(struct reg *context);
 
 void Init_trap()
 {
@@ -23,7 +26,7 @@ void machine_interrupt_handler()	//handle the char from keyboard
 	if(irq)complete(irq);
 }
 
-reg64_t trap_handler(reg64_t cause,reg64_t epc)
+reg64_t trap_handler(reg64_t cause,reg64_t epc,struct task_struct *p)
 {
 	if(cause & 0x8000000000000000)		//interrupt
 	{
@@ -64,7 +67,7 @@ reg64_t trap_handler(reg64_t cause,reg64_t epc)
 			case 8:
 			{
 				printf("Environment call from U-mode\n");
-				do_syscall();
+				do_syscall(&(p->context));
 				goto NO_ERROR;
 			}
 			case 9:printf("Environment call from S-mode\n");break;
