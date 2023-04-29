@@ -13,3 +13,8 @@ reg64_t sys_gethid()
 {
 	return r_mhartid();
 }
+
+reg64_t sys_getpid()
+{
+	return current->pid;
+}

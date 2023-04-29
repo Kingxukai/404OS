@@ -13,6 +13,6 @@ void task0()
 	printf("current hartid:%d\n",id);
 	while(1)
 	{
-		//printf("task running\n");
+		printf("task%d running\n",getpid());
 	}
 }

@@ -21,7 +21,7 @@ void schedule()
 	while(--i)
 	{
 		if(!*--p)continue;
-		if((*p)->state == TASK_READY && (*p)->priority > max_priority)
+		if((*p)->state == TASK_READY && (*p)->priority > max_priority && current != (*p))
 		{
 			max_priority = (*p)->priority;
 			(*p)->counter = (*p)->priority;

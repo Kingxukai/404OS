@@ -37,21 +37,25 @@
 	
 4:
 	add "syscall"
-	time:2023-04-28 10:10:38 by wxk
+	time:2023-04-28 15:10:38 by wxk
 	comment:althougn maybe it not always get the right answer...
 	however I actually try to complete the syscall...
 	In the next step I'll try to correct it
 	
 5:
 	issue: "the ret_num of syscall not right"
-	time:2023-04-28 11:18:38 by wxk
+	time:2023-04-28 16:18:38 by wxk
 	solution:
 	I ignored the *(fn)() and thought the ret_num = *(fn),which is the address of syscall function, and noticed it through GDB.
 	
 6:
 	add "software timer"
-	time:2023-04-28 14:06:28 by wxk
+	time:2023-04-28 19:06:28 by wxk
 	
 7:
 	add and modify: "add_timer,timer_list,do_timer"
-	time:2023-04-28 15:33:51 by wxk
+	time:2023-04-28 20:33:51 by wxk
+	
+8:
+	add "syscall:getpid()" and mofify the error of Makefile  in file manage
+	time:2023-04-29 18:03:12 by wxk
