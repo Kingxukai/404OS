@@ -57,5 +57,9 @@
 	time:2023-04-28 20:33:51 by wxk
 	
 8:
-	add "syscall:getpid()" and mofify the error of Makefile  in file manage
+	add "syscall:getpid()" and modify the error of Makefile in file manage
 	time:2023-04-29 18:03:12 by wxk
+	
+9：
+	add "syscall:getppid()"
+	time:2023-04-29 22:52:30 by wxk

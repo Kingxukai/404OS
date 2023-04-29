@@ -3,6 +3,7 @@
 
 .global gethid
 .global getpid
+.global getppid
 
 .text
 .align 4
@@ -17,4 +18,8 @@ getpid:
 	ecall
 	ret
 
+getppid:
+	li a7,NR_GETPPID
+	ecall
+	ret
 .end

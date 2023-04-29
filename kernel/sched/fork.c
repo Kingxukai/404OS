@@ -33,7 +33,7 @@ int copy_process()
 		
 		p = current;
 		p->pid = new_id;
-		p->father_id = current->pid;
+		p->father_pid = current->pid;
 		p->state = TASK_READY;
 		p->start_time = jiffies;
 		p->time = 0;

@@ -66,7 +66,7 @@ reg64_t trap_handler(reg64_t cause,reg64_t epc,struct reg *context)
 			case 7:printf("Store/AMO acess fault\n");break;
 			case 8:
 			{
-				printf("Environment call from U-mode\n");
+				//printf("Environment call from U-mode\n");
 				do_syscall(context);
 				goto NO_ERROR;
 			}
@@ -85,12 +85,12 @@ reg64_t trap_handler(reg64_t cause,reg64_t epc,struct reg *context)
 	return epc;
 }
 
-void cli()
+void cli()													//close interrupt
 {
 	w_mstatus(r_mstatus() & ~EA);
 }
 
-void sti()
+void sti()													//enable interrupt
 {
 	w_mstatus(r_mstatus() | EA);
 }

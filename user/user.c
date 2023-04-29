@@ -8,11 +8,10 @@ void task0()
 	int pid1,pid2;
 	if(pid1 = copy_process())printf("task%d create\n",pid1);
 	if(pid2 = copy_process())printf("task%d create\n",pid2);
-	printf("return from system_call\n");
-	int id = gethid();
-	printf("current hartid:%d\n",id);
 	while(1)
 	{
+		printf("current hartid:%d\n",gethid());
 		printf("task%d running\n",getpid());
+		printf("my father pid:%d\n",getppid());
 	}
 }

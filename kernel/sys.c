@@ -18,3 +18,8 @@ reg64_t sys_getpid()
 {
 	return current->pid;
 }
+
+reg64_t sys_getppid()
+{
+	return current->father_pid;
+}
