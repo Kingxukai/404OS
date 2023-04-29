@@ -4,6 +4,7 @@
 .global gethid
 .global getpid
 .global getppid
+.global fork
 
 .text
 .align 4
@@ -20,6 +21,11 @@ getpid:
 
 getppid:
 	li a7,NR_GETPPID
+	ecall
+	ret
+	
+fork:
+	li a7,NR_FORK
 	ecall
 	ret
 .end

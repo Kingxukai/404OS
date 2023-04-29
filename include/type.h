@@ -16,6 +16,8 @@ typedef uint16_t reg16_t;					//register 16bit
 typedef uint32_t reg32_t;							//register 32bit
 typedef uint64_t reg64_t;						 //register 64bit
 
+typedef uint16_t pid_t;						//pid type
+
 typedef _Bool bool;								//bool type
 
 typedef reg64_t (*sys_func)();				//sys_call function

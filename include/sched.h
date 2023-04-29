@@ -65,8 +65,8 @@ struct reg {
 
 struct task_struct
 {
-	int16_t pid;				//process id
-	int16_t father_pid;	
+	pid_t pid;				//process id
+	pid_t father_pid;	
 	int16_t state;				//process state
 	uint64_t start_time;	//start time
 	uint64_t time;				//time of existing in system

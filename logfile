@@ -8,7 +8,6 @@
 	issue:	"turn to trap while execute 'MRET' in machine mode and get a tips 'Illegal instruction'"
 	time:	2023-04-27 20:40:38 by wxk
 	
-
 	solution:
 	add some instruction to BOOT/boot.s
 	"
@@ -45,6 +44,7 @@
 5:
 	issue: "the ret_num of syscall not right"
 	time:2023-04-28 16:18:38 by wxk
+	
 	solution:
 	I ignored the *(fn)() and thought the ret_num = *(fn),which is the address of syscall function, and noticed it through GDB.
 	
@@ -63,3 +63,12 @@
 9：
 	add "syscall:getppid()"
 	time:2023-04-29 22:52:30 by wxk
+	
+10:
+	issue "encounter unexpected error while use fork() to replace with copy_process() in task0,and the whole system paused"
+	and add "syscall:fork()"
+	time:2023-04-30 00:13:05 by wxk
+	
+	solution:
+	delete an instruction in copy_process(),which caused thar error
+	However, it spent me a lot time tracing the process step by step through GDB, and is always be ignored in writing text.

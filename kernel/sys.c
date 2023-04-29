@@ -9,17 +9,22 @@ void do_syscall(struct reg *context)										//syscall executing function
 	context->a0 = ret_num;																//transmit ret_num
 }
 
-reg64_t sys_gethid()
+uint64_t sys_gethid()
 {
 	return r_mhartid();
 }
 
-reg64_t sys_getpid()
+pid_t sys_getpid()
 {
 	return current->pid;
 }
 
-reg64_t sys_getppid()
+pid_t sys_getppid()
 {
 	return current->father_pid;
+}
+
+pid_t sys_fork()
+{
+	return copy_process();
 }

@@ -6,9 +6,9 @@ uint16_t task_stack[MAX_TASK][STACK_SIZE];			//each task occupy 1024*2B stack si
 
 extern struct task_struct *current;
 
-uint16_t get_newpid()
+static pid_t find_new_pid()
 {
-	uint16_t i = 0;
+	pid_t i = 0;
 	struct task_struct ** p = &TASK[0];
 	while(++i<MAX_TASK)
 	{
@@ -18,10 +18,10 @@ uint16_t get_newpid()
 	return MAX_TASK;
 }
 
-int copy_process()
+pid_t copy_process()
 {
-	int16_t new_id = 0;
-	if( (new_id = get_newpid()) >= MAX_TASK )
+	pid_t new_id = 0;
+	if( (new_id = find_new_pid()) >= MAX_TASK )
 	{	
 		panic("No free task_id to create!\n");
 	}
@@ -31,7 +31,6 @@ int copy_process()
 		if(!p) panic("something wrong in page alloc,please check\n");																//something wrong in page alloc
 		TASK[new_id] = p;
 		
-		p = current;
 		p->pid = new_id;
 		p->father_pid = current->pid;
 		p->state = TASK_READY;
@@ -73,7 +72,6 @@ int copy_process()
 		p->context.t6 = current->context.t6;
 		p->context.epc = current->context.epc;
 						
-		
 		return p->pid;
 	}
 }

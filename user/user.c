@@ -6,8 +6,8 @@ void task0()
 	printf("task0 create\n");
 	printf("task0 running\n");
 	int pid1,pid2;
-	if(pid1 = copy_process())printf("task%d create\n",pid1);
-	if(pid2 = copy_process())printf("task%d create\n",pid2);
+	if(pid1 = fork())printf("task%d create\n",pid1);
+	if(pid2 = fork())printf("task%d create\n",pid2);
 	while(1)
 	{
 		printf("current hartid:%d\n",gethid());
