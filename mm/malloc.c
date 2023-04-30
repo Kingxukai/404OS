@@ -1,7 +1,7 @@
 #include "../include/kernel.h"
-#include "../mm/page.c"
 
-struct page_table_entry {
-    unsigned long index;
-    unsigned long pet;
-}
+struct page_table_entry
+{
+	uint64_t index;
+	uint64_t sit;
+};
