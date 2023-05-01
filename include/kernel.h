@@ -7,6 +7,7 @@
 #include "trap.h"
 #include "printf.h"
 #include "stddef.h"
+#include "mm.h"
 
 void *page_alloc(int npages);
 void page_free(void *p);

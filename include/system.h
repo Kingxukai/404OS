@@ -7,14 +7,15 @@
 extern uint64_t gethid();	//0
 extern pid_t getpid();		//1
 extern pid_t getppid();		//2
-extern pid_t fork(); 			//3
-
+extern pid_t fork(); 		//3
+extern void* malloc();		//4
 #else
 
 #define NR_GETHID 0
 #define NR_GETPID 1
 #define NR_GETPPID 2
 #define NR_FORK 3
+#define NR_MALLOC 4
 
 #endif
 
