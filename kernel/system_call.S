@@ -27,5 +27,8 @@ getppid:
 fork:
 	li a7,NR_FORK
 	ecall
+	j r
+	li a0,0
+	r:
 	ret
 .end

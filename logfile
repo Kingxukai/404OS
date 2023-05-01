@@ -72,3 +72,12 @@
 	solution:
 	delete an instruction in copy_process(),which caused thar error
 	However, it spent me a lot time tracing the process step by step through GDB, and is always be ignored in writing text.
+	
+11:
+	issue "encounter an unexpected error while execute set_Queue() 5th,the value of register a1 was random"
+	and modify "fork()",so it can be invoked as same as Linux.
+	time:2023-05-01 22:30:56 by wxk
+	
+	solution:
+	I traced the program and noticed that the order will be added to 6,which is greater than 5.Because we only set an arrary with 5 space.
+	so stupid..hh

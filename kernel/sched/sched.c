@@ -24,14 +24,14 @@ void set_Queue()																//set the queue
 		if(!*--p || (*p)->in_Queue || (*p)->order < 0)continue;
 		if((*p)->state == TASK_READY || (*p)->state == TASK_RUNNING)
 		{
-			if((*p)->order != 5 && (*p)->state == TASK_RUNNING)
+			if((*p)->order < 4 && (*p)->state == TASK_RUNNING)
 			{
 				(*p)->order++;
 			}
 			order = (*p)->order;
 			if(!(queue_head[order].next))
 			{
-				queue_head[order].next = (struct Queue*)page_alloc(1);
+				queue_head[order].next = (struct Queue*)page_alloc(1);;
 				tail[order] = queue_head[order].next;
 			}
 			else
@@ -77,6 +77,7 @@ void schedule()
 		current = q->task;
 		queue_head[i].next = q->next;
 		current->in_Queue = 0;
+		current->state = TASK_RUNNING;
 		page_free(q);
 		break;
 	}

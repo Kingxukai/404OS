@@ -42,7 +42,7 @@ pid_t copy_process()
 		p->in_Queue = 0;
 
 		p->context.ra = current->context.ra;
-		p->context.sp = (reg64_t)task_stack[p->pid][STACK_SIZE-1];
+		p->context.sp = (reg64_t)&task_stack[p->pid][STACK_SIZE-1];
 		p->context.gp = current->context.gp;
 		p->context.tp = current->context.tp;
 		p->context.t0 = current->context.t0;
@@ -72,7 +72,7 @@ pid_t copy_process()
 		p->context.t4 = current->context.t4;
 		p->context.t5 = current->context.t5;
 		p->context.t6 = current->context.t6;
-		p->context.epc = current->context.epc + 4;
+		p->context.epc = current->context.epc+8;
 						
 		return p->pid;
 	}
