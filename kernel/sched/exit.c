@@ -9,10 +9,12 @@ void do_exit()
 	{
 		p->state = TASK_STOP;
 		p->counter = 0;
+		p->in_Queue = 0;
+		p->order = -1;
 		page_free(p);
 	}
 	else
 	{
-		panic("try to kill task 0\n");
+		panic("Attempted to kill task 0\n");
 	}
 }

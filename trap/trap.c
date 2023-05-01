@@ -63,7 +63,7 @@ reg64_t trap_handler(reg64_t cause,reg64_t epc,struct reg *context)
 			case 4:printf("Load address  misalligned\n");break;
 			case 5:printf("Load acess fault\n");break;
 			case 6:printf("Store/AMO address misalligned\n");break;
-			case 7:/*printf("Store/AMO acess fault\n");*/break;
+			case 7:printf("Store/AMO acess fault\n");break;
 			case 8:
 			{
 				//printf("Environment call from U-mode\n");
@@ -77,7 +77,7 @@ reg64_t trap_handler(reg64_t cause,reg64_t epc,struct reg *context)
 			case 15:printf("Store/AMO page fault\n");break;
 			default:printf("unknow fault\n");break;
 		}
-		//printf("mcause:0x%x\nmepc:0x%x\n",cause,epc);
+		printf("\nmcause:0x%x\nmepc:0x%x\n",cause,epc);
 		panic("encounter error\n");			//except cause=8/9/11
 		NO_ERROR:
 		epc += 4;												//make epc point to next 4 address to avoid infinte loop

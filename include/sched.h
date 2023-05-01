@@ -72,6 +72,8 @@ struct task_struct
 	uint64_t time;				//time of existing in system
 	int16_t priority;
 	int16_t counter;
+	bool in_Queue;				//if in queue or not
+	int8_t order;				//the order of queue
 	struct reg context;
 };
 
@@ -84,6 +86,8 @@ struct task_struct
 /*running time*/  				 0, \
 /*priority*/	    				 LOW, \
 /*counter*/		    				 LOW, \
+/*in_Queue*/							 0, \
+/*order*/                  0, \
 /*register initialization*/{ \
 /*return address of function*/0, \
 /*task stack pointer*/				(reg64_t)&task_stack[0][STACK_SIZE-1], \
@@ -95,5 +99,19 @@ struct task_struct
 /*return address of task*/		(reg64_t)task0 \
 		  										 } \
 }
+
+struct Queue
+{
+	pid_t pid;
+	struct task_struct* task;
+	struct Queue *next;
+};
+
+struct Queue_head
+{
+	struct Queue *next;
+};
+
+#define COUNTER(order) (2 + 4 * order)				//counter of each qeueu
 
 #endif

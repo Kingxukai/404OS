@@ -38,6 +38,8 @@ pid_t copy_process()
 		p->time = 0;
 		p->priority = current->priority;
 		p->counter = p->priority;
+		p->order = 0;
+		p->in_Queue = 0;
 
 		p->context.ra = current->context.ra;
 		p->context.sp = (reg64_t)task_stack[p->pid][STACK_SIZE-1];
@@ -70,7 +72,7 @@ pid_t copy_process()
 		p->context.t4 = current->context.t4;
 		p->context.t5 = current->context.t5;
 		p->context.t6 = current->context.t6;
-		p->context.epc = current->context.epc;
+		p->context.epc = current->context.epc + 4;
 						
 		return p->pid;
 	}

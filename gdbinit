@@ -1,5 +1,5 @@
 set disassemble-next-line on
-b fork.c:44
+b *0x80000a6c
 set output-radix 16
 target remote : 1234
 c

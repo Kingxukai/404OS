@@ -16,5 +16,6 @@ void Init()
 	Init_plic();
 	Init_sched();
 	Init_timer();
+	printf("Initialed All!\n");
 	/*other init*/
 }
