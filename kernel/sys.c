@@ -28,3 +28,9 @@ pid_t sys_fork()
 {
 	return copy_process();
 }
+
+void* sys_malloc()
+{
+	void *nil = NULL;
+	return nil;
+}
