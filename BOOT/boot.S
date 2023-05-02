@@ -1,16 +1,16 @@
 #include "../include/platform.h"
 
-.equ STACK_SIZE, 1024
+.equ STACK_SIZE, 4096
 .global _start
 
 .text
 
 _start:
 	csrr t0, mhartid	
-	mv tp, t0									//save the value of hartid in tp
-	bnez t0, park							//temporarily we only allow hart0 to run,and other to park
+	mv a0, t0									//save the value of hartid in a0, which is an arg of kernel_start
+	bnez t0, park							//temporarily we only allow hart0 to run,and other turn to park
 	
-	slli t0,t0,10							//hartid * 1024
+	slli t0,t0,12							//hartid * (1024 * 4)
 	la sp, stack + STACK_SIZE
 	add sp, sp, t0						//alloc stacksize and stack pointer to every hart
 	
@@ -20,7 +20,7 @@ _start:
 1:
 	sw	zero, (t0)
 	addi	t0, t0, 4
-	bltu	t0, t1, 1b
+	bltu	t0, t1, 1b					//clear BSS end
 2:
 
 	li      t0, 0xffffffff
@@ -28,17 +28,17 @@ _start:
 	li      t0, 0xf
 	csrw    pmpcfg0, t0
 	
-	li t0,MPIE						//defined in platfrom.h
+	li t0,MPIE						//MPIE defined in platfrom.h
 	csrr t1,mstatus	
 	or t0,t0,t1
 	csrw mstatus,t0						//set the MPIE
 	
-	j kernel_start
+	j kernel_start				//the entry of kernel
 	
 park:
-	wfi
+	wfi								//wait for interrupt
 	j park	
 	
 stack:
-	.skip STACK_SIZE * CPU_NUM
+	.skip STACK_SIZE * CPU_NUM				//alloc each hard stack for STACK_SIZE(1024B)
 	.end
