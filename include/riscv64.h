@@ -69,4 +69,53 @@ static inline reg64_t r_mip()
 	return reg;
 }
 
+static inline void w_a0(reg64_t reg)
+{
+	asm volatile("li a0,%0"::"r"(reg));
+}
+
+static inline void w_a1(reg64_t reg)
+{
+	asm volatile("li a1,%0"::"r"(reg));
+}
+
+static inline void w_a2(reg64_t reg)
+{
+	asm volatile("li a2,%0"::"r"(reg));
+}
+
+static inline void w_a3(reg64_t reg)
+{
+	asm volatile("li a3,%0"::"r"(reg));
+}
+
+static inline void w_a4(reg64_t reg)
+{
+	asm volatile("li a4,%0"::"r"(reg));
+}
+
+static inline void w_a5(reg64_t reg)
+{
+	asm volatile("li a5,%0"::"r"(reg));
+}
+
+static inline void w_a6(reg64_t reg)
+{
+	asm volatile("li a6,%0"::"r"(reg));
+}
+
+static inline void w_a7(reg64_t reg)
+{
+	asm volatile("li a7,%0"::"r"(reg));
+}
+
+static inline void asm_ecall()
+{
+	asm volatile("ecall");
+}
+
+static inline void asm_ret()
+{
+	asm volatile("ret");
+}
 #endif

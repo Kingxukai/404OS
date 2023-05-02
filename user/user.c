@@ -5,7 +5,7 @@ void task0()
 {
 	printf("task0 create\n");
 	printf("task0 running\n");
-	int pid1,pid2;
+	pid_t pid1,pid2;
 	if((pid1 = fork()) == 0)
 	{
 		printf("task%d running\n",getpid());

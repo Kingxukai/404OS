@@ -3,13 +3,13 @@ include common.mk
 SRCS_ASM = \
 	BOOT/boot.S \
 	kernel/switch.S \
-	kernel/system_call.S \
 	mm/mem.S \
 
 SRCS_C = \
 	kernel/kernel.c \
 	kernel/init.c \
 	kernel/sys.c \
+	kernel/system_call.c \
 	kernel/sched/sched.c \
 	kernel/sched/fork.c \
 	kernel/sched/exit.c \

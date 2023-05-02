@@ -27,6 +27,8 @@ struct task_struct *TASK[MAX_TASK];
 struct task_struct *current;
 uint16_t task_stack[MAX_TASK][STACK_SIZE];
 
+extern pid_t NEW_PID;
+
 struct reg {
 	reg64_t ra;
 	reg64_t sp;
@@ -112,6 +114,6 @@ struct Queue_head
 	struct Queue *next;
 };
 
-#define COUNTER(order) (2 + 4 * order)				//counter of each qeueu
+#define COUNTER(order) (2 + 6 * order)				//counter of each qeueu
 
 #endif

@@ -81,3 +81,11 @@
 	solution:
 	I traced the program and noticed that the order will be added to 6,which is greater than 5.Because we only set an arrary with 5 space.
 	so stupid..hh
+	
+12:
+	modify "define syscall with macro,and change the fork()"
+	time:2023-05-03 02:20:38 by wxk
+	
+	comment:Ok,let's talk about the classic syscall——fork,which is invoked to create a new process,and get new pid as return value in father process while get 0 return number in child process. How can I implement it?
+	Actually,I let child process's mepc = father's mepc + 1,so that the child process can skip 'ecall',and return 0 directly.
+	However,there is still a problem that I haven't tackled it,which surprises me with that it can be correctly execute if I add 'registed' attribute instead of only 'pid_t'.I think is stack's problem. I'll modify it next step.

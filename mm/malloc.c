@@ -6,11 +6,6 @@ struct page_table_entry
 	uint64_t sit;
 };
 
-void* malloc(int size) {
-	
-	return NULL;
-}
-
 void _free(unsigned long address) {
 	
 }

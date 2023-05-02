@@ -1,6 +1,9 @@
 #ifndef _PLATFORM_H__
 #define _PLATFORM_H__
 
+#define PLATFORM "virt"
+#define ARCH "RISC-V"
+
 #define CPU_NUM 2
 
 #define MPIE (1<<7)			//control machine previous interrupt enable
