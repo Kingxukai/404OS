@@ -45,7 +45,9 @@ static inline void _clear(struct Page *page)
 {
 	page->flags = 0;
 }
-
+/*
+* 0 means not null
+*/
 static inline int _is_free(struct Page *page)
 {
 	if (page->flags & PAGE_TAKEN) {
@@ -161,7 +163,7 @@ void page_free(void *p)
 	if (!p || (uint32_t)p >= _alloc_end) {
 		return;
 	}
-	/* get the first page descriptor of this memory block */
+	/* get the first page descriptor of this m                      emory block */
 	struct Page *page = (struct Page *)HEAP_START;
 	page += ((uint32_t)p - _alloc_start)/ PAGE_SIZE;
 	/* loop and clear all the page descriptors of the memory block */

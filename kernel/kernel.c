@@ -3,6 +3,7 @@ static void show_hello();
 
 void kernel_start(reg64_t hardid)
 {
+<<<<<<< Updated upstream
 	if(!hardid)
 	{
 		show_hello();	// show hello 404
@@ -14,6 +15,12 @@ void kernel_start(reg64_t hardid)
 	else printf("hard%d OK!!!\n",hardid);
 	
 
+=======
+	printf("Loading...\n");
+	show_hello();	// show hello 404
+	Init();				//exceve task0
+	printf("the bytes of void*is %d\n",sizeof(void*));
+>>>>>>> Stashed changes
 	schedule();		//schedule to switch from machine mode to user mode and  run task0  in free time
 	while(1)
 	{
