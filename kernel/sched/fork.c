@@ -61,7 +61,7 @@ pid_t copy_process()
 	p->context.t2 = current->context.t2;
 	p->context.s0 = current->context.s0;
 	p->context.s1 = current->context.s1;
-	p->context.a0 = 0;
+	p->context.a0 = 0;										//so the return value of fork in new process is 0
 	p->context.a1 = current->context.a1;
 	p->context.a2 = current->context.a2;
 	p->context.a3 = current->context.a3;
@@ -83,7 +83,7 @@ pid_t copy_process()
 	p->context.t4 = current->context.t4;
 	p->context.t5 = current->context.t5;
 	p->context.t6 = current->context.t6;
-	p->context.epc = current->context.epc + 4;
+	p->context.epc = current->context.epc + 4;	//don't ecall again to avoid endless loop
 						
 	return p->pid;
 }
