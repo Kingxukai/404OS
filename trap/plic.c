@@ -4,6 +4,7 @@
 #include "../include/platform.h"
 #include "../include/uart.h"
 #include "../include/printf.h"
+#include "../include/riscv64.h"
 
 uint64_t claim()
 {
