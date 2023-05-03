@@ -87,8 +87,3 @@ pid_t copy_process()
 						
 	return p->pid;
 }
-
-/*int execve()
-{
-	
-}*/

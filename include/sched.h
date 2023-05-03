@@ -19,9 +19,9 @@
 #define STACK_SIZE 1024
 
 void schedule();
-void do_exit();
+pid_t do_exit();
 void Init_sched();
-void task0();
+extern void task0();
 
 struct task_struct *TASK[MAX_TASK];
 struct task_struct *current;

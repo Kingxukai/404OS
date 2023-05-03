@@ -2,7 +2,7 @@
 
 extern struct task_struct *current;
 
-void do_exit()
+pid_t do_exit()
 {
 	struct task_struct *p = current;
 	if(p->pid)
@@ -12,9 +12,11 @@ void do_exit()
 		p->in_Queue = 0;
 		p->order = -1;
 		page_free(p);
+		printf("task%d exit\n",p->pid);
 	}
 	else
 	{
 		panic("Attempted to kill task 0\n");
 	}
+	return 0;
 }

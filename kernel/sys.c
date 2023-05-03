@@ -35,6 +35,53 @@ pid_t sys_fork()
 	return copy_process();
 }
 
+int sys_execve(const char *filepath,char ** const argv,char ** const envp)
+{
+	struct task_struct *p = current;
+	if(!argv)
+	{
+		p->context.ra = (reg64_t)filepath;
+		p->context.sp = (reg64_t)&task_stack[p->pid][STACK_SIZE-1];	
+		p->context.gp = 0;
+		p->context.tp = 0;
+		p->context.t0 = 0;
+		p->context.t1 = 0;
+		p->context.t2 = 0;
+		p->context.s0 = current->context.s0;
+		p->context.s1 = 0;
+		p->context.a0 = 0;										
+		p->context.a1 = 0;
+		p->context.a2 = 0;
+		p->context.a3 = 0;
+		p->context.a4 = 0;
+		p->context.a5 = 0;
+		p->context.a6 = 0;
+		p->context.a7 = 0;
+		p->context.s2 = 0;
+		p->context.s3 = 0;
+		p->context.s4 = 0;
+		p->context.s5 = 0;
+		p->context.s6 = 0;
+		p->context.s7 = 0;
+		p->context.s8 = 0;
+		p->context.s9 = 0;
+		p->context.s10 = 0;
+		p->context.s11 = 0;
+		p->context.t3 = 0;
+		p->context.t4 = 0;
+		p->context.t5 = 0;
+		p->context.t6 = 0;
+		p->context.epc = (reg64_t)filepath;
+		return 0;
+	}
+	else return -1;
+}
+
+pid_t sys_exit()
+{
+	return do_exit();
+}
+
 void* sys_malloc()
 {
 	void *nil = NULL;
