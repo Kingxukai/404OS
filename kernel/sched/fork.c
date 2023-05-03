@@ -21,6 +21,19 @@ pid_t find_new_pid()
 	return MAX_TASK;
 }
 
+static void copy_memory(reg64_t *sp)
+{
+	reg64_t *old_addr_start = &task_stack[current->pid][STACK_SIZE - 1];
+	reg64_t *old_addr_end = task_stack[current->pid];
+	reg64_t *new_addr_start = sp;
+	while(old_addr_start >= old_addr_end)
+	{
+		*new_addr_start = *old_addr_start;
+		new_addr_start--;
+		old_addr_start--;
+	}
+}
+
 pid_t copy_process()
 {
 	struct task_struct *p = (struct task_struct *)page_alloc(1);
@@ -38,7 +51,9 @@ pid_t copy_process()
 	p->in_Queue = 0;
 
 	p->context.ra = current->context.ra;
-	p->context.sp = (reg64_t)&task_stack[p->pid][STACK_SIZE-1];
+	p->context.sp = (reg64_t)&task_stack[p->pid][STACK_SIZE-1];	//if just alloc the new process a new stack,what will happen? yes,the local variable will disapear because it pointing to a new space with none data while new task executing. SO,we need to copy mm.
+	copy_memory(p->context.sp);
+	p->context.sp = p->context.sp - ((reg64_t)(&task_stack[current->pid][STACK_SIZE-1])-(current->context.sp));//get the relative address
 	p->context.gp = current->context.gp;
 	p->context.tp = current->context.tp;
 	p->context.t0 = current->context.t0;
