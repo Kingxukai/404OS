@@ -1,17 +1,17 @@
 #include "../include/kernel.h"
 static void show_hello();
 
-void kernel_start(reg64_t hardid)
+void kernel_start(reg64_t hartid)
 {
-	if(!hardid)
+	if(!hartid)
 	{
 		show_hello();	// show hello 404
 		printf("PLATFORM:%s\n",PLATFORM);
 		printf("ARCH:%s\n",ARCH);
-		printf("hard%d OK!!!\n",hardid);
+		printf("hart%d OK!!!\n",hartid);
 		Init();				//Initial all
 	}
-	else printf("hard%d OK!!!\n",hardid);
+	else printf("hart%d OK!!!\n",hartid);
 	
 
 	schedule();		//schedule to switch from machine mode to user mode and  run task0  in free time
