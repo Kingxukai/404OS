@@ -6,6 +6,7 @@ extern void Init_timer();
 extern void Init_page();
 extern void Init_sched();
 extern void Init_plic();
+extern void Init_block_desc();
 
 void Init()
 {
@@ -16,6 +17,7 @@ void Init()
 	Init_plic();
 	Init_sched();
 	Init_timer();
+ 	Init_block_desc();
 	printf("Initialed All!\n");
 	/*other init*/
 }

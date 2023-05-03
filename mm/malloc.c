@@ -7,7 +7,7 @@ struct page_table_entry
 };
 //存储块描述符结构
 struct block_desc 
-{			/* 28 bytes*/
+{			/* 16 bytes*/
 	void *block;			//该描述符对应的内存页面指针
 	struct block_desc *next;	//下一个描述符指针
 	void *freeptr;			//指向本块中空闲内存的指针
@@ -21,7 +21,7 @@ void _free_block_(unsigned long address) {
 }
 
 struct _block_dir 
-{			/* 12 bytes */
+{			/* 8 bytes */
 	uint32_t size;			//该存储块的大小
 	struct block_desc *list;	//该存储块目录项的块描述符链表指针
 };
@@ -42,15 +42,16 @@ struct _block_dir bolck_dir[] = {
 /*
 * 这是含有空闲描述符内存块的链表
 */
-struct block_desc *free_block_desc = (struct bloc_desc *) 0;
+struct block_desc *free_block_desc = NULL;
 
 
 /*
 * 初始化内存块列表
 * 建立空闲块描述符链表，并让free_block_desc 指向第一个空闲块描述符
 */
-static inline void init_block_desc () 
+void Init_block_desc () 
 {
+	printf("Init block_desc for malloc\n");
 	struct block_desc *bdesc,*first;
 	int i;
 	
@@ -58,9 +59,15 @@ static inline void init_block_desc ()
 	if(!bdesc) {
 		panic("Out of bolck_buket_desc[]!");
 	}
-	else {
-		
+	for( i = PAGE_SIZE/sizeof(struct block_desc); i > 1; i--) {
+			bdesc->next = bdesc +  1;
+			bdesc = bdesc->next;
 	}
+/*
+*	进行最后处理，为了避免alloc_page无法调用，而子程序被调用引起竞争条件
+*/
+	bdesc->next = free_block_desc;
+	free_block_desc = first;
 }
 
 void* _malloc_(int size) 
