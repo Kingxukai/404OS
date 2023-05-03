@@ -1,18 +1,22 @@
 #include "../include/kernel.h"
 static void show_hello();
 
-void kernel_start(reg64_t hardid)
+void kernel_start(reg64_t hartid)
 {
+<<<<<<< HEAD
 <<<<<<< Updated upstream
 	if(!hardid)
+=======
+	if(!hartid)
+>>>>>>> 872085f675df21c574d10487306b5c402149e374
 	{
 		show_hello();	// show hello 404
 		printf("PLATFORM:%s\n",PLATFORM);
 		printf("ARCH:%s\n",ARCH);
-		printf("hard%d OK!!!\n",hardid);
+		printf("hart%d OK!!!\n",hartid);
 		Init();				//Initial all
 	}
-	else printf("hard%d OK!!!\n",hardid);
+	else printf("hart%d OK!!!\n",hartid);
 	
 
 =======
