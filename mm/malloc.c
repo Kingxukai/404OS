@@ -58,7 +58,9 @@ static inline void init_block_desc ()
 	if(!bdesc) {
 		panic("Out of bolck_buket_desc[]!");
 	}
-	
+	else {
+		
+	}
 }
 
 void* _malloc_(int size) 
