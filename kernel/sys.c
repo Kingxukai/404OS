@@ -88,8 +88,7 @@ int sys_wait()
 	schedule();
 }
 
-void* sys_malloc()
+void* sys_malloc(uint32_t size)
 {
-	void *nil = NULL;
-	return nil;
+	return _malloc_(size);
 }

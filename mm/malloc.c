@@ -56,7 +56,7 @@ void* _malloc_(uint32_t length)
 	*检索block_dir查找合适大小的内存块描述块列表
 	*/
 	
-	for( bdir = block_dir ;  bdir->size ; bdir) 
+	for( bdir = block_dir ;  bdir->size ; bdir++) 
 				if( bdir->size >= length) 
 					break;
 	//若检索不到合适大小的块,则输出错误,并暂停程序
