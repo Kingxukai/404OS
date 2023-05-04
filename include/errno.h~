@@ -1,5 +1,5 @@
 #ifndef _ERRNO_H__
-#define _ERRNO_H__
+#define -ERRNO_H__
 
 extern uint64_t errno;//define in kernel/errno.c
 
