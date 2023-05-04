@@ -7,7 +7,7 @@ void do_syscall(struct reg *context)										//syscall executing function
 	reg64_t sys_num = context->a7;
 	sys_func fn;
 	fn = (sys_func)sys_call_table[sys_num];
-	context->a0 = (*fn)(context->a0,context->a1,context->a2);
+	context->a0 = (*fn)(context->a0,context->a1,context->a2,context->a3,context->a4,context->a5);
 }
 
 uint64_t sys_gethid()	
@@ -35,10 +35,10 @@ pid_t sys_fork()
 	return copy_process();
 }
 
-int sys_execve(const char *filepath,char ** const argv,char ** const envp)
+int sys_execve(const char *filepath,char * const * argv,char * const * envp)
 {
 	struct task_struct *p = current;
-	if(!argv)
+	if(filepath)
 	{
 		p->context.ra = (reg64_t)filepath;
 		p->context.sp = (reg64_t)&task_stack[p->pid][STACK_SIZE-1];	
