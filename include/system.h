@@ -11,7 +11,6 @@
 #define NR_execve 4
 #define NR_exit	5
 #define NR_wait 6
-#define NR_malloc 7
 
 #define _syscall0(type,name) \
 type name(void) \

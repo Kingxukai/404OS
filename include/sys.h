@@ -11,7 +11,6 @@ extern pid_t sys_fork();
 extern int sys_execve();
 extern pid_t sys_exit();
 extern int sys_wait();
-extern void* sys_malloc();
 
 sys_func sys_call_table[] = {//sys_func defined in include/type.h
 sys_gethid,	//0
@@ -21,7 +20,6 @@ sys_fork,	//3
 sys_execve,	//4
 sys_exit,	//5
 sys_wait,	//6
-sys_malloc,	//7
 
 };
 

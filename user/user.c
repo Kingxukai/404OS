@@ -1,8 +1,8 @@
 #include "../include/unistd.h"
 #include "../include/printf.h"
-
+#include "../include/lib.h"
 typedef struct _node {
-	int *next;
+	struct node_ *next;
 	char ch;
 	int in;
 	long lo;
@@ -29,12 +29,16 @@ void task3()
 {
 	printf("test\n");
 	NODE node = (NODE)malloc(sizeof(struct _node));
-	node->next = NULL;
+	node->next = node;
 	node->sh = 10;
 	node->ch = 't';
 	node->in = 1;
 	node->lo = 1000000000000;
-	printf("int:%d char:%c long:%ld short:%d ptsr:%p\n",node->in,node->ch,node->lo,node->sh,node->next);
+	printf("short:%d ptr:%x \n",node->sh,node->next);
+	printf("int:%d char:%c long:%ld \n",node->in,node->ch,node->lo);
+	free(node);
+	printf("after short:%d ptr:%x \n",node->sh,node->next);
+	printf("int:%d char:%c long:%ld \n",node->in,node->ch,node->lo);
 	int *a = (int*) malloc(sizeof(int));
 	*a = 100;
 	printf("the int type index is : %d\n",*a);

@@ -9,6 +9,4 @@ pid_t fork(); //3
 int execve(const char *filepath,char * const * argv,char * const * envp);//4
 pid_t exit();	//5
 int wait();	//6
-void* malloc();	//7
-
 #endif
