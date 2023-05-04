@@ -87,9 +87,3 @@ int sys_wait()
 	current->state == TASK_WAIT;
 	schedule();
 }
-
-void* sys_malloc()
-{
-	void *nil = NULL;
-	return nil;
-}

@@ -26,7 +26,6 @@ void kernel_start(reg64_t hartid)
 	printf("\nInitial...\n");
 	Init_page();
 	Init_block_desc();
- 	printf("the bytes of void*is %d\n",sizeof(void*));
 	Init_uart();
 	Init_trap();
 	Init_sched();

@@ -3,7 +3,7 @@
 #include "../../include/timer.h"
 #include "../../include/trap.h"
 
-uint16_t task_stack[MAX_TASK][STACK_SIZE];			//each task occupy 1024*2B stack size
+uint8_t task_stack[MAX_TASK][STACK_SIZE];			//each task occupy 1024B stack size
 
 extern struct task_struct *current;
 

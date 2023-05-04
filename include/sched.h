@@ -26,7 +26,7 @@ extern void Init();
 
 struct task_struct *TASK[MAX_TASK];
 struct task_struct *current;
-uint16_t task_stack[MAX_TASK][STACK_SIZE];
+uint8_t task_stack[MAX_TASK][STACK_SIZE];
 
 extern pid_t NEW_PID;
 
