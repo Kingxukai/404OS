@@ -82,6 +82,12 @@ pid_t sys_exit()
 	return do_exit();
 }
 
+int sys_wait()
+{
+	current->state == TASK_WAIT;
+	schedule();
+}
+
 void* sys_malloc()
 {
 	void *nil = NULL;

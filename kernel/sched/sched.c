@@ -39,17 +39,17 @@ void set_Queue()																//set the queue
 				tail[order]->next = (struct Queue*)page_alloc(1);
 				tail[order] = tail[order]->next;
 			}
-		}
-		
-		tail[order]->pid = (*p)->pid;
-		tail[order]->next = NULL;
-		tail[order]->task = *p;
 			
-		(*p)->in_Queue = 1;
-		(*p)->order = order;
-		(*p)->counter = COUNTER(order);
+			tail[order]->pid = (*p)->pid;
+			tail[order]->next = NULL;
+			tail[order]->task = *p;
+			
+			(*p)->in_Queue = 1;
+			(*p)->order = order;
+			(*p)->counter = COUNTER(order);
+		}
 	}
-	
+	/*
 	for(int j = 0;j<5;j++)
 	{
 		if(!(queue_head[j].next))continue;
@@ -61,7 +61,7 @@ void set_Queue()																//set the queue
 			q = q->next;
 		}
 		printf("\n");
-	}
+	}*/
 }
 
 void schedule()

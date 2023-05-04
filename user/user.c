@@ -1,4 +1,4 @@
-#include "../include/system.h"
+#include "../include/unistd.h"
 #include "../include/printf.h"
 
 void task1()
@@ -9,35 +9,17 @@ void task1()
 
 void task2()
 {
-	while(1)
+	int t = 5;
+	while(t--)
 	{
 		printf("task%d running\n",getpid());
 	}
+	exit();
 }
 
-void task0()
+void task3()
 {
-	printf("task0 create\n");
-	printf("task0 running\n");
-	pid_t pid1,pid2;
-	if((pid1 = fork()) == 0)
-	{
-		execve(task1,NULL,NULL);
-	}
-	else if((pid2 = fork()) == 0)
-	{
-		execve(task2,NULL,NULL);
-	}
-	else
-	{
-		printf("here is father task\n");
-		printf("task%d create\n",pid1);
-		printf("task%d create\n",pid2);
-	}
 	printf("task%d running\n",getpid());
-
-	while(1)
-	{
-		//printf("task%d running\n",getpid());
-	}
+	wait();
+	printf("task%d running\n",getpid());
 }
