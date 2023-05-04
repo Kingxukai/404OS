@@ -17,6 +17,7 @@ void task2()
 
 void task0()
 {
+	printf("malooc\n");
 	printf("task0 create\n");
 	printf("task0 running\n");
 	pid_t pid1,pid2;
