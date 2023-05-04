@@ -1,4 +1,4 @@
-#include "../include/system.h"
+#include "../include/unistd.h"
 #include "../include/printf.h"
 
 void task1()
@@ -9,14 +9,17 @@ void task1()
 
 void task2()
 {
-	while(1)
+	int t = 5;
+	while(t--)
 	{
 		printf("task%d running\n",getpid());
 	}
+	exit();
 }
 
-void task0()
+void task3()
 {
+<<<<<<< HEAD
 	printf("malooc\n");
 	printf("task0 create\n");
 	printf("task0 running\n");
@@ -35,10 +38,9 @@ void task0()
 		printf("task%d create\n",pid1);
 		printf("task%d create\n",pid2);
 	}
+=======
+>>>>>>> b263a168e9b1161ebcebeb9fff679fda95062a44
 	printf("task%d running\n",getpid());
-
-	while(1)
-	{
-		//printf("task%d running\n",getpid());
-	}
+	wait();
+	printf("task%d running\n",getpid());
 }

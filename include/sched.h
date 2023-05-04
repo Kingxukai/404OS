@@ -9,7 +9,8 @@
 #define TASK_RUNNING 1
 #define TASK_READY 2
 #define TASK_WAIT 3
-#define TASK_STOP 4
+#define TASK_ZOMBINE 4
+#define TASK_STOP 5
 
 #define TOP 3	//priority value
 #define MID 2
@@ -21,7 +22,7 @@
 void schedule();
 pid_t do_exit();
 void Init_sched();
-extern void task0();
+extern void Init();
 
 struct task_struct *TASK[MAX_TASK];
 struct task_struct *current;
@@ -98,7 +99,7 @@ struct task_struct
 															0,0,0,0,0,0,0, \
 															0,0,0,0,0,0,0, \
 															0, \
-/*return address of task*/		(reg64_t)task0 \
+/*return address of task*/		(reg64_t)Init \
 		  										 } \
 }
 

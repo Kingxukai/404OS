@@ -4,21 +4,14 @@
 #include "type.h"
 #include "riscv64.h"
 
-uint64_t gethid();	//0
-pid_t getpid();	//1
-pid_t getppid();	//2
-pid_t fork(); //3
-int execve(const char *filepath,char * const * argv,char * const * envp);//4
-pid_t exit();	//5
-void* malloc();	//6
-
 #define NR_gethid 0
 #define NR_getpid 1
 #define NR_getppid 2
 #define NR_fork 3
 #define NR_execve 4
 #define NR_exit	5
-#define NR_malloc 6
+#define NR_wait 6
+#define NR_malloc 7
 
 #define _syscall0(type,name) \
 type name(void) \

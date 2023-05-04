@@ -1,23 +1,37 @@
 #include "../include/kernel.h"
+#include "../include/unistd.h"
 
-extern void Init_trap();
-extern void Init_uart();
-extern void Init_timer();
-extern void Init_page();
-extern void Init_sched();
-extern void Init_plic();
-extern void Init_block_desc();
+extern void task1();
+extern void task2();
+extern void task3();
 
 void Init()
 {
-	printf("\nInitial...\n");
-	Init_page();
-	Init_uart();
-	Init_trap();
-	Init_plic();
-	Init_sched();
-	Init_timer();
- 	Init_block_desc();
-	printf("Initialed All!\n");
 	/*other init*/
+	pid_t pid1,pid2,pid3;
+	if((pid1 = fork()) == 0)
+	{
+		execve(task1,NULL,NULL);
+	}
+	else if((pid2 = fork()) == 0)
+	{
+		execve(task2,NULL,NULL);
+	}
+	else if((pid3 = fork()) == 0)
+	{
+		execve(task3,NULL,NULL);
+	}
+	else
+	{
+		printf("task%d has created\n",pid1);
+		printf("task%d has created\n",pid2);
+		printf("task%d has created\n",pid3);
+		printf("here is father process\n");
+
+	}
+	while(1)
+	{
+		
+	}
+	panic("unexpected step?!\n");
 }
