@@ -101,3 +101,9 @@
 14:
 	add "syscall:execve and exit"
 	time:2023-05-03 17:06:57 by wxk
+	
+15:
+	modify "syscall:execve and modify the macro of syscall to make it be compatible with void function(no return)"
+	time:2023-05-04 23:34:08 by wxk
+	
+	comment:I have a trial run almost a day because of some problem in the execve in order to simlify the original syscall——'execute' in Linux.

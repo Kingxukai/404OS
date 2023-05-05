@@ -1,8 +1,9 @@
 #include "../../include/sched.h"
 #include "../../include/kernel.h"
 #include "../../include/timer.h"
+#include "../../include/trap.h"
 
-uint16_t task_stack[MAX_TASK][STACK_SIZE];			//each task occupy 1024*2B stack size
+uint8_t task_stack[MAX_TASK][STACK_SIZE];			//each task occupy 1024B stack size
 
 extern struct task_struct *current;
 
@@ -21,11 +22,11 @@ pid_t find_new_pid()
 	return MAX_TASK;
 }
 
-static void copy_memory(reg64_t *sp)
+static void copy_memory(reg64_t sp)
 {
-	reg64_t *old_addr_start = &task_stack[current->pid][STACK_SIZE - 1];
-	reg64_t *old_addr_end = task_stack[current->pid];
-	reg64_t *new_addr_start = sp;
+	reg8_t *old_addr_start = (reg64_t)&task_stack[current->pid][STACK_SIZE - 1];
+	reg8_t *old_addr_end = (reg64_t)&task_stack[current->pid][0];
+	reg8_t *new_addr_start = (reg8_t *)sp;
 	while(old_addr_start >= old_addr_end)
 	{
 		*new_addr_start = *old_addr_start;
@@ -36,6 +37,7 @@ static void copy_memory(reg64_t *sp)
 
 pid_t copy_process()
 {
+	cli();
 	struct task_struct *p = (struct task_struct *)page_alloc(1);
 	if(!p) panic("something wrong in page alloc,please check\n");																//something wrong in page alloc
 	TASK[NEW_PID] = p;
@@ -53,7 +55,7 @@ pid_t copy_process()
 	p->context.ra = current->context.ra;
 	p->context.sp = (reg64_t)&task_stack[p->pid][STACK_SIZE-1];	//if just alloc the new process a new stack,what will happen? yes,the local variable will disapear because it pointing to a new space with none data while new task executing. SO,we need to copy mm.
 	copy_memory(p->context.sp);
-	p->context.sp = p->context.sp - ((reg64_t)(&task_stack[current->pid][STACK_SIZE-1])-(current->context.sp));//get the relative address
+	p->context.sp = p->context.sp - ((reg64_t)(&task_stack[current->pid][STACK_SIZE-1]) - (current->context.sp));//get the relative address
 	p->context.gp = current->context.gp;
 	p->context.tp = current->context.tp;
 	p->context.t0 = current->context.t0;
@@ -84,6 +86,7 @@ pid_t copy_process()
 	p->context.t5 = current->context.t5;
 	p->context.t6 = current->context.t6;
 	p->context.epc = current->context.epc + 4;	//don't ecall again to avoid endless loop
-						
+	
+	sti();
 	return p->pid;
 }

@@ -72,9 +72,9 @@ int sys_execve(const char *filepath,char * const * argv,char * const * envp)
 		p->context.t5 = 0;
 		p->context.t6 = 0;
 		p->context.epc = (reg64_t)filepath;
-		return 0;
+		switch_to(&p->context);
 	}
-	else return -1;
+	return -1;
 }
 
 pid_t sys_exit()
@@ -87,4 +87,3 @@ int sys_wait()
 	current->state == TASK_WAIT;
 	schedule();
 }
-

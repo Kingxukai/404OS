@@ -1,5 +1,6 @@
 #include "../../include/sched.h"
 #include "../../include/riscv64.h"
+#include "../../include/lib.h"
 
 //2023-04-02 12:45:46 
 
@@ -31,12 +32,12 @@ void set_Queue()																//set the queue
 			order = (*p)->order;
 			if(!(queue_head[order].next))
 			{
-				queue_head[order].next = (struct Queue*)page_alloc(1);;
+				queue_head[order].next = (struct Queue*)malloc(sizeof(struct Queue));;
 				tail[order] = queue_head[order].next;
 			}
 			else
 			{
-				tail[order]->next = (struct Queue*)page_alloc(1);
+				tail[order]->next = (struct Queue*)malloc(sizeof(struct Queue));
 				tail[order] = tail[order]->next;
 			}
 			
@@ -78,7 +79,7 @@ void schedule()
 		queue_head[i].next = q->next;
 		current->in_Queue = 0;
 		current->state = TASK_RUNNING;
-		page_free(q);
+		free(q);
 		break;
 	}
 	

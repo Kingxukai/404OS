@@ -9,13 +9,13 @@ typedef struct _node {
 	short sh;
 }*NODE,Node;
 
-void task1()
+void task2()
 {
 	printf("task%d running\n",getpid());
 	exit();
 }
 
-void task2()
+void task3()
 {
 	int t = 5;
 	while(t--)
@@ -25,7 +25,7 @@ void task2()
 	exit();
 }
 
-void task3()
+void task4()
 {
 	printf("test\n");
 	NODE node = (NODE)malloc(sizeof(struct _node));
@@ -53,27 +53,38 @@ void task3()
 	short *e = (short*)malloc(sizeof(short));
 	*e = 10;
 	printf("the int type index is : %d\n",*e);
-	
-	
-	printf("task0 create\n");
-	printf("task0 running\n");
-	pid_t pid1,pid2;
-	if((pid1 = fork()) == 0)
+	while(1)
 	{
-		execve(task1,NULL,NULL);
+	
 	}
-	else if((pid2 = fork()) == 0)
+}
+
+void task1()
+{
+	pid_t pid2,pid3,pid4;
+	if((pid2 = fork()) == 0)
 	{
 		execve(task2,NULL,NULL);
 	}
+	else if((pid3 = fork()) == 0)
+	{
+		execve(task3,NULL,NULL);
+	}
+	else if((pid4 = fork()) == 0)
+	{
+		execve(task4,NULL,NULL);
+	}
 	else
 	{
-		printf("here is father task\n");
-		printf("task%d create\n",pid1);
-		printf("task%d create\n",pid2);
+		printf("task%d has created\n",pid2);
+		printf("task%d has created\n",pid3);
+		printf("task%d has created\n",pid4);
+		//wait();
+		printf("here is father process\n");
+		printf("task%d is running\n",getpid());
 	}
-
-	printf("task%d running\n",getpid());
-	wait();
-	printf("task%d running\n",getpid());
+	while(1)
+	{
+	
+	}
 }

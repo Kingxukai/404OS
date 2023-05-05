@@ -2,6 +2,7 @@
 #include "../include/sched.h"
 #include "../include/trap.h"
 #include "../include/riscv64.h"
+#include "../include/lib.h"
 
 extern void cli();				//defined in trap/trap.c
 extern void sti();
@@ -21,7 +22,7 @@ void add_timer(uint64_t _jiffies, void (*fn)())
 	{
 		p = p->next;
 	}
-	p->next = (struct timer_list *)page_alloc(1);				//temporarily we use 'page_alloc' to alloc, but lately we will use 'malloc' to alloc preciesely
+	p->next = (struct timer_list *)malloc(sizeof(struct timer_list));
 	p = p->next;
 	
 	p->jiffies = jiffies;
@@ -45,7 +46,7 @@ void do_timer()
 	current->time++;
 	if(current->pid) 
 	{
-		if(--(current->counter) > 0)
+		if(--(current->counter) > 0 && (current->state == TASK_RUNNING || current->state == TASK_READY))
 		{
 			timer_selfadd();
 			return;
