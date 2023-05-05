@@ -27,32 +27,14 @@ void task3()
 
 void task4()
 {
-	printf("test\n");
-	NODE node = (NODE)malloc(sizeof(struct _node));
-	node->next = node;
-	node->sh = 10;
-	node->ch = 't';
-	node->in = 1;
-	node->lo = 1000000000000;
-	printf("short:%d ptr:%x \n",node->sh,node->next);
-	printf("int:%d char:%c long:%ld \n",node->in,node->ch,node->lo);
-	free(node);
-	printf("after short:%d ptr:%x \n",node->sh,node->next);
-	printf("int:%d char:%c long:%ld \n",node->in,node->ch,node->lo);
-	int *a = (int*) malloc(sizeof(int));
-	*a = 100;
-	printf("the int type index is : %d\n",*a);
-	char *b = (char*)malloc(sizeof(char));
-	*b = 'a';
-	printf("the int type index is : %c\n",*b);
-	long *c = (long*)malloc(sizeof(long));
-	*c = 1000000000000;
-	printf("the int type index is : %ld\n",*c);
-	void *d = malloc(sizeof(void));
-	//*d = 10; 
-	short *e = (short*)malloc(sizeof(short));
-	*e = 10;
-	printf("the int type index is : %d\n",*e);
+	NODE node[5] = {NULL,NULL,NULL,NULL,NULL,};
+	int* a = (int*)page_alloc(1);
+	*a = 1000;
+	printf("a : 0x%x *a : %d\n",a,*a);
+	page_free(a);
+	printf("a : 0x%x *a : %d\n",a,*a);
+	a = (int*)page_alloc(1);
+	printf("a : 0x%x *a : %d\n",a,*a);
 	while(1)
 	{
 	

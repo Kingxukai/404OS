@@ -14,12 +14,14 @@ struct task_struct *current = &init_task;
 static struct Queue_head queue_head[5] = {{NULL},{NULL},{NULL},{NULL},{NULL}};
 static struct Queue *tail[5] = {NULL,NULL,NULL,NULL,NULL};			//pointer of each queue's tail
 
+int times = 0;
+
 void set_Queue()																//set the queue
 {
 	struct task_struct **p = &TASK[MAX_TASK];
 	int i = MAX_TASK;
 	uint8_t order = 0;
-	
+	printf("called : %d\n",times++);
 	while(--i)
 	{
 		if(!*--p || (*p)->in_Queue || (*p)->order < 0)continue;
@@ -32,12 +34,15 @@ void set_Queue()																//set the queue
 			order = (*p)->order;
 			if(!(queue_head[order].next))
 			{
-				queue_head[order].next = (struct Queue*)malloc(sizeof(struct Queue));;
+				printf("the size of Queue is: %d\n",sizeof(struct Queue));
+				//queue_head[order].next = (struct Queue*)page_alloc(1);
+				queue_head[order].next = (struct Queue*)malloc(sizeof(struct Queue));
 				tail[order] = queue_head[order].next;
 			}
 			else
 			{
 				tail[order]->next = (struct Queue*)malloc(sizeof(struct Queue));
+				//tail[order]->next = (struct Queue*)page_alloc(1);
 				tail[order] = tail[order]->next;
 			}
 			

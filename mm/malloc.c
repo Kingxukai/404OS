@@ -50,9 +50,9 @@ void Init_block_desc ()
 */
 void* _malloc_(uint32_t length) 
 {
-	 BDIR bdir = block_dir;
-	 BDESC bdesc;
-	void *retval; 
+	 BDIR bdir = block_dir;  //指向空闲描述符列表
+	 BDESC bdesc;		//描述符类型空指针
+	 void *retval; 	//无类型指针，作返回值
 	/*
 	*检索block_dir查找合适大小的内存块描述块列表
 	*/
@@ -135,22 +135,22 @@ void _free_ (void* obj,int size)
 {
 		void *page;
 		BDIR bdir;
-		BDESC bdesc,prev;
+		BDESC bdesc;
+		BDESC prev;
 		bdesc = prev = NULL;
 		// 首先计算对象所在的页面 对于高五位，地址不变，低十二位为寻址位置，因为一页为4096，而4096 = 2*12，占十二位，故每次分配一页，必然是高位改变，地位不变
-		page =  (void *) ( (unsigned long) obj & 0xfffff000);
+		page =  (void *) ( (uint32_t) obj & 0xfffff000);
 		/*
 			现在我们寻找需要释放内存的页面
 		*/
-		for( bdir = block_dir ; bdir->size; bdir ++) {
+		for( bdir = block_dir ; bdir->size; bdir++) {
 				prev = NULL;
 				//  if size eq zero ,then not do below code
 				if(bdir->size < size) 
 					continue;
 				for(bdesc = bdir->list; bdesc ; bdesc = bdesc->next) {
-						if(bdesc->block== page) 
+						if(bdesc->block == page) 
 							goto bfound;
-
 							prev = bdesc;
 				}
 		}
@@ -159,27 +159,31 @@ bfound:
 	/*
 		若找到对应要释放的内存块，首指针指向空闲地址，再将空闲地址覆盖内存块地址
 	*/
+	cli();
 	*((void **) obj) = bdesc->freeptr;
 	bdesc->freeptr = obj;
 	bdesc->blocnt--;
-	//若描述符中的引用为了，此时我们就能释放整个页面和其描述符了
+	//若描述符中的引用为0，此时我们就能释放整个页面和其描述符了
 	if(bdesc->blocnt == 0) {
 				if( (prev && prev->block != bdesc ) || (!prev && bdir->list != bdesc) ) 
-						for( prev = bdir->list; prev != bdesc  ; prev = prev->block ) {
-				
-				if(prev) {
+						for( prev = bdir->list; prev ; prev = prev->block ) 
+									if(prev->next = bdesc)
+												break;
+				if(prev) 
 					prev->next = bdesc->next;
-				}
+
 				else {
-					if(bdir->list != bdesc) {
+					if(bdir->list != bdesc) 
 						panic("malloc block list corrupted");
-					}
+
 					bdir->list = bdesc->next;
 				}
-	}
-	page_free((void *)bdesc->block);
-	bdesc->next = free_block_desc;
-	free_block_desc = bdesc;
-}
 
+		page_free((void *)bdesc->block);
+		bdesc->next = free_block_desc;
+		free_block_desc = bdesc;
+		printf("delete a page");
+	}
+	sti();
+	return;
 }

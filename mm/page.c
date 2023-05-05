@@ -150,7 +150,7 @@ void *page_alloc(int npages)
 	}
 	return NULL;
 }
-
+		
 /*
  * Free the memory block
  * - p: start address of the memory block
@@ -160,6 +160,7 @@ void page_free(void *p)
 	/*
 	 * Assert (TBD) if p is invalid
 	 */
+	*((int **) p ) = 0;
 	if (!p || (uint32_t)p >= _alloc_end) {
 		return;
 	}

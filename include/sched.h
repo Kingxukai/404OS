@@ -104,7 +104,7 @@ struct task_struct
 }
 
 struct Queue
-{
+{						/* 20bytes */
 	pid_t pid;
 	struct task_struct* task;
 	struct Queue *next;
