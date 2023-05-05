@@ -50,8 +50,9 @@ void Init_block_desc ()
 */
 void* _malloc_(uint32_t length) 
 {
+	
 	 BDIR bdir = block_dir;
-	 BDESC bdesc;
+	 BDESC bdesc = NULL;
 	void *retval; 
 	/*
 	*检索block_dir查找合适大小的内存块描述块列表
@@ -67,6 +68,7 @@ void* _malloc_(uint32_t length)
 		panic("malloc : bad arg");
 
 	}
+	cli();
 	//在块链表中检索合适的空闲块
 	for( bdesc = bdir->list; bdesc; bdesc = bdesc->next ) 
 			if(bdesc->freeptr) 
@@ -116,6 +118,7 @@ void* _malloc_(uint32_t length)
 	retval = (void*)bdesc->freeptr;
 	bdesc->freeptr = *( (void**) retval);
 	bdesc->blocnt++;
+	sti();
 	return retval;
 }
 /*

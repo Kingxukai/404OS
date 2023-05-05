@@ -22,7 +22,7 @@ void add_timer(uint64_t _jiffies, void (*fn)())
 	{
 		p = p->next;
 	}
-	p->next = (struct timer_list *)malloc(sizeof(struct timer_list));
+	p->next = (struct timer_list *)page_alloc(1);
 	p = p->next;
 	
 	p->jiffies = jiffies;

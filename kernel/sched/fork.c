@@ -2,6 +2,7 @@
 #include "../../include/kernel.h"
 #include "../../include/timer.h"
 #include "../../include/trap.h"
+#include "../../include/lib.h"
 
 uint8_t task_stack[MAX_TASK][STACK_SIZE];			//each task occupy 1024B stack size
 
@@ -38,7 +39,7 @@ static void copy_memory(reg64_t sp)
 pid_t copy_process()
 {
 	cli();
-	struct task_struct *p = (struct task_struct *)page_alloc(1);
+	struct task_struct *p = (struct task_struct *)malloc(sizeof(struct task_struct));
 	if(!p) panic("something wrong in page alloc,please check\n");																//something wrong in page alloc
 	TASK[NEW_PID] = p;
 		
@@ -61,7 +62,7 @@ pid_t copy_process()
 	p->context.t0 = current->context.t0;
 	p->context.t1 = current->context.t1;
 	p->context.t2 = current->context.t2;
-	p->context.s0 = current->context.s0;
+	p->context.s0 = (reg64_t)&task_stack[p->pid][STACK_SIZE-1] - (current->context.sp - current->context.s0);
 	p->context.s1 = current->context.s1;
 	p->context.a0 = 0;										//so the return value of fork in new process is 0
 	p->context.a1 = current->context.a1;
