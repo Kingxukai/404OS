@@ -107,3 +107,7 @@
 	time:2023-05-04 23:34:08 by wxk
 	
 	comment:I have a trial run almost a day because of some problem in the execve in order to simlify the original syscall——'execute' in Linux.
+	
+16:
+	ignored the page_alloc in 'copy_process',which should to be modified to malloc..
+	time:2023-05-05 22:45:44 by wxk

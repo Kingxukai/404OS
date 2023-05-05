@@ -25,8 +25,15 @@ void task3()
 	exit();
 }
 
+struct node
+{
+	struct node *next;
+	int n;
+};
+
 void task4()
 {
+<<<<<<< HEAD
 	NODE node[5] = {NULL,NULL,NULL,NULL,NULL,};
 	int* a = (int*)page_alloc(1);
 	*a = 1000;
@@ -35,6 +42,9 @@ void task4()
 	printf("a : 0x%x *a : %d\n",a,*a);
 	a = (int*)page_alloc(1);
 	printf("a : 0x%x *a : %d\n",a,*a);
+=======
+	printf("\n");
+>>>>>>> e83086dec04d5b07f95b1fc8010490e02451cf51
 	while(1)
 	{
 	
@@ -43,6 +53,7 @@ void task4()
 
 void task1()
 {
+	printf("task%d is running\n",getpid());
 	pid_t pid2,pid3,pid4;
 	if((pid2 = fork()) == 0)
 	{
@@ -63,7 +74,6 @@ void task1()
 		printf("task%d has created\n",pid4);
 		//wait();
 		printf("here is father process\n");
-		printf("task%d is running\n",getpid());
 	}
 	while(1)
 	{
