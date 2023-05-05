@@ -103,7 +103,7 @@ struct task_struct
 		  										 } \
 }
 
-typedef struct Queue
+struct Queue
 {
 	pid_t pid;
 	struct task_struct* task;
