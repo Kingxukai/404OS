@@ -9,9 +9,6 @@
 #include "stddef.h"
 #include "mm.h"
 
-void *page_alloc(int npages);
-void page_free(void *p);
-
 #define MACHINE_MODE (3 << 11)
 #define USER_MODE (~(3<<11))
 
