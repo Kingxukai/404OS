@@ -62,7 +62,7 @@ void set_Queue()																//set the queue
 			order = (*p)->order;
 			if(!(queue_head[order].next))
 			{
-				printf("the size of Queue is: %d\n",sizeof(struct Queue));
+				
 				//queue_head[order].next = (struct Queue*)page_alloc(1);
 
 				queue_head[order].next = (struct Queue*)malloc(sizeof(struct Queue));
