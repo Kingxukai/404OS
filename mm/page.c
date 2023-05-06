@@ -160,7 +160,7 @@ void page_free(void *p)
 	/*
 	 * Assert (TBD) if p is invalid
 	 */
-	*((int **) p ) = 0;
+	*((uint64_t **) p ) = 0;
 	if (!p || (uint32_t)p >= _alloc_end) {
 		return;
 	}

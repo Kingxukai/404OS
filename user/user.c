@@ -33,18 +33,18 @@ struct node
 
 void task4()
 {
-<<<<<<< HEAD
+
 	NODE node[5] = {NULL,NULL,NULL,NULL,NULL,};
 	int* a = (int*)page_alloc(1);
-	*a = 1000;
-	printf("a : 0x%x *a : %d\n",a,*a);
+	*a = 1 << 27;
+	printf("a : 0x%x *a : %d \n",a,*a);
 	page_free(a);
 	printf("a : 0x%x *a : %d\n",a,*a);
 	a = (int*)page_alloc(1);
 	printf("a : 0x%x *a : %d\n",a,*a);
-=======
+
 	printf("\n");
->>>>>>> e83086dec04d5b07f95b1fc8010490e02451cf51
+
 	while(1)
 	{
 	

@@ -21,9 +21,9 @@ void set_Queue()																//set the queue
 	struct task_struct **p = &TASK[MAX_TASK];
 	int i = MAX_TASK;
 	uint8_t order = 0;
-<<<<<<< HEAD
+
 	printf("called : %d\n",times++);
-=======
+
 	
 	/*for(int j = 0;j<5;j++)
 	{
@@ -49,7 +49,7 @@ void set_Queue()																//set the queue
 		else printf("queue%d:NULL\n",j);
 	}*/
 	
->>>>>>> e83086dec04d5b07f95b1fc8010490e02451cf51
+ 	
 	while(--i)
 	{
 		if(!*--p || (*p)->in_Queue || (*p)->order < 0)continue;
@@ -62,11 +62,9 @@ void set_Queue()																//set the queue
 			order = (*p)->order;
 			if(!(queue_head[order].next))
 			{
-<<<<<<< HEAD
 				printf("the size of Queue is: %d\n",sizeof(struct Queue));
 				//queue_head[order].next = (struct Queue*)page_alloc(1);
-=======
->>>>>>> e83086dec04d5b07f95b1fc8010490e02451cf51
+
 				queue_head[order].next = (struct Queue*)malloc(sizeof(struct Queue));
 				tail[order] = queue_head[order].next;
 			}
