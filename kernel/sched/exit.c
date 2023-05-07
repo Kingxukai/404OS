@@ -1,4 +1,5 @@
 #include "../../include/sched.h"
+#include "../../include/lib.h"
 
 extern struct task_struct *current;
 
@@ -11,8 +12,8 @@ pid_t do_exit()
 		p->counter = 0;
 		p->in_Queue = 0;
 		p->order = -1;
-		page_free(p);
 		printf("task%d exit\n",p->pid);
+		free(p);
 		schedule();
 	}
 	else

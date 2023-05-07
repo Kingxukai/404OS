@@ -21,34 +21,6 @@ void set_Queue()																//set the queue
 	struct task_struct **p = &TASK[MAX_TASK];
 	int i = MAX_TASK;
 	uint8_t order = 0;
-
-	printf("called : %d\n",times++);
-
-	
-	/*for(int j = 0;j<5;j++)
-	{
-		if(!(queue_head[j].next))
-		{
-			printf("Queue[%d]:NULL\n",j);
-			continue;
-			}
-		printf("Queue[%d]:",j);
-		struct Queue* q = queue_head[j].next;
-		while(q)
-		{
-			printf("task%d\t",q->pid);
-			q = q->next;
-		}
-		printf("\n");
-	}
-	
-	for(int j = 0;j<5;j++)
-	{
-		if(tail[j])
-		printf("queue%d:task%d\n",j,tail[j]->pid);
-		else printf("queue%d:NULL\n",j);
-	}*/
-	
  	
 	while(--i)
 	{
