@@ -187,7 +187,6 @@ bfound:
 		page_free((void *)bdesc->block);
 		bdesc->next = free_block_desc;
 		free_block_desc = bdesc;
-		printf("delete a page");
 	}
 	sti();
 	return;

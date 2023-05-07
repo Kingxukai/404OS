@@ -27,9 +27,9 @@ pid_t sys_getppid()
 
 pid_t sys_fork()
 {
-	if( find_new_pid() >= MAX_TASK )
+	if( find_new_id() >= MAX_TASK )
 	{	
-		panic("No free task_id to create!\n");
+		panic("No free PCB_id to create!\n");
 	}
 	
 	return copy_process();
@@ -41,8 +41,8 @@ int sys_execve(const char *filepath,char * const * argv,char * const * envp)
 	if(filepath)
 	{
 		p->context.ra = (reg64_t)filepath;
-		p->context.sp = (reg64_t)&task_stack[p->pid][STACK_SIZE-1];	
-		p->context.gp = 0;
+		p->context.sp = (reg64_t)&task_stack[p->pcb_id][STACK_SIZE-1];	
+		p->context.gp = (reg64_t)p;
 		p->context.tp = 0;
 		p->context.t0 = 0;
 		p->context.t1 = 0;
@@ -84,6 +84,7 @@ pid_t sys_exit()
 
 int sys_wait()
 {
-	current->state == TASK_WAIT;
+	current->state = TASK_WAIT;
+	printf("task%d wait\n",current->pid);
 	schedule();
 }

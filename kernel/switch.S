@@ -106,5 +106,5 @@ trap_vector:
 	reg_restore t6
 	
 	mret
-	
+
 .end

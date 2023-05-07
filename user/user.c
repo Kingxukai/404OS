@@ -12,12 +12,14 @@ typedef struct _node {
 void task2()
 {
 	printf("task%d running\n",getpid());
+	printf("my father is %d\n",getppid());
 	exit();
 }
 
 void task3()
 {
 	int t = 5;
+	printf("my father is %d\n",getppid());
 	while(t--)
 	{
 		printf("task%d running\n",getpid());
@@ -25,26 +27,12 @@ void task3()
 	exit();
 }
 
-struct node
-{
-	struct node *next;
-	int n;
-};
-
 void task4()
 {
-
-	NODE node[5] = {NULL,NULL,NULL,NULL,NULL,};
-	int* a = (int*)page_alloc(1);
-	*a = 1 << 27;
-	printf("a : 0x%x *a : %d \n",a,*a);
-	page_free(a);
-	printf("a : 0x%x *a : %d\n",a,*a);
-	a = (int*)page_alloc(1);
-	printf("a : 0x%x *a : %d\n",a,*a);
-
-	printf("\n");
-
+	printf("task%d running\n",getpid());
+	printf("my father is %d\n",getppid());
+	wait();
+	printf("task%d running\n",getpid());
 	while(1)
 	{
 	
@@ -72,7 +60,7 @@ void task1()
 		printf("task%d has created\n",pid2);
 		printf("task%d has created\n",pid3);
 		printf("task%d has created\n",pid4);
-		//wait();
+		//exit();
 		printf("here is father process\n");
 	}
 	while(1)

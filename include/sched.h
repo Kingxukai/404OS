@@ -5,22 +5,20 @@
 #include "kernel.h"
 #include "type.h"
 
-#define TASK_CREATE 0		//process state value
-#define TASK_RUNNING 1
-#define TASK_READY 2
-#define TASK_WAIT 3
-#define TASK_ZOMBINE 4
-#define TASK_STOP 5
+#define TASK_RUNNING 0	//process state value
+#define TASK_READY 1
+#define TASK_WAIT 2
+#define TASK_ZOMBINE 3
+#define TASK_STOP 4
 
 #define TOP 3	//priority value
 #define MID 2
 #define LOW 1
 
-#define MAX_TASK 64
+#define MAX_TASK 64	//max PCB num
 #define STACK_SIZE 1024
 
 void schedule();
-pid_t do_exit();
 void Init_sched();
 extern void Init();
 
@@ -70,6 +68,7 @@ struct task_struct
 {
 	pid_t pid;				//process id
 	pid_t father_pid;	
+	int pcb_id;				//pcb id
 	int16_t state;				//process state
 	uint64_t start_time;	//start time
 	uint64_t time;				//time of existing in system
@@ -77,6 +76,7 @@ struct task_struct
 	int16_t counter;
 	bool in_Queue;				//if in queue or not
 	int8_t order;				//the order of queue
+	uint64_t signal;		//the signal bit map
 	struct reg context;
 };
 
@@ -84,6 +84,7 @@ struct task_struct
 { \
 /*pid*/									   0, \
 /*father pid*/    				 0, \
+/*pcb id*/								 0, \
 /*state*/			    				 TASK_READY, \
 /*start time*/    				 0, \
 /*running time*/  				 0, \
@@ -91,6 +92,7 @@ struct task_struct
 /*counter*/		    				 LOW, \
 /*in_Queue*/							 0, \
 /*order*/                  0, \
+/*signal*/								 0, \
 /*register initialization*/{ \
 /*return address of function*/0, \
 /*task stack pointer*/				(reg64_t)&task_stack[0][STACK_SIZE-1], \

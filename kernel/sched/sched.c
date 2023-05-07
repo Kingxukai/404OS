@@ -2,6 +2,8 @@
 #include "../../include/riscv64.h"
 #include "../../include/lib.h"
 
+#define BLOCK_SIG (SIG_KILL | SIG_STOP)				//except SIG_KILL and SIG_STOP
+
 //2023-04-02 12:45:46 
 
 void switch_to(struct reg* next);
@@ -14,6 +16,8 @@ struct task_struct *current = &init_task;
 static struct Queue_head queue_head[5] = {{NULL},{NULL},{NULL},{NULL},{NULL}};
 static struct Queue *tail[5] = {NULL,NULL,NULL,NULL,NULL};			//pointer of each queue's tail
 
+static void show_task_queue();
+
 int times = 0;
 
 void set_Queue()																//set the queue
@@ -24,38 +28,64 @@ void set_Queue()																//set the queue
  	
 	while(--i)
 	{
-		if(!*--p || (*p)->in_Queue || (*p)->order < 0)continue;
-		if((*p)->state == TASK_READY || (*p)->state == TASK_RUNNING)
+		if(!*--p ||(*p)->order < 0)continue;
+		if(!(*p)->in_Queue)
 		{
-			if((*p)->order < 4 && (*p)->state == TASK_RUNNING)
+			if((*p)->state == TASK_READY || (*p)->state == TASK_RUNNING)
 			{
-				(*p)->order++;
-			}
-			order = (*p)->order;
-			if(!(queue_head[order].next))
-			{
+				if((*p)->order < 4 && (*p)->state == TASK_RUNNING)
+				{
+					(*p)->order++;
+				}
+				order = (*p)->order;
+				if(!(queue_head[order].next))
+				{
+					queue_head[order].next = (struct Queue*)malloc(sizeof(struct Queue));
+					tail[order] = queue_head[order].next;
+				}
+				else
+				{
+					tail[order]->next = (struct Queue*)malloc(sizeof(struct Queue));
+					tail[order] = tail[order]->next;
+				}
 				
-				//queue_head[order].next = (struct Queue*)page_alloc(1);
-
-				queue_head[order].next = (struct Queue*)malloc(sizeof(struct Queue));
-				tail[order] = queue_head[order].next;
+				tail[order]->pid = (*p)->pid;
+				tail[order]->next = NULL;
+				tail[order]->task = *p;
+				
+				(*p)->in_Queue = 1;
+				(*p)->order = order;
+				(*p)->counter = COUNTER(order);
 			}
-			else
+		}
+		else//remove the task which is not in TASK_RUNNING or TASK_READY from the ready queue
+		{
+			if((*p)->state == TASK_RUNNING || (*p)->state == TASK_READY)continue;
+			order = (*p)->order;
+			struct Queue *q = queue_head[order].next;
+			struct Queue *last = NULL;
+			do
 			{
-				tail[order]->next = (struct Queue*)malloc(sizeof(struct Queue));
-				//tail[order]->next = (struct Queue*)page_alloc(1);
-				tail[order] = tail[order]->next;
-			}
+				if(q->pid == (*p)->pid)break;
+				if(q->next)
+				{
+					last = q;
+					q = q->next;
+				}
+				else panic("error in remove task from ready queue!?\n");
+			}while(1);
 			
-			tail[order]->pid = (*p)->pid;
-			tail[order]->next = NULL;
-			tail[order]->task = *p;
-			
-			(*p)->in_Queue = 1;
-			(*p)->order = order;
-			(*p)->counter = COUNTER(order);
+			if(!last)//if the task is located in first space of queue
+				queue_head[order].next = q->next;
+			else 
+				last->next = q->next;
+			if(q == tail[i])tail[i] = last;
+			printf("remove task%d\n",q->pid);
+			free(q);
 		}
 	}
+
+	//show_task_queue();
 
 }
 
@@ -88,4 +118,24 @@ void Init_sched()
 	printf("Initial sched...\n");
 	w_mscratch(0);
 	
+}
+
+static void show_task_queue()			//in order to test the queue of task
+{
+	struct Queue *q;
+	for(int i = 0;i<5;i++)
+	{
+		if(!queue_head[i].next)continue;
+		q = queue_head[i].next;
+		printf("Queue[%d]:",i);
+		while(1)
+		{
+			printf("task%d ",q->pid);
+			if(q->next)
+					q = q->next;
+			else 
+				break;
+		}
+		printf("\n");
+	}
 }
