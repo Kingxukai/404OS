@@ -96,7 +96,7 @@ struct task_struct
 /*register initialization*/{ \
 /*return address of function*/0, \
 /*task stack pointer*/				(reg64_t)&task_stack[0][STACK_SIZE-1], \
-/*remain 31+1-2*/							0,0,0,0,0,0,0, \
+/*remain 31+1-2*/							0,0,(reg64_t)&init_task,0,0,0,0, \
 /*=30 registers*/							0,0,0,0,0,0,0, \
 															0,0,0,0,0,0,0, \
 															0,0,0,0,0,0,0, \
