@@ -11,7 +11,7 @@ extern struct task_struct *current;
 pid_t NEW_PID = 0;					//newest PID
 int NEW_PCBID = 0;					//newest PCB id
 
-pid_t find_new_id()
+int find_new_id()
 {
 	pid_t i = 0;
 	struct task_struct ** p = &TASK[0];
@@ -27,8 +27,8 @@ pid_t find_new_id()
 
 static void copy_memory(reg64_t sp)
 {
-	reg8_t *old_addr_start = (reg64_t)&task_stack[current->pid][STACK_SIZE - 1];
-	reg8_t *old_addr_end = (reg64_t)&task_stack[current->pid][0];
+	reg8_t *old_addr_start = (reg64_t)&task_stack[current->pcb_id][STACK_SIZE - 1];
+	reg8_t *old_addr_end = (reg64_t)&task_stack[current->pcb_id][0];
 	reg8_t *new_addr_start = (reg8_t *)sp;
 	while(old_addr_start >= old_addr_end)//copy task stack
 	{

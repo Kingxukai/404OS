@@ -29,7 +29,7 @@ pid_t sys_fork()
 {
 	if( find_new_id() >= MAX_TASK )
 	{	
-		panic("No free PCB_id to create!\n");
+		panic("No free PCB_id to request!\n");
 	}
 	
 	return copy_process();
