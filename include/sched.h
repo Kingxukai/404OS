@@ -20,6 +20,7 @@
 
 void schedule();
 void Init_sched();
+void show_task(pid_t pid);
 extern void Init();
 
 struct task_struct *TASK[MAX_TASK];
@@ -117,6 +118,6 @@ struct Queue_head
 	struct Queue *next;
 };
 
-#define COUNTER(order) (2 + 6 * order)				//counter of each qeueu
+#define COUNTER(order) (2 + 6 * order)				//counter of each queue
 
 #endif

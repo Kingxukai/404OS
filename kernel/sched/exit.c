@@ -46,6 +46,7 @@ void release(struct task_struct* p)			//release certain memory of a PCB
 	if(!p)return;
 	for (int i = 1;i < MAX_TASK;i++)
 	{
+		if(!TASK[i])continue;
 		if(TASK[i] == p)
 		{
 			TASK[i] = NULL;
@@ -70,5 +71,6 @@ void tell_father(pid_t pid)
 		}
 	}
 	//father process dont exist or has been exited
+	current->father_pid = 0;
 	TASK[0]->signal |= SIG_CHLD;//make his father as process 'INIT'
 }

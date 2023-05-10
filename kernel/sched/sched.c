@@ -118,6 +118,35 @@ void Init_sched()
 	printf("Initial sched...\n");
 	w_mscratch(0);
 	
+	for(int i=1;i<MAX_TASK;i++)		//clear the TASK
+	{
+		TASK[i] = NULL;
+	}
+	
+}
+
+void show_task(pid_t pid)
+{
+	int i = MAX_TASK;
+	while(--i)
+	{
+		if(!TASK[i])continue;
+		if(TASK[i]->pid == pid)break;
+	}
+	if(TASK[i])
+	{
+		printf("PID:%d\n",TASK[i]->pid);
+		printf("Father PID:%d\n",TASK[i]->father_pid);
+		printf("pcb_id:%d\n",TASK[i]->pcb_id);
+		printf("state:%d\n",TASK[i]->state);
+		printf("start time:%d\n",TASK[i]->start_time);
+		printf("time:%d\n",TASK[i]->time);
+		printf("priority:%d\n",TASK[i]->priority);
+	}
+	else
+	{
+		printf("pid don't exist yet\n");
+	}
 }
 
 static void show_task_queue()			//in order to test the queue of task
