@@ -1,7 +1,10 @@
 #ifndef _SIGNAL_H__
 #define _SIGNAL_H__
 
+#include "type.h"
 //ref Linux011
+
+void do_signal(int64_t signr);
 
 #define SIGHUP 1 // Hang Up – 挂断控制终端或进程。
 #define SIGINT 2 // Interrupt – 来自键盘的中断。
@@ -35,7 +38,7 @@
 #define SIG_TRAP    (1<<(SIGTRAP-1))
 #define SIG_ABRT    (1<<(SIGABRT-1))
 #define SIG_IOT     (1<<(SIGIOT-1))
-#define SIG_UNUSED  (1<<(SIGUNUSED-1))
+#define SIG_UNUSED  (1<<(SIGUNUSED-1))	
 #define SIG_FPE     (1<<(SIGFPE-1))
 #define SIG_KILL    (1<<(SIGKILL-1))
 #define SIG_USR1    (1<<(SIGUSR1-1))
@@ -51,5 +54,22 @@
 #define SIG_TSTP    (1<<(SIGTSTP-1))
 #define SIG_TTIN    (1<<(SIGTTIN-1))
 #define SIG_TTOU    (1<<(SIGTTOU-1))
+
+//transform
+#define _S(nr) (1<<(nr-1))
+
+#define SIG_DFL	( (void (*)(int) )0)//default handler
+#define SIG_IGN	( (void (*)(int) )1)//ignored handler
+
+#define SA_NOCLDSTOP 1
+#define SA_UNBLOCK 0x40000000
+#define SA_ONESHOT 0x80000000
+
+struct sigaction
+{
+	void (*sa_handler)(int);
+	sigset_t sa_mask;
+	int sa_flags;
+};
 
 #endif

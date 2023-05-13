@@ -10,10 +10,12 @@ SRCS_C = \
 	kernel/init.c \
 	kernel/sys.c \
 	kernel/errno.c \
+	kernel/signal.c \
 	kernel/system_call.c \
 	kernel/sched/sched.c \
 	kernel/sched/fork.c \
 	kernel/sched/exit.c \
+	kernel/sched/wait.c \
 	printf/uart.c \
 	printf/printf.c \
 	printf/panic.c \

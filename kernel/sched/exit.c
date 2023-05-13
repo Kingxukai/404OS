@@ -4,7 +4,7 @@
 
 extern struct task_struct *current;
 
-void tell_father(pid_t pid);
+static void tell_father(pid_t pid);
 
 pid_t do_exit()
 {
@@ -38,7 +38,6 @@ pid_t do_exit()
 	{
 		panic("Attempted to kill task 0\n");
 	}
-	return 0;
 }
 
 void release(struct task_struct* p)			//release certain memory of a PCB
@@ -51,14 +50,13 @@ void release(struct task_struct* p)			//release certain memory of a PCB
 		{
 			TASK[i] = NULL;
 			free(p);
-			schedule();
 			return;
 		}
 	}
 	panic("error in releasing a task memory");
 }
 
-void tell_father(pid_t pid)
+static void tell_father(pid_t pid)
 {
 	if(pid)				
 	{

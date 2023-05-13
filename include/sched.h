@@ -4,6 +4,7 @@
 #include "platform.h"
 #include "kernel.h"
 #include "type.h"
+#include "signal.h"
 
 #define TASK_RUNNING 0	//process state value
 #define TASK_READY 1
@@ -22,6 +23,8 @@ void schedule();
 void Init_sched();
 void show_task(pid_t pid);
 extern void Init();
+void release();
+pid_t do_exit();
 
 struct task_struct *TASK[MAX_TASK];
 struct task_struct *current;
@@ -70,14 +73,21 @@ struct task_struct
 	pid_t pid;				//process id
 	pid_t father_pid;	
 	int pcb_id;				//pcb id
+	
 	int16_t state;				//process state
+	
 	uint64_t start_time;	//start time
 	uint64_t time;				//time of existing in system
+	
 	int16_t priority;
 	int16_t counter;
 	bool in_Queue;				//if in queue or not
 	int8_t order;				//the order of queue
-	uint64_t signal;		//the signal bit map
+	
+	uint32_t signal;		//the signal bit map
+	struct sigaction sigaction[32];
+	
+	int exit_code;
 	struct reg context;
 };
 
@@ -94,6 +104,8 @@ struct task_struct
 /*in_Queue*/							 0, \
 /*order*/                  0, \
 /*signal*/								 0, \
+/*sigaction*/							 {{},}, \
+/*exit code*/							 0, \
 /*register initialization*/{ \
 /*return address of function*/0, \
 /*task stack pointer*/				(reg64_t)&task_stack[0][STACK_SIZE-1], \

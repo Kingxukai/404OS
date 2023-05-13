@@ -111,3 +111,8 @@
 16:
 	ignored the page_alloc in 'copy_process',which should to be modified to malloc..
 	time:2023-05-05 22:45:44 by wxk
+	
+17:
+	add signal of process and modify the wait() and watpid()
+	time2023-05-13 16:38:25 by wxk
+	comment:however,I'm still not clear how can process excute the code after invoking schedule() in waitpid(), because there's no any step to save the context of current process,and next time current process was executing, the mepc will make PC point to ecall in sys_waitpid() instead of the code after invoking schedule() after waitpid()

@@ -118,4 +118,5 @@ static inline void asm_ret()
 {
 	asm volatile("ret");
 }
+
 #endif

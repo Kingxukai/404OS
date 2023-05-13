@@ -11,7 +11,7 @@ void switch_to(struct reg* next);
 static struct task_struct init_task = INIT_TASK;
 
 struct task_struct *TASK[MAX_TASK] = {&init_task,};
-struct task_struct *current = &init_task;
+struct task_struct *current = NULL;
 
 static struct Queue_head queue_head[5] = {{NULL},{NULL},{NULL},{NULL},{NULL}};
 static struct Queue *tail[5] = {NULL,NULL,NULL,NULL,NULL};			//pointer of each queue's tail
@@ -20,7 +20,7 @@ static void show_task_queue();
 
 int times = 0;
 
-void set_Queue()																//set the queue
+static void set_Queue()																//set the queue
 {
 	struct task_struct **p = &TASK[MAX_TASK];
 	int i = MAX_TASK;
@@ -89,28 +89,45 @@ void set_Queue()																//set the queue
 
 }
 
+static void alter_state()
+{
+	struct task_struct **p = &TASK[MAX_TASK];
+	int i = MAX_TASK;
+	while(--i)
+	{
+		if(!*--p)continue;
+		if((*p)->state == TASK_WAIT)
+		{
+			(*p)->state  = TASK_READY;
+		}
+	}
+}
+
 void schedule()
 {
+	alter_state();
 	set_Queue();
 	bool flag = 0;
+	struct task_struct* next;
 	
 	for(int i = 0;i<5;i++)
 	{
 		if(!(queue_head[i].next))continue;
 		flag = 1;
 		struct Queue* q = queue_head[i].next;
-		current = q->task;
+		next = q->task;
 		queue_head[i].next = q->next;
-		current->in_Queue = 0;
-		current->state = TASK_RUNNING;
+		next->in_Queue = 0;
+		next->state = TASK_RUNNING;
 		free(q);
 		break;
 	}
 	
-	if(!flag)current = TASK[0];
-	struct reg *next = &(current->context);
+	if(!flag)next = TASK[0];
 	timer_selfadd();
-	switch_to(next);
+	if(current == next)return;
+	current = next;
+	switch_to(&(next->context));
 }
 
 void Init_sched()

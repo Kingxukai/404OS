@@ -22,6 +22,8 @@ typedef _Bool bool;								//bool type
 
 typedef reg64_t (*sys_func)();				//sys_call function
 
+typedef uint32_t sigset_t;				//32bit siganl bit map
+
 #ifndef NULL
 #define NULL (void *)(0)
 #endif

@@ -44,7 +44,7 @@ pid_t copy_process()
 	struct task_struct *p = (struct task_struct *)malloc(sizeof(struct task_struct));
 	if(!p) panic("something wrong in page alloc,please check\n");																//something wrong in page alloc
 	TASK[NEW_PCBID] = p;
-		
+	
 	p->pid = NEW_PID;
 	p->father_pid = current->pid;
 	p->pcb_id = NEW_PCBID;
@@ -55,6 +55,15 @@ pid_t copy_process()
 	p->counter = p->priority;
 	p->order = 0;
 	p->in_Queue = 0;
+	p->signal = 0;
+	
+	for(int i = 0;i < 32;i++)//copy the sigaction
+	{
+		p->sigaction[i].sa_handler = current->sigaction[i].sa_handler;
+		p->sigaction[i].sa_mask = current->sigaction[i].sa_mask;
+		p->sigaction[i].sa_flags = current->sigaction[i].sa_flags;
+	}
+	p->exit_code = 0;
 
 	p->context.ra = current->context.ra;
 	p->context.sp = (reg64_t)&task_stack[p->pcb_id][STACK_SIZE-1];	//if just alloc the new process a new stack,what will happen? yes,the local variable will disapear because it pointing to a new space with none data while new task executing. SO,we need to copy mm.

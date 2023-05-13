@@ -1,6 +1,8 @@
 #include "../include/sys.h"
 #include "../include/sched.h"
 #include "../include/riscv64.h"
+#include "../include/type.h"
+#include "../include/errno.h"
 
 void do_syscall(struct reg *context)										//syscall executing function
 {
@@ -47,7 +49,7 @@ int sys_execve(const char *filepath,char * const * argv,char * const * envp)
 		p->context.t0 = 0;
 		p->context.t1 = 0;
 		p->context.t2 = 0;
-		p->context.s0 = current->context.s0;
+		//p->context.s0 = current->context.s0;
 		p->context.s1 = 0;
 		p->context.a0 = 0;										
 		p->context.a1 = 0;
@@ -82,9 +84,39 @@ pid_t sys_exit()
 	return do_exit();
 }
 
-int sys_wait()
+pid_t sys_waitpid(pid_t pid,uint64_t* stat_addr,int options)
 {
-	current->state = TASK_WAIT;
-	printf("task%d wait\n",current->pid);
-	schedule();
+	struct task_struct **p = &TASK[MAX_TASK];
+	int i = MAX_TASK;
+	bool flag = 0;
+	repeat:
+		flag = 0;
+		while(--i)
+		{
+			if(!*--p || *p == current)continue;
+			if((*p)->father_pid != current->pid)continue;
+			if(pid > 0)
+			{
+				if(pid != (*p)->pid)continue;
+				if((*p)->state == TASK_ZOMBINE)
+				{
+					current->time += (*p)->time;
+						release(*p);
+				}
+				else flag = 1;
+			}
+		}
+		if(flag)
+		{
+			current->state = TASK_WAIT;
+			current->in_Queue = 0;
+			schedule();
+			if(current->signal &= (~SIG_CHLD))
+				goto repeat;
+			else
+				{
+					return -EINTR;
+				}
+		}
+	return -ECHILD;
 }
