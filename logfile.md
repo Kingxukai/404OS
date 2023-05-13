@@ -6,7 +6,7 @@
     add a instruction to common.mk "-mcmodel=medany"
 
 2：
-   ** issue:    "turn to trap while execute 'MRET' in machine mode and get a tips 'Illegal **instruction'"
+   **issue:    "turn to trap while execute 'MRET' in machine mode and get a tips 'Illegal instruction'"**
     time:    2023-04-27 20:40:38 by wxk
 
     solution:
@@ -36,7 +36,7 @@
     time:    2023-04-27 20:40:38 by wxk
 
 4:
-   ** add "syscall"**
+   **add "syscall"**
     time:2023-04-28 15:10:38 by wxk
 
 ```
@@ -46,14 +46,14 @@ In the next step I'll try to correct it
 ```
 
 5:
-   ** issue: "the ret_num of syscall not right"**
+   **issue: "the ret_num of syscall not right"**
     time:2023-04-28 16:18:38 by wxk
 
     solution:
     I ignored the *(fn)() and thought the ret_num = *(fn),which is the address of syscall function, and noticed it through GDB.
 
 6:
-   ** add "software timer"**
+   **add "software timer"**
     time:2023-04-28 19:06:28 by wxk
 
 7:
@@ -69,8 +69,7 @@ In the next step I'll try to correct it
     time:2023-04-29 22:52:30 by wxk
 
 10:
-   ** issue "encounter unexpected error while use fork() to replace with copy_process() in task0,and the whole system paused"
-    and add "syscall:fork()"**
+   **issue "encounter unexpected error while use fork() to replace with copy_process() in task0,and the whole system paused"and add "syscall:fork()"**
     time:2023-04-30 00:13:05 by wxk
 
     solution:
@@ -78,8 +77,7 @@ In the next step I'll try to correct it
     However, it spent me a lot time tracing the process step by step through GDB, and is always be ignored in writing text.
 
 11:
-    **issue "encounter an unexpected error while execute set_Queue() 5th,the value of register a1 was random"
-    and modify "fork()",so it can be invoked as same as Linux.**
+    **issue "encounter an unexpected error while execute set_Queue() 5th,the value of register a1 was random"and modify "fork()",so it can be invoked as same as Linux.**
     time:2023-05-01 22:30:56 by wxk
 
     solution:
@@ -87,7 +85,7 @@ In the next step I'll try to correct it
     so stupid..hh
 
 12:
-   ** modify "define syscall with macro,and change the fork()"**
+   **modify "define syscall with macro,and change the fork()"**
     time:2023-05-03 02:20:38 by wxk
 
     comment:Ok,let's talk about the classic syscall——fork,which is invoked to create a new process,and get new pid as return value in father process while get 0 return number in child process. How can I implement it?
@@ -103,7 +101,7 @@ In the next step I'll try to correct it
     solution,in last comment, I said that there's a problem that the local variable will be edited but using 'register'. I try to solve the problem through GDB. And I noticed that the s0 of new process unexpected to be 0, so I thought that's the compiler's problem. After a moment,I found that the child process can't execute the same step because of different stack space. oh!!!That's the reason, copying the stack space of father is neccessary.
 
 14:
-   ** add "syscall:execve and exit"**
+   **add "syscall:execve and exit"**
     time:2023-05-03 17:06:57 by wxk
 
 15:
@@ -113,7 +111,7 @@ In the next step I'll try to correct it
     comment:I have a trial run almost a day because of some problem in the execve in order to simlify the original syscall——'execute' in Linux.
 
 16:
-   ** ignored the page_alloc in 'copy_process',which should to be modified to malloc..**
+   **ignored the page_alloc in 'copy_process',which should to be modified to malloc..**
     time:2023-05-05 22:45:44 by wxk
 
 17:
