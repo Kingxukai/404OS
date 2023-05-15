@@ -1,7 +1,7 @@
 #include "../include/kernel.h"
 #include "../include/unistd.h"
 
-extern void task1();
+extern void task2();
 
 void Init()
 {
@@ -9,7 +9,7 @@ void Init()
 	
 	if(fork() == 0)
 	{
-		execve(task1,NULL,NULL);
+		execve(task2,NULL,NULL);
 	}
 	while(1)
 	{

@@ -6,12 +6,12 @@
 
 //2023-04-02 12:45:46 
 
-void switch_to(struct reg* next);
+void switch_to(struct reg* last, struct reg* next);
 
 static struct task_struct init_task = INIT_TASK;
 
 struct task_struct *TASK[MAX_TASK] = {&init_task,};
-struct task_struct *current = NULL;
+struct task_struct *current = &init_task;
 
 static struct Queue_head queue_head[5] = {{NULL},{NULL},{NULL},{NULL},{NULL}};
 static struct Queue *tail[5] = {NULL,NULL,NULL,NULL,NULL};			//pointer of each queue's tail
@@ -53,6 +53,7 @@ static void set_Queue()																//set the queue
 				tail[order]->next = NULL;
 				tail[order]->task = *p;
 				
+				(*p)->state = TASK_READY;
 				(*p)->in_Queue = 1;
 				(*p)->order = order;
 				(*p)->counter = COUNTER(order);
@@ -124,16 +125,16 @@ void schedule()
 	}
 	
 	if(!flag)next = TASK[0];
-	timer_selfadd();
 	if(current == next)return;
+	struct task_struct* last = current;
 	current = next;
-	switch_to(&(next->context));
+	switch_to(&(last->context), &(next->context));
 }
 
 void Init_sched()
 {
 	printf("Initial sched...\n");
-	w_mscratch(0);
+	w_mscratch((reg64_t)&(TASK[0]->context));
 	
 	for(int i=1;i<MAX_TASK;i++)		//clear the TASK
 	{

@@ -1,22 +1,15 @@
 #include "../include/unistd.h"
 #include "../include/printf.h"
 #include "../include/lib.h"
-typedef struct _node {
-	struct node_ *next;
-	char ch;
-	int in;
-	long lo;
-	short sh;
-}*NODE,Node;
 
-void task2()
+void task3()
 {
 	printf("task%d running\n",getpid());
 	printf("my father is %d\n",getppid());
 	exit();
 }
 
-void task3()
+void task4()
 {
 	int t = 5;
 	printf("my father is %d\n",getppid());
@@ -27,7 +20,7 @@ void task3()
 	exit();
 }
 
-void task4()
+void task5()
 {
 	printf("task%d running\n",getpid());
 	printf("my father is %d\n",getppid());
@@ -38,15 +31,11 @@ void task4()
 	}
 }
 
-void task1()
+void task2()
 {
 	printf("task%d is running\n",getpid());
-	pid_t pid2,pid3,pid4;
-	if((pid2 = fork()) == 0)
-	{
-		execve(task2,NULL,NULL);
-	}
-	else if((pid3 = fork()) == 0)
+	pid_t pid3,pid4,pid5;
+	if((pid3 = fork()) == 0)
 	{
 		execve(task3,NULL,NULL);
 	}
@@ -54,12 +43,16 @@ void task1()
 	{
 		execve(task4,NULL,NULL);
 	}
+	else if((pid5 = fork()) == 0)
+	{
+		execve(task5,NULL,NULL);
+	}
 	else
 	{
-		printf("task%d has created\n",pid2);
 		printf("task%d has created\n",pid3);
 		printf("task%d has created\n",pid4);
-		waitpid(pid3,NULL,0);
+		printf("task%d has created\n",pid5);
+		waitpid(pid4,NULL,0);
 		printf("here is father process\n");
 	}
 	while(1)

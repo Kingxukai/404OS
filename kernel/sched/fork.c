@@ -4,6 +4,9 @@
 #include "../../include/trap.h"
 #include "../../include/lib.h"
 
+void switch_to(struct reg* last, struct reg* next);
+reg64_t ret_from_sys_call();
+
 uint8_t task_stack[MAX_TASK][STACK_SIZE];			//each task occupy 1024B stack size
 
 extern struct task_struct *current;
@@ -23,6 +26,16 @@ int find_new_id()
 		return NEW_PCBID;
 	}
 	return MAX_TASK;
+}
+
+void memcpy(reg8_t* from, reg8_t* to, uint64_t size)
+{
+	while(size--)
+	{
+		*to = *from;
+		to++;
+		from++;
+	}
 }
 
 static void copy_memory(reg64_t sp)
@@ -65,7 +78,7 @@ pid_t copy_process()
 	}
 	p->exit_code = 0;
 
-	p->context.ra = current->context.ra;
+	p->context.ra = (reg64_t)ret_from_sys_call;
 	p->context.sp = (reg64_t)&task_stack[p->pcb_id][STACK_SIZE-1];	//if just alloc the new process a new stack,what will happen? yes,the local variable will disapear because it pointing to a new space with none data while new task executing. SO,we need to copy mm.
 	copy_memory(p->context.sp);
 	p->context.sp = p->context.sp - ((reg64_t)(&task_stack[current->pcb_id][STACK_SIZE-1]) - (current->context.sp));//get the relative address

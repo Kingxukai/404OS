@@ -16,7 +16,11 @@
 type name(void) \
 { \
 	asm volatile("li a7, %[_nr]" ::[_nr] "i" (NR_##name)); \
+	asm volatile("addi sp,sp,-8"); \
+	asm volatile("sd ra,0(sp)"); \
 	asm volatile("ecall"); \
+	asm volatile("ld ra,0(sp)"); \
+	asm volatile("addi sp,sp,8"); \
 	reg64_t ret; \
 	asm volatile("mv %[arg0],a0":[arg0]"=r" (ret)); \
 	if(ret >= 0)return (type)ret; \
@@ -28,7 +32,13 @@ type name(type0 name0) \
 { \
 	asm volatile("li a7, %[_nr]" ::[_nr] "i" (NR_##name)); \
 	asm volatile("mv a0, %[arg0]" ::[arg0] "r" ((type0)name0)); \
+	\
+	asm volatile("addi sp,sp,-8"); \
+	asm volatile("sd ra,0(sp)"); \
 	asm volatile("ecall"); \
+	asm volatile("ld ra,0(sp)"); \
+	asm volatile("addi sp,sp,8"); \
+	\
 	reg64_t ret; \
 	asm volatile("mv %[arg1],a0":[arg1]"=r" (ret)); \
 	if(ret >= 0)return (type)ret; \
@@ -41,7 +51,13 @@ type name(type0 name0,type1 name1) \
 	asm volatile("li a7, %[_nr]" ::[_nr] "i" (NR_##name)); \
 	asm volatile("mv a0, %[arg0]" ::[arg0] "r" ((type0)name0)); \
 	asm volatile("mv a1, %[arg1]" ::[arg1] "r" ((type1)name1)); \
+	\
+	asm volatile("addi sp,sp,-8"); \
+	asm volatile("sd ra,0(sp)"); \
 	asm volatile("ecall"); \
+	asm volatile("ld ra,0(sp)"); \
+	asm volatile("addi sp,sp,8"); \
+	\
 	reg64_t ret; \
 	asm volatile("mv %[arg2],a0":[arg2]"=r" (ret)); \
 	if(ret >= 0)return (type)ret; \
@@ -55,7 +71,11 @@ type name(type0 name0,type1 name1,type2 name2) \
   asm volatile("mv a0, %[arg0]" ::[arg0] "r" ((type0)name0)); \
   asm volatile("mv a1, %[arg1]" ::[arg1] "r" ((type1)name1)); \
   asm volatile("mv a2, %[arg2]" ::[arg2] "r" ((type2)name2)); \
+		asm volatile("addi sp,sp,-8"); \
+	asm volatile("sd ra,0(sp)"); \
 	asm volatile("ecall"); \
+	asm volatile("ld ra,0(sp)"); \
+	asm volatile("addi sp,sp,8"); \
 	reg64_t ret; \
 	asm volatile("mv %[arg3],a0":[arg3]"=r" (ret)); \
 	if(ret >= 0)return (type)ret; \
@@ -70,7 +90,13 @@ type name(type0 name0,type1 name1,type2 name2) \
   asm volatile("mv a1, %[arg1]" ::[arg1] "r" ((type1)name1)); \
   asm volatile("mv a2, %[arg2]" ::[arg2] "r" ((type2)name2)); \
   asm volatile("mv a3, %[arg3]" ::[arg3] "r" ((type3)name3)); \
+  \
+	asm volatile("addi sp,sp,-8"); \
+	asm volatile("sd ra,0(sp)"); \
 	asm volatile("ecall"); \
+	asm volatile("ld ra,0(sp)"); \
+	asm volatile("addi sp,sp,8"); \
+	\
 	reg64_t ret; \
 	asm volatile("mv %[arg4],a0":[arg4]"=r" (ret)); \
 	if(ret >= 0)return (type)ret; \
@@ -86,7 +112,13 @@ type name(type0 name0,type1 name1,type2 name2) \
   asm volatile("mv a2, %[arg2]" ::[arg2] "r" ((type2)name2)); \
   asm volatile("mv a3, %[arg3]" ::[arg3] "r" ((type3)name3)); \
   asm volatile("mv a4, %[arg4]" ::[arg4] "r" ((type4)name4)); \
+  \
+	asm volatile("addi sp,sp,-8"); \
+	asm volatile("sd ra,0(sp)"); \
 	asm volatile("ecall"); \
+	asm volatile("ld ra,0(sp)"); \
+	asm volatile("addi sp,sp,8"); \
+	\
 	reg64_t ret; \
 	asm volatile("mv %[arg5],a0":[arg5]"=r" (ret)); \
 	if(ret >= 0)return (type)ret; \
@@ -103,7 +135,13 @@ type name(type0 name0,type1 name1,type2 name2) \
   asm volatile("mv a3, %[arg3]" ::[arg3] "r" ((type3)name3)); \
   asm volatile("mv a4, %[arg4]" ::[arg4] "r" ((type4)name4)); \
   asm volatile("mv a5, %[arg5]" ::[arg5] "r" ((type5)name5)); \
+  \
+	asm volatile("addi sp,sp,-8"); \
+	asm volatile("sd ra,0(sp)"); \
 	asm volatile("ecall"); \
+	asm volatile("ld ra,0(sp)"); \
+	asm volatile("addi sp,sp,8"); \
+	\
 	reg64_t ret; \
 	asm volatile("mv %[arg6],a0":[arg6]"=r" (ret)); \
 	if(ret >= 0)return (type)ret; \

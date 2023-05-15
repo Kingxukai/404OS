@@ -15,23 +15,22 @@ pid_t do_exit()
 		while(--i)
 		{
 			if(!*--p)continue;
-			if((*p)->father_pid == current->pid)			//find every child process,and change their father as 0
+			if((*p)->father_pid == current->pid)			//find every child process,and change their father as 1
 			{
-				(*p)->father_pid = 0;
-				if((*p)->state == TASK_ZOMBINE)					//if his child process is already in TASK_ZOMBINE, tell task0.
+				(*p)->father_pid = 1;
+				if((*p)->state == TASK_ZOMBINE)					//if his child process is already in TASK_ZOMBINE, tell task1.
 				{
-					tell_father(0);
+					tell_father(1);
 				}
 			}
 		}
-		struct task_struct *q = current;
-		q->state = TASK_ZOMBINE;
-		q->counter = 0;
-		q->in_Queue = 0;
-		q->order = -1;
+		current->state = TASK_ZOMBINE;
+		current->counter = 0;
+		current->in_Queue = 0;
+		current->order = -1;
 		
-		tell_father(0);
-		printf("task%d exit\n",q->pid);
+		tell_father(1);
+		printf("task%d exit\n",current->pid);
 		schedule();
 	}
 	else
@@ -69,6 +68,6 @@ static void tell_father(pid_t pid)
 		}
 	}
 	//father process dont exist or has been exited
-	current->father_pid = 0;
-	TASK[0]->signal |= SIG_CHLD;//make his father as process 'INIT'
+	current->father_pid = 1;
+	TASK[1]->signal |= SIG_CHLD;//make his father as process 'INIT'
 }

@@ -68,30 +68,32 @@
 .globl switch_to
 .align 4
 switch_to:
-	csrw mscratch,a0
+	beqz a0,1f
+	reg_save a0
+1:
 	
-	csrr t6,mscratch
-	
+	csrw mscratch,a1
+
+	mv t6,a1
 	ld t5,248(t6)
 	csrw mepc,t5
-
 	reg_restore t6
 
-	mret
+	ret
 
 .global trap_vector
+.global ret_from_sys_call
 .align 4
 trap_vector:
 	csrrw t6,mscratch,t6
 	
-	reg_save t6
+	reg_save t6	
 	mv t5,t6
 	csrr t6,mscratch
 	sd t6,240(t5)
 	csrr t6,mepc
 	sd t6,248(t5)
 	
-1:
 	csrw mscratch,t5
 	
 	csrr a0,mcause
@@ -99,12 +101,14 @@ trap_vector:
 	csrr a2,mscratch
 	
 	call trap_handler
-	
+
+ret_from_exception:
 	csrw mepc,a0
 	
 	csrr t6,mscratch
 	reg_restore t6
 	
+ret_from_sys_call:	
 	mret
 
 .end

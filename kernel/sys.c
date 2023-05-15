@@ -3,6 +3,9 @@
 #include "../include/riscv64.h"
 #include "../include/type.h"
 #include "../include/errno.h"
+#include "../include/lib.h"
+
+reg64_t ret_from_sys_call();
 
 void do_syscall(struct reg *context)										//syscall executing function
 {
@@ -42,14 +45,14 @@ int sys_execve(const char *filepath,char * const * argv,char * const * envp)
 	struct task_struct *p = current;
 	if(filepath)
 	{
-		p->context.ra = (reg64_t)filepath;
+		p->context.ra = (reg64_t)ret_from_sys_call;
 		p->context.sp = (reg64_t)&task_stack[p->pcb_id][STACK_SIZE-1];	
-		p->context.gp = (reg64_t)p;
+		p->context.gp = 0;
 		p->context.tp = 0;
 		p->context.t0 = 0;
 		p->context.t1 = 0;
 		p->context.t2 = 0;
-		//p->context.s0 = current->context.s0;
+		p->context.s0 = 0;
 		p->context.s1 = 0;
 		p->context.a0 = 0;										
 		p->context.a1 = 0;
@@ -74,8 +77,8 @@ int sys_execve(const char *filepath,char * const * argv,char * const * envp)
 		p->context.t5 = 0;
 		p->context.t6 = 0;
 		p->context.epc = (reg64_t)filepath;
-		switch_to(&p->context);
 	}
+		switch_to(0, &(p->context));
 	return -1;
 }
 
@@ -101,7 +104,7 @@ pid_t sys_waitpid(pid_t pid,uint64_t* stat_addr,int options)
 				if((*p)->state == TASK_ZOMBINE)
 				{
 					current->time += (*p)->time;
-						release(*p);
+					release(*p);
 				}
 				else flag = 1;
 			}
@@ -110,7 +113,13 @@ pid_t sys_waitpid(pid_t pid,uint64_t* stat_addr,int options)
 		{
 			current->state = TASK_WAIT;
 			current->in_Queue = 0;
+			
+			struct reg* context = (struct reg*)malloc(sizeof(struct reg));
+			memcpy((reg8_t *)&(current->context),(reg8_t *)context,sizeof(struct reg));
 			schedule();
+			memcpy((reg8_t *)context,(reg8_t *)&(current->context),sizeof(struct reg));
+			free(context);
+			
 			if(current->signal &= (~SIG_CHLD))
 				goto repeat;
 			else

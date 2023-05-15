@@ -68,6 +68,8 @@ void Init_timer()
 	w_mstatus(r_mstatus() | EA);
 	
 	w_mie(r_mie() | MTIE);
+	
+	timer_selfadd();
 }
 
 void timer_interrupt_handler()

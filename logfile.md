@@ -121,3 +121,12 @@ In the next step I'll try to correct it
 ```
 comment:however,I'm still not clear how can process excute the code after invoking schedule() in waitpid(), because there's no any step to save the context of current process,and next time current process was executing, the mepc will make PC point to ecall in sys_waitpid() instead of the code after invoking schedule() after waitpid()
 ```
+
+18:
+
+    **rebuild the bottom logic of process schedule,which is apprrently a big project.** 
+    time:2023-05-15 23:36:01 by wxk
+
+```
+comment:In order to surport the waitpid in returning after invoking schedule in U-mode, I decide to rebuild it these days,and contacted with 'ziyao233',who is a 16 years old girls,contributing a lot.Thanks!!!\
+```

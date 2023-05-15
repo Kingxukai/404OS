@@ -1,4 +1,5 @@
 #include "../include/kernel.h"
+#include "../include/riscv64.h"
 static void show_hello();
 
 extern void Init_trap();
@@ -32,7 +33,9 @@ void kernel_start(reg64_t hartid)
 	Init_timer();
  	Init_plic();
 	printf("Initialed All!\n");
-	schedule();		//schedule to switch from machine mode to user mode and  run init(task0)
+	move_to_user_mode();
+	if(!fork())Init();
+	while(1){}
 }
 
 static void show_hello()

@@ -114,7 +114,7 @@ struct task_struct
 															0,0,0,0,0,0,0, \
 															0,0,0,0,0,0,0, \
 															0, \
-/*return address of task*/		(reg64_t)Init \
+/*return address of task*/		0 \
 		  										 } \
 }
 

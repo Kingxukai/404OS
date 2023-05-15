@@ -2,6 +2,9 @@
 #define _RISCV64_H__
 
 #include "type.h"
+#include "sched.h"
+#define STACK_SIZE 1024
+
 static inline reg64_t r_mhartid()
 {
 	reg64_t reg;
@@ -117,6 +120,13 @@ static inline void asm_ecall()
 static inline void asm_ret()
 {
 	asm volatile("ret");
+}
+
+static inline void move_to_user_mode()
+{
+	asm volatile("csrw mepc,ra");
+	asm volatile("mv sp,%0"::"r"((reg64_t)&task_stack[0][STACK_SIZE - 1]));
+	asm volatile("mret");
 }
 
 #endif
