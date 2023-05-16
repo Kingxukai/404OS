@@ -9,7 +9,7 @@
 void Init_timer();
 void timer_interrupt_handler();
 
-volatile uint64_t jiffies;
+extern volatile uint64_t jiffies;
 
 static struct timer_list
 {

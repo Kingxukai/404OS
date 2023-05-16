@@ -2,7 +2,7 @@
 #include "../include/type.h"
 #include "../include/sched.h"
 
-struct task_struct *current;
+extern struct task_struct *current;
 
 void do_signal(int64_t signr)
 {

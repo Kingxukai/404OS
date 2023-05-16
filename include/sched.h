@@ -26,9 +26,9 @@ extern void Init();
 void release();
 pid_t do_exit();
 
-struct task_struct *TASK[MAX_TASK];
-struct task_struct *current;
-uint8_t task_stack[MAX_TASK][STACK_SIZE];
+extern struct task_struct *TASK[MAX_TASK];
+extern struct task_struct *current;
+extern uint8_t task_stack[MAX_TASK][STACK_SIZE];
 
 extern pid_t NEW_PID;
 
