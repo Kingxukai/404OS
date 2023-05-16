@@ -29,7 +29,7 @@ pid_t do_exit()
 		current->in_Queue = 0;
 		current->order = -1;
 		
-		tell_father(1);
+		tell_father(current->father_pid);
 		printf("task%d exit\n",current->pid);
 		schedule();
 	}

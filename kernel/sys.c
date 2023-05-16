@@ -89,10 +89,12 @@ pid_t sys_exit()
 
 pid_t sys_waitpid(pid_t pid,uint64_t* stat_addr,int options)
 {
-	struct task_struct **p = &TASK[MAX_TASK];
-	int i = MAX_TASK;
-	bool flag = 0;
+	bool flag;
+	struct task_struct **p;
+	int i;
 	repeat:
+		p = &TASK[MAX_TASK];
+		i = MAX_TASK;
 		flag = 0;
 		while(--i)
 		{
@@ -120,7 +122,7 @@ pid_t sys_waitpid(pid_t pid,uint64_t* stat_addr,int options)
 			memcpy((reg8_t *)context,(reg8_t *)&(current->context),sizeof(struct reg));
 			free(context);
 			
-			if(current->signal &= (~SIG_CHLD))
+			if(!(current->signal &= (~SIG_CHLD)))
 				goto repeat;
 			else
 				{
