@@ -53,7 +53,6 @@ static void copy_memory(reg64_t sp)
 
 pid_t copy_process()
 {
-	cli();
 	struct task_struct *p = (struct task_struct *)malloc(sizeof(struct task_struct));
 	if(!p) panic("something wrong in page alloc,please check\n");																//something wrong in page alloc
 	TASK[NEW_PCBID] = p;
@@ -113,6 +112,5 @@ pid_t copy_process()
 	p->context.t6 = current->context.t6;
 	p->context.epc = current->context.epc + 4;	//don't ecall again to avoid endless loop
 	
-	sti();
 	return p->pid;
 }

@@ -130,3 +130,13 @@ comment:however,I'm still not clear how can process excute the code after invoki
 ```
 comment:In order to surport the waitpid in returning after invoking schedule in U-mode, I decide to rebuild it these days,and contacted with 'ziyao233',who is a 16 years old girls,contributing a lot.Thanks!!!\
 ```
+
+19:
+
+    **modify the demo7**
+
+    time:2023-05-18 22:13:31 by wxk
+
+```
+temporily,there's problem if I put a pritnf in while of TASK2,and I don't understand how did it.
+```

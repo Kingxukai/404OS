@@ -25,6 +25,7 @@ void show_task(pid_t pid);
 extern void Init();
 void release();
 pid_t do_exit();
+void Dect_stack(reg64_t sp);
 
 extern struct task_struct *TASK[MAX_TASK];
 extern struct task_struct *current;
@@ -66,6 +67,7 @@ struct reg {
 	reg64_t t6;
 	
 	reg64_t epc;//to save the pc the task can switch to
+	reg64_t temp;//aim to save a0 in trap_vector and restore in ret_from_exception
 };
 
 struct task_struct
@@ -114,7 +116,7 @@ struct task_struct
 															0,0,0,0,0,0,0, \
 															0,0,0,0,0,0,0, \
 															0, \
-/*return address of task*/		0 \
+/*mepc,temp*/									0,0 \
 		  										 } \
 }
 

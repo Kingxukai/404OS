@@ -15,7 +15,7 @@ static struct timer_list *timer_head = &time_head;
 void add_timer(uint64_t _jiffies, void (*fn)())
 {
 	if(!fn)return;
-	cli();//close interrupt
+	//cli();//close interrupt
 	
 	struct timer_list * p = timer_head;
 	while(p->next)
@@ -29,7 +29,7 @@ void add_timer(uint64_t _jiffies, void (*fn)())
 	p->_jiffies = _jiffies;
 	p->fn = fn;
 	
-	sti();//enable interrupt
+	//sti();//enable interrupt
 }
 
 

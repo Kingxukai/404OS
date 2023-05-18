@@ -6,6 +6,7 @@
 
 extern void trap_vector(void);
 extern void do_syscall(struct reg *context);
+extern void ret_from_sys_call();
 
 void Init_trap()
 {
@@ -28,6 +29,8 @@ void machine_interrupt_handler()	//handle the char from keyboard
 
 reg64_t trap_handler(reg64_t cause,reg64_t epc,struct reg *context)
 {
+	reg64_t ra;
+	asm volatile("mv %0,ra":"=r"(ra));
 	if(cause & 0x8000000000000000)		//interrupt
 	{
 		switch(cause & 0xfff)
@@ -41,6 +44,7 @@ reg64_t trap_handler(reg64_t cause,reg64_t epc,struct reg *context)
 				{
 					//printf("Machine timer interrupt\n");
 					timer_interrupt_handler();
+					ra = context->ra;
 					break;
 				}
 			case 11:
@@ -71,7 +75,12 @@ reg64_t trap_handler(reg64_t cause,reg64_t epc,struct reg *context)
 				goto NO_ERROR;
 			}
 			case 9:printf("Environment call from S-mode\n");goto NO_ERROR;;
-			case 11:printf("Environment call from M-mode\n");goto NO_ERROR;;
+			case 11:
+			{
+				printf("Environment call from M-mode\n");
+				panic("OOPS!!! it's forbiddened temporily ecall from M-mode\n");
+				goto NO_ERROR;
+			}
 			case 12:printf("Instruction page fault\n");break;
 			case 13:printf("Load page fault\n");break;
 			case 15:printf("Store/AMO page fault\n");break;
@@ -82,9 +91,12 @@ reg64_t trap_handler(reg64_t cause,reg64_t epc,struct reg *context)
 		NO_ERROR:
 		epc += 4;												//make epc point to next 4 address to avoid infinte loop
 	}
-	return epc;
+	asm volatile("addi sp,sp,64");
+	asm volatile("mv a0,%0"::"r"(epc));
+	asm volatile("mv ra,%0"::"r"(ra));
+	asm volatile("ret");
 }
-
+/*
 void cli()													//close interrupt
 {
 	w_mstatus(r_mstatus() & ~EA);
@@ -93,4 +105,4 @@ void cli()													//close interrupt
 void sti()													//enable interrupt
 {
 	w_mstatus(r_mstatus() | EA);
-}
+}*/

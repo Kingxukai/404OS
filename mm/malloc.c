@@ -70,7 +70,6 @@ void* _malloc_(uint32_t length)
 		panic("malloc : bad arg");
 
 	}
-	cli();
 	//在块链表中检索合适的空闲块
 	for( bdesc = bdir->list; bdesc; bdesc = bdesc->next ) 
 			if(bdesc->freeptr) 
@@ -120,7 +119,6 @@ void* _malloc_(uint32_t length)
 	retval = (void*)bdesc->freeptr;
 	bdesc->freeptr = *( (void**) retval);
 	bdesc->blocnt++;
-	sti();
 	return retval;
 }
 /*
@@ -164,7 +162,6 @@ bfound:
 	/*
 		若找到对应要释放的内存块，首指针指向空闲地址，再将空闲地址覆盖内存块地址
 	*/
-	cli();
 	*((void **) obj) = bdesc->freeptr;
 	bdesc->freeptr = obj;
 	bdesc->blocnt--;
@@ -188,6 +185,5 @@ bfound:
 		bdesc->next = free_block_desc;
 		free_block_desc = bdesc;
 	}
-	sti();
 	return;
 }

@@ -68,25 +68,38 @@
 .globl switch_to
 .align 4
 switch_to:
+#judge that if a0 is 0
 	beqz a0,1f
 	reg_save a0
-1:
 	
+1:
 	csrw mscratch,a1
 
 	mv t6,a1
 	ld t5,248(t6)
 	csrw mepc,t5
 	reg_restore t6
+	
+#it's a necessary step which is avoid restoring the context again as we return from switch_to to ret_from_sys_call
+#rather than ret_from_exception
+	csrrw t6,mscratch,t6
+	la t5,ret_from_sys_call
+	sd t5,(t6)
+	csrrw t6,mscratch,t6
 
 	ret
 
 .global trap_vector
 .global ret_from_sys_call
 .align 4
+#hardware auto disable interrupt
 trap_vector:
 	csrrw t6,mscratch,t6
 	
+#this step is aim to save ra in context.temp and the addr of ret_from_exception and reload it to ra after timer_interrupt_handler() in trap_handler()
+
+	sd ra,256(t6)
+	la ra,ret_from_exception
 	reg_save t6	
 	mv t5,t6
 	csrr t6,mscratch
@@ -96,6 +109,11 @@ trap_vector:
 	
 	csrw mscratch,t5
 	
+#alarm if stack overflow
+
+	mv a0,sp
+	call Dect_stack
+
 	csrr a0,mcause
 	csrr a1,mepc
 	csrr a2,mscratch
@@ -106,9 +124,15 @@ ret_from_exception:
 	csrw mepc,a0
 	
 	csrr t6,mscratch
+	ld ra,256(t6)
+	sd ra,(t6)
 	reg_restore t6
-	
-ret_from_sys_call:	
+
+#without reg_resotre	
+
+ret_from_sys_call:
+#enable interrupt
+
 	mret
 
 .end

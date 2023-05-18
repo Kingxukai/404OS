@@ -30,10 +30,10 @@ void kernel_start(reg64_t hartid)
 	Init_uart();
 	Init_trap();
 	Init_sched();
-	Init_timer();
  	Init_plic();
-	printf("Initialed All!\n");
-	move_to_user_mode();
+ 	Init_timer();
+ 	printf("Initialed All!\n");
+ 	move_to_user_mode();
 	if(!fork())Init();
 	while(1){}
 }

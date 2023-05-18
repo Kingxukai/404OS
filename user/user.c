@@ -34,7 +34,7 @@ void task5()
 void task2()
 {
 	printf("task%d is running\n",getpid());
-	pid_t pid3,pid4,pid5;
+	pid_t pid3,pid4,pid5,n = 0;
 	if((pid3 = fork()) == 0)
 	{
 		execve(task3,NULL,NULL);
@@ -57,6 +57,5 @@ void task2()
 	}
 	while(1)
 	{
-	
 	}
 }

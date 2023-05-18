@@ -143,6 +143,17 @@ void Init_sched()
 	
 }
 
+void Dect_stack(reg64_t sp)
+{
+	reg64_t T = (reg64_t)&task_stack[current->pcb_id][STACK_SIZE-1];
+	reg64_t L = (reg64_t)&task_stack[current->pcb_id][0];
+	if(sp > T || sp < L )
+	{
+		printf("$SP:0X%x STACK:0X%x~0X%x\n",sp,L,T);
+		panic("STACK OVERFLOW!\n");
+	}
+}
+
 void show_task(pid_t pid)
 {
 	int i = MAX_TASK;
@@ -183,6 +194,9 @@ static void show_task_queue()			//in order to test the queue of task
 			else 
 				break;
 		}
+		printf("\ntail[%d]:%x\t",i,tail[i]);
+		printf("\ttail[%d]:%d,next:%x",i,tail[i]->pid,tail[i]->next);
 		printf("\n");
 	}
+	printf("----------\n");
 }
