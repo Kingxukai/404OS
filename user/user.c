@@ -57,5 +57,6 @@ void task2()
 	}
 	while(1)
 	{
+		printf("1\n");
 	}
 }

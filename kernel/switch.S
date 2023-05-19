@@ -124,13 +124,14 @@ ret_from_exception:
 	csrw mepc,a0
 	
 	csrr t6,mscratch
-	ld ra,256(t6)
-	sd ra,(t6)
 	reg_restore t6
 
 #without reg_resotre	
 
 ret_from_sys_call:
+	csrr t6,mscratch
+	ld ra,256(t6)
+	sd ra,(t6)
 #enable interrupt
 
 	mret

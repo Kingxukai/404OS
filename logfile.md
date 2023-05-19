@@ -140,3 +140,8 @@ comment:In order to surport the waitpid in returning after invoking schedule in 
 ```
 temporily,there's problem if I put a pritnf in while of TASK2,and I don't understand how did it.
 ```
+
+20:
+
+    **modify the bug in in ret_from_sys_call which will lose the $ra while timer is coming**
+    time:2023-05-19 18:11:57  by wxk
