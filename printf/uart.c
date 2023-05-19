@@ -18,6 +18,7 @@ void Init_uart()								//Initial  ther uart
 	
 	uint8_t ier = uart_read_reg(IER);
 	uart_write_reg(IER, ier | (1 << 0));
+
 }
 
 int uart_putc(char ch)						//put a char on screen by uart0

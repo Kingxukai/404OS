@@ -12,7 +12,6 @@ extern void Init_block_desc();
 
 void kernel_start(reg64_t hartid)
 {
-
 	if(!hartid)
 
 	{

@@ -111,6 +111,7 @@ pid_t copy_process()
 	p->context.t5 = current->context.t5;
 	p->context.t6 = current->context.t6;
 	p->context.epc = current->context.epc + 4;	//don't ecall again to avoid endless loop
+	p->context.temp = current->context.temp; //make sure this process will return to the same address
 	
 	return p->pid;
 }

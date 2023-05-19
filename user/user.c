@@ -20,6 +20,8 @@ void task4()
 	exit();
 }
 
+uint64_t n = 0;
+
 void task5()
 {
 	printf("task%d running\n",getpid());
@@ -27,14 +29,22 @@ void task5()
 	printf("task%d running\n",getpid());
 	while(1)
 	{
-	
+		
 	}
+}
+
+
+uint64_t get()
+{
+	for(int i = 0;i<n;i++)
+	{}
+	return n++;
 }
 
 void task2()
 {
 	printf("task%d is running\n",getpid());
-	pid_t pid3,pid4,pid5,n = 0;
+	pid_t pid3,pid4,pid5;
 	if((pid3 = fork()) == 0)
 	{
 		execve(task3,NULL,NULL);
@@ -57,6 +67,7 @@ void task2()
 	}
 	while(1)
 	{
-		printf("1\n");
+		n = get();
 	}
 }
+

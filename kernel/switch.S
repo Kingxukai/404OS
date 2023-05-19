@@ -82,9 +82,21 @@ switch_to:
 	
 #it's a necessary step which is avoid restoring the context again as we return from switch_to to ret_from_sys_call
 #rather than ret_from_exception
+
+#save the value of t5
 	csrrw t6,mscratch,t6
+	addi sp,sp,-8
+	
+#use t5 to save addr of ret_from_sys_call and then put it to context.ra
+	sd t5,(sp)
 	la t5,ret_from_sys_call
+	
 	sd t5,(t6)
+
+#resotre the value of t5
+	ld t5,(sp)
+	addi sp,sp,8
+	
 	csrrw t6,mscratch,t6
 
 	ret

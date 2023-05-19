@@ -1,6 +1,6 @@
 #include "../include/platform.h"
 
-.equ STACK_SIZE, 4096
+.equ STACK_SIZE, 1024
 .global _start
 
 .text
@@ -10,7 +10,7 @@ _start:
 	mv a0, t0									//save the value of hartid in a0, which is an arg of kernel_start
 	bnez t0, park							//temporarily we only allow hart0 to run,and other turn to park
 	
-	slli t0,t0,12							//hartid * (1024 * 4)
+	slli t0,t0,10							//hartid * 1024
 	la sp, stack + STACK_SIZE
 	add sp, sp, t0						//alloc stacksize and stack pointer to every hart
 	

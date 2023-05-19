@@ -42,7 +42,7 @@ reg64_t trap_handler(reg64_t cause,reg64_t epc,struct reg *context)
 				}
 			case 7:
 				{
-					//printf("Machine timer interrupt\n");
+					printf("\nMachine timer interrupt\n");
 					timer_interrupt_handler();
 					ra = context->ra;
 					break;
@@ -64,7 +64,7 @@ reg64_t trap_handler(reg64_t cause,reg64_t epc,struct reg *context)
 			case 1:printf("Instruction acess fault\n");break;
 			case 2:printf("Illegal instruction\n");break;
 			case 3:printf("BreakPoint\n");break;
-			case 4:printf("Load address  misalligned\n");break;
+			case 4:printf("Load address misalligned\n");break;
 			case 5:printf("Load acess fault\n");break;
 			case 6:printf("Store/AMO address misalligned\n");break;
 			case 7:printf("Store/AMO acess fault\n");break;
