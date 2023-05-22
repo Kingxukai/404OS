@@ -63,5 +63,5 @@ code: all
 
 .PHONY : clean
 clean:
-	rm -rf BOOT/*.o kernel/*.o kernel/sched/*.o timer/*.o trap/*.o mm/*.o printf/*.o user/*.o printf/*.o include/*.o *.bin *.elf
+	rm -rf BOOT/*.o kernel/*.o kernel/sched/*.o kernel/lock/*.o timer/*.o trap/*.o mm/*.o printf/*.o user/*.o printf/*.o include/*.o *.bin *.elf
 
