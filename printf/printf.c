@@ -1,6 +1,7 @@
 #include<stdarg.h>
 #include<stddef.h>
 #include "../include/uart.h"
+#include "../include/lock.h"
 
 //ref: https://github.com/cccriscv/mini-riscv-os/blob/master/05-Preemptive/lib.c
 static int _vsnprintf(char * out, size_t n, const char* s, va_list vl)
@@ -106,8 +107,9 @@ static int _vsnprintf(char * out, size_t n, const char* s, va_list vl)
 
 static char out_buf[1000]; // buffer for _vprintf()
 
-static int _vprintf(const char* s, va_list vl)
+static int _vprintf(struct file_lock* lock,const char* s, va_list vl)
 {
+	FLOCK(lock);
 	int res = _vsnprintf(NULL, -1, s, vl);
 	if (res+1 >= sizeof(out_buf)) {
 		uart_puts("error: output string size overflow\n");
@@ -115,15 +117,18 @@ static int _vprintf(const char* s, va_list vl)
 	}
 	_vsnprintf(out_buf, res + 1, s, vl);
 	uart_puts(out_buf);
+	UFLOCK(lock);
 	return res;
 }
+
+extern struct file_lock* uart_lock;
 
 int printf(const char* s, ...)
 {
 	int res = 0;
 	va_list vl;
 	va_start(vl, s);
-	res = _vprintf(s, vl);
+	res = _vprintf(uart_lock,s, vl);
 	va_end(vl);
 	return res;
 }

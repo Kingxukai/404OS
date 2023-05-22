@@ -11,6 +11,7 @@ SRCS_C = \
 	kernel/sys.c \
 	kernel/errno.c \
 	kernel/signal.c \
+	kernel/lock/flock.c \
 	kernel/system_call.c \
 	kernel/sched/sched.c \
 	kernel/sched/fork.c \
