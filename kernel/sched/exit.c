@@ -6,7 +6,7 @@ extern struct task_struct *current;
 
 static void tell_father(pid_t pid);
 
-pid_t do_exit()
+pid_t do_exit(int error_code)
 {
 	if(current->pid)
 	{
@@ -30,7 +30,7 @@ pid_t do_exit()
 		current->order = -1;
 		
 		tell_father(current->father_pid);
-		printf("task%d exit\n",current->pid);
+		printf("task%d exit with error_code:%d\n",current->pid,error_code);
 		schedule();
 	}
 	else

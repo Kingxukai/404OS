@@ -1,7 +1,7 @@
 #include "../include/kernel.h"
 #include "../include/unistd.h"
 
-extern void task2();
+extern int task2();
 
 void Init()
 {

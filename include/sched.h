@@ -24,7 +24,7 @@ void Init_sched();
 void show_task(pid_t pid);
 extern void Init();
 void release();
-pid_t do_exit();
+pid_t do_exit(int error_code);
 void Dect_stack(reg64_t sp);
 
 extern struct task_struct *TASK[MAX_TASK];

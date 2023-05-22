@@ -8,8 +8,8 @@ extern pid_t sys_getpid();
 extern pid_t sys_getppid();
 extern pid_t sys_fork();
 extern pid_t sys_fork();
-extern int sys_execve();
-extern pid_t sys_exit();
+extern int sys_execve(const char *filepath,char * const * argv,char * const * envp);
+extern pid_t sys_exit(int error_code);
 extern pid_t sys_waitpid(pid_t pid,uint64_t* stat_addr,int options);
 
 sys_func sys_call_table[] = {//sys_func defined in include/type.h

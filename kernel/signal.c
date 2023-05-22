@@ -14,7 +14,7 @@ void do_signal(int64_t signr)
 	if(sa_handler == SIG_IGN)
 	{
 		if(signr == SIGCHLD)return;
-		else do_exit();
+		else do_exit(0);
 	}
 	
 	if(sa->sa_flags & SA_ONESHOT)

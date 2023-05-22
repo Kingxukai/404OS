@@ -4,6 +4,7 @@
 #include "../include/type.h"
 #include "../include/errno.h"
 #include "../include/lib.h"
+#include "../include/unistd.h"
 
 reg64_t ret_from_sys_call();
 
@@ -77,15 +78,15 @@ int sys_execve(const char *filepath,char * const * argv,char * const * envp)
 		p->context.t5 = 0;
 		p->context.t6 = 0;
 		p->context.epc = (reg64_t)filepath;
-		p->context.temp = (reg64_t)do_exit;	//make it over while exit current process
+		p->context.temp = (reg64_t)exit;	//make it over while exit current process
 	}
 		switch_to(0, &(p->context));
 	return -1;
 }
 
-pid_t sys_exit()
+pid_t sys_exit(int error_code)
 {
-	return do_exit();
+	return do_exit(error_code);
 }
 
 pid_t sys_waitpid(pid_t pid,uint64_t* stat_addr,int options)

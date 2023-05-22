@@ -27,7 +27,7 @@ BDESC free_block_desc = NULL;
 */
 void Init_block_desc () 
 {
-	printf("Init block_desc for malloc\n");
+	printf("Initial block_desc...\n");
 	struct block_desc *bdesc,*first;
 	int i;
 	

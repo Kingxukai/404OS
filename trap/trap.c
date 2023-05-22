@@ -42,7 +42,7 @@ reg64_t trap_handler(reg64_t cause,reg64_t epc,struct reg *context)
 				}
 			case 7:
 				{
-					printf("\nMachine timer interrupt\n");
+					//printf("\nMachine timer interrupt\n");
 					timer_interrupt_handler();
 					ra = context->ra;
 					break;

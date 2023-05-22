@@ -2,14 +2,14 @@
 #include "../include/printf.h"
 #include "../include/lib.h"
 
-void task3()
+int task3()
 {
 	printf("task%d running\n",getpid());
 	printf("my father is %d\n",getppid());
-	exit();
+	return 0;
 }
 
-void task4()
+int task4()
 {
 	int t = 5;
 	printf("my father is %d\n",getppid());
@@ -17,12 +17,10 @@ void task4()
 	{
 		printf("task%d running\n",getpid());
 	}
-	exit();
+	return 0;
 }
 
-uint64_t n = 0;
-
-void task5()
+int task5()
 {
 	printf("task%d running\n",getpid());
 	printf("my father is %d\n",getppid());
@@ -31,17 +29,10 @@ void task5()
 	{
 		
 	}
+	return 0;
 }
 
-
-uint64_t get()
-{
-	for(int i = 0;i<n;i++)
-	{}
-	return n++;
-}
-
-void task2()
+int task2()
 {
 	printf("task%d is running\n",getpid());
 	pid_t pid3,pid4,pid5;
@@ -67,7 +58,7 @@ void task2()
 	}
 	while(1)
 	{
-		n = get();
 	}
+	return 0;
 }
 
