@@ -1,6 +1,6 @@
 #ifndef _UNISTD_H__
 #define _UNISTD_H__
-#include "type.h"
+#include "../type.h"
 
 uint64_t gethid();	//0
 pid_t getpid();	//1

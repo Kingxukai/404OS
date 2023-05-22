@@ -1,6 +1,6 @@
 #include "../../include/sched.h"
-#include "../../include/riscv64.h"
-#include "../../include/lib.h"
+#include "../../include/asm/riscv64.h"
+#include "../../include/usr/lib.h"
 
 #define BLOCK_SIG (SIG_KILL | SIG_STOP)				//except SIG_KILL and SIG_STOP
 
@@ -81,7 +81,7 @@ static void set_Queue()																//set the queue
 			else 
 				last->next = q->next;
 			if(q == tail[i])tail[i] = last;
-			printf("remove task%d\n",q->pid);
+			printk("remove task%d\n",q->pid);
 			free(q);
 		}
 	}
@@ -133,7 +133,7 @@ void schedule()
 
 void Init_sched()
 {
-	printf("Initial sched...\n");
+	printk("Initial sched...\n");
 	w_mscratch((reg64_t)&(TASK[0]->context));
 	
 	for(int i=1;i<MAX_TASK;i++)		//clear the TASK
@@ -149,7 +149,7 @@ void Dect_stack(reg64_t sp)
 	reg64_t L = (reg64_t)&task_stack[current->pcb_id][0];
 	if(sp > T || sp < L )
 	{
-		printf("$SP:0X%x STACK:0X%x~0X%x\n",sp,L,T);
+		printk("$SP:0X%x STACK:0X%x~0X%x\n",sp,L,T);
 		panic("STACK OVERFLOW!\n");
 	}
 }
@@ -164,17 +164,17 @@ void show_task(pid_t pid)
 	}
 	if(TASK[i])
 	{
-		printf("PID:%d\n",TASK[i]->pid);
-		printf("Father PID:%d\n",TASK[i]->father_pid);
-		printf("pcb_id:%d\n",TASK[i]->pcb_id);
-		printf("state:%d\n",TASK[i]->state);
-		printf("start time:%d\n",TASK[i]->start_time);
-		printf("time:%d\n",TASK[i]->time);
-		printf("priority:%d\n",TASK[i]->priority);
+		printk("PID:%d\n",TASK[i]->pid);
+		printk("Father PID:%d\n",TASK[i]->father_pid);
+		printk("pcb_id:%d\n",TASK[i]->pcb_id);
+		printk("state:%d\n",TASK[i]->state);
+		printk("start time:%d\n",TASK[i]->start_time);
+		printk("time:%d\n",TASK[i]->time);
+		printk("priority:%d\n",TASK[i]->priority);
 	}
 	else
 	{
-		printf("pid don't exist yet\n");
+		printk("pid don't exist yet\n");
 	}
 }
 
@@ -185,18 +185,18 @@ static void show_task_queue()			//in order to test the queue of task
 	{
 		if(!queue_head[i].next)continue;
 		q = queue_head[i].next;
-		printf("Queue[%d]:",i);
+		printk("Queue[%d]:",i);
 		while(1)
 		{
-			printf("task%d ",q->pid);
+			printk("task%d ",q->pid);
 			if(q->next)
 					q = q->next;
 			else 
 				break;
 		}
-		printf("\ntail[%d]:%x\t",i,tail[i]);
-		printf("\ttail[%d]:%d,next:%x",i,tail[i]->pid,tail[i]->next);
-		printf("\n");
+		printk("\ntail[%d]:%x\t",i,tail[i]);
+		printk("\ttail[%d]:%d,next:%x",i,tail[i]->pid,tail[i]->next);
+		printk("\n");
 	}
-	printf("----------\n");
+	printk("----------\n");
 }

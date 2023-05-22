@@ -1,6 +1,6 @@
-#include "../include/system.h"
+#include "../include/asm/system.h"
 #include "../include/sched.h"
-#include "../include/unistd.h"
+#include "../include/usr/unistd.h"
 #include "../include/signal.h"
 
 inline _syscall0(uint64_t,gethid)	//0

@@ -1,6 +1,6 @@
-#include "../include/unistd.h"
-#include "../include/printf.h"
-#include "../include/lib.h"
+#include "../include/usr/unistd.h"
+#include "../include/usr/printf.h"
+#include "../include/usr/lib.h"
 
 int task3(char* argv,char* envp)
 {

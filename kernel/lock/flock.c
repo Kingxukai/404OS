@@ -1,8 +1,8 @@
 #include "../../include/lock.h"
-#include "../../include/printf.h"
 
-static struct file_lock STDOUT = {0};
-const struct file_lock* uart_lock = &STDOUT;
+static struct file_lock uart_lock[] = {{0},{0}};
+const struct file_lock* STDOUT = &uart_lock[0];
+const struct file_lock* KOUT = &uart_lock[1];
 
 void _lockfile(struct file_lock* lock)
 {

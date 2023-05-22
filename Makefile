@@ -7,7 +7,6 @@ SRCS_ASM = \
 
 SRCS_C = \
 	kernel/kernel.c \
-	kernel/init.c \
 	kernel/sys.c \
 	kernel/errno.c \
 	kernel/signal.c \
@@ -17,9 +16,11 @@ SRCS_C = \
 	kernel/sched/fork.c \
 	kernel/sched/exit.c \
 	kernel/sched/wait.c \
-	printf/uart.c \
-	printf/printf.c \
-	printf/panic.c \
+	init/init.c \
+	print/uart.c \
+	print/printf.c \
+	print/printk.c \
+	print/panic.c \
 	timer/timer.c \
 	mm/malloc.c \
 	mm/page.c \
@@ -63,5 +64,5 @@ code: all
 
 .PHONY : clean
 clean:
-	rm -rf BOOT/*.o kernel/*.o kernel/sched/*.o kernel/lock/*.o timer/*.o trap/*.o mm/*.o printf/*.o user/*.o printf/*.o include/*.o *.bin *.elf
+	rm -rf BOOT/*.o init/*.o kernel/*.o kernel/sched/*.o kernel/lock/*.o timer/*.o trap/*.o mm/*.o print/*.o user/*.o include/*.o *.bin *.elf *.o
 

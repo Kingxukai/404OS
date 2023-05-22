@@ -1,7 +1,7 @@
 #ifndef _SYSTEM_H__
 #define _SYSTEM_H__
 
-#include "type.h"
+#include "../type.h"
 #include "riscv64.h"
 
 #define NR_gethid 0

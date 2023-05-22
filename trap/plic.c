@@ -2,9 +2,9 @@
 #include "../include/type.h"
 #include "../include/trap.h"
 #include "../include/platform.h"
-#include "../include/uart.h"
-#include "../include/printf.h"
-#include "../include/riscv64.h"
+#include "../include/print/uart.h"
+#include "../include/print/printk.h"
+#include "../include/asm/riscv64.h"
 
 uint64_t claim()
 {
@@ -21,7 +21,7 @@ void complete(uint64_t irq)
 
 void Init_plic()
 {
-	printf("Initial plic...\n");
+	printk("Initial plic...\n");
 	uint64_t hart = r_tp();
 	*(uint32_t *)PLIC_PRIORITY(UART0_IRQ) = 1;
 	

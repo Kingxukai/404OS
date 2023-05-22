@@ -2,7 +2,7 @@
 #include "../../include/kernel.h"
 #include "../../include/timer.h"
 #include "../../include/trap.h"
-#include "../../include/lib.h"
+#include "../../include/usr/lib.h"
 
 void switch_to(struct reg* last, struct reg* next);
 reg64_t ret_from_sys_call();

@@ -149,6 +149,11 @@ temporily,there's problem if I put a pritnf in while of TASK2,and I don't unders
 21:
     **find the problem which troubled me a week.**
     time:2023-05-20 00:39:06 by wxk
+
 ```
 comment:Unexpectedly, I encountered a problem if I put printf in while(1),and next time it switch to other process, resulting of a output unsafely. So,it's necessary to realise printk which is threading-safe and take lock to uart if last process use it. However, I havno free time to solve these yet,so I'm going to take it later if I'm available from school pressure. That's what I write to remind me.
 ```
+
+22:
+    **add printk and put the header into folder**
+    time:2023-05-22 19:09:56 by wxk 

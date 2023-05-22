@@ -1,10 +1,10 @@
 #include "../include/sys.h"
 #include "../include/sched.h"
-#include "../include/riscv64.h"
+#include "../include/asm/riscv64.h"
 #include "../include/type.h"
 #include "../include/errno.h"
-#include "../include/lib.h"
-#include "../include/unistd.h"
+#include "../include/usr/lib.h"
+#include "../include/usr/unistd.h"
 
 reg64_t ret_from_sys_call();
 

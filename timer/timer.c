@@ -1,8 +1,8 @@
 #include "../include/timer.h"
 #include "../include/sched.h"
 #include "../include/trap.h"
-#include "../include/riscv64.h"
-#include "../include/lib.h"
+#include "../include/asm/riscv64.h"
+#include "../include/usr/lib.h"
 
 extern void cli();				//defined in trap/trap.c
 extern void sti();
@@ -64,7 +64,7 @@ void timer_selfadd()
 
 void Init_timer()
 {
-	printf("Initial timer...\n");
+	printk("Initial timer...\n");
 	w_mstatus(r_mstatus() | EA);
 	
 	w_mie(r_mie() | MTIE);

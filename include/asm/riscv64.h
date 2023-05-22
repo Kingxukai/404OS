@@ -1,8 +1,8 @@
 #ifndef _RISCV64_H__
 #define _RISCV64_H__
 
-#include "type.h"
-#include "sched.h"
+#include "../type.h"
+#include "../sched.h"
 #define STACK_SIZE 1024
 
 static inline reg64_t r_mhartid()

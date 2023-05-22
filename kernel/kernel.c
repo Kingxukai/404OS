@@ -1,5 +1,5 @@
 #include "../include/kernel.h"
-#include "../include/riscv64.h"
+#include "../include/asm/riscv64.h"
 static void show_hello();
 
 extern void Init_trap();
@@ -16,14 +16,14 @@ void kernel_start(reg64_t hartid)
 
 	{
 		show_hello();	// show hello 404
-		printf("PLATFORM:%s\n",PLATFORM);
-		printf("ARCH:%s\n",ARCH);
-		printf("hart%d OK!!!\n",hartid);
+		printk("PLATFORM:%s\n",PLATFORM);
+		printk("ARCH:%s\n",ARCH);
+		printk("hart%d OK!!!\n",hartid);
 	}
-	else printf("hart%d OK!!!\n",hartid);
+	else printk("hart%d OK!!!\n",hartid);
 	
-	printf("Loading...\n");
-	printf("\nInitial...\n");
+	printk("Loading...\n");
+	printk("\nInitial...\n");
 	Init_page();
 	Init_block_desc();
 	Init_uart();
@@ -31,7 +31,7 @@ void kernel_start(reg64_t hartid)
 	Init_sched();
  	Init_plic();
  	Init_timer();
- 	printf("Initialed All!\n");
+ 	printk("Initialed All!\n");
  	move_to_user_mode();
 	if(!fork())Init();
 	while(1){}
@@ -39,21 +39,21 @@ void kernel_start(reg64_t hartid)
 
 static void show_hello()
 {
-	printf("\t                __________\n");
-	printf("\t|           |  |                                        ________ \n");
-	printf("\t|           |  |              |           |            /        \\ \n");
-	printf("\t|           |  |              |           |           /          \\ \n");
-	printf("\t|___________|  |__________    |           |          |            | \n");
-	printf("\t|           |  |              |           |          |            | \n");
-	printf("\t|           |  |              |           |          |            | \n");
-	printf("\t|           |  |              |           |           \\          / \n");
-	printf("\t|           |  |__________    |_________  |_________   \\________/  \n\n\n");
+	printk("\t                __________\n");
+	printk("\t|           |  |                                        ________ \n");
+	printk("\t|           |  |              |           |            /        \\ \n");
+	printk("\t|           |  |              |           |           /          \\ \n");
+	printk("\t|___________|  |__________    |           |          |            | \n");
+	printk("\t|           |  |              |           |          |            | \n");
+	printk("\t|           |  |              |           |          |            | \n");
+	printk("\t|           |  |              |           |           \\          / \n");
+	printk("\t|           |  |__________    |_________  |_________   \\________/  \n\n\n");
 	
-	printf("\t\t\t            ________\n");
-	printf("\t\t\t|       |  |        |  |       |\n");
-	printf("\t\t\t|       |  |        |  |       |\n");
-	printf("\t\t\t|_______|  |        |  |_______|\n");
-	printf("\t\t\t        |  |        |          | \n");
-	printf("\t\t\t        |  |        |          | \n");
-	printf("\t\t\t        |  |________|          | \n");
+	printk("\t\t\t            ________\n");
+	printk("\t\t\t|       |  |        |  |       |\n");
+	printk("\t\t\t|       |  |        |  |       |\n");
+	printk("\t\t\t|_______|  |        |  |_______|\n");
+	printk("\t\t\t        |  |        |          | \n");
+	printk("\t\t\t        |  |        |          | \n");
+	printk("\t\t\t        |  |________|          | \n");
 }
