@@ -2,9 +2,10 @@
 #include "../include/printf.h"
 #include "../include/lib.h"
 
-int task3()
+int task3(char* argv,char* envp)
 {
 	printf("task%d running\n",getpid());
+	printf("argv:%s\nenvp:%s\n",argv,envp);
 	printf("my father is %d\n",getppid());
 	return 0;
 }
@@ -38,7 +39,7 @@ int task2()
 	pid_t pid3,pid4,pid5;
 	if((pid3 = fork()) == 0)
 	{
-		execve(task3,NULL,NULL);
+		execve(task3,"666","/usr/task3");
 	}
 	else if((pid4 = fork()) == 0)
 	{

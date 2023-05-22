@@ -55,8 +55,8 @@ int sys_execve(const char *filepath,char * const * argv,char * const * envp)
 		p->context.t2 = 0;
 		p->context.s0 = 0;
 		p->context.s1 = 0;
-		p->context.a0 = 0;										
-		p->context.a1 = 0;
+		p->context.a0 = (reg64_t)argv;	//transfer the arg to filepath/process			
+		p->context.a1 = (reg64_t)envp;
 		p->context.a2 = 0;
 		p->context.a3 = 0;
 		p->context.a4 = 0;
