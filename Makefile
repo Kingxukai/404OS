@@ -17,7 +17,6 @@ SRCS_C = \
 	kernel/sched/exit.c \
 	kernel/sched/wait.c \
 	init/init.c \
-	print/uart.c \
 	print/printf.c \
 	print/printk.c \
 	print/panic.c \
@@ -26,6 +25,7 @@ SRCS_C = \
 	mm/page.c \
 	trap/trap.c \
 	trap/plic.c \
+	driver/uart.c \
 	user/user.c
 
 OBJS = $(SRCS_ASM:.S=.o)
@@ -64,5 +64,20 @@ code: all
 
 .PHONY : clean
 clean:
-	rm -rf BOOT/*.o init/*.o kernel/*.o kernel/sched/*.o kernel/lock/*.o timer/*.o trap/*.o mm/*.o print/*.o user/*.o include/*.o *.bin *.elf *.o
+	rm -rf \
+	BOOT/*.o \
+	init/*.o \
+	kernel/*.o \
+	kernel/sched/*.o \
+	kernel/lock/*.o \
+	timer/*.o \
+	trap/*.o \
+	mm/*.o \
+	print/*.o \
+	driver/*.o \
+	user/*.o \
+	include/*.o \
+	*.o \
+	*.bin \
+	*.elf
 

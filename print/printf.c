@@ -105,18 +105,19 @@ static int _vsnprintf(char * out, size_t n, const char* s, va_list vl)
 	return pos;
 }
 
-static char out_buf[1000]; // buffer for _vprintf()
+#define BUF_SIZE 1000	
+static char out_buf[BUF_SIZE]; // buffer for _vprintf()
 
-int _vprintf(struct file_lock* lock,const char* s, va_list vl)
+int _vprintf(struct file_lock* lock,const char* s, va_list vl,char buf[])
 {
 	FLOCK(lock);
 	int res = _vsnprintf(NULL, -1, s, vl);
-	if (res+1 >= sizeof(out_buf)) {
+	if (res+1 >= (BUF_SIZE * sizeof(char))) {
 		uart_puts("error: output string size overflow\n");
 		while(1) {}
 	}
-	_vsnprintf(out_buf, res + 1, s, vl);
-	uart_puts(out_buf);
+	_vsnprintf(buf, res + 1, s, vl);
+	uart_puts(buf);
 	UFLOCK(lock);
 	return res;
 }
@@ -128,7 +129,7 @@ int printf(const char* s, ...)
 	int res = 0;
 	va_list vl;
 	va_start(vl, s);
-	res = _vprintf(STDOUT,s, vl);
+	res = _vprintf(STDOUT,s, vl,out_buf);
 	va_end(vl);
 	return res;
 }

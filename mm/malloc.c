@@ -27,7 +27,7 @@ BDESC free_block_desc = NULL;
 */
 void Init_block_desc () 
 {
-	printf("Initial block_desc...\n");
+	printk("Initial block_desc...\n");
 	struct block_desc *bdesc,*first;
 	int i;
 	
@@ -65,7 +65,7 @@ void* _malloc_(uint32_t length)
 					break;
 	//若检索不到合适大小的块,则输出错误,并暂停程序
 	if(!bdir->size) {
-		printf("malloc called with a Unsatisfied requirements : (%d)! \n",length);
+		printk("malloc called with a Unsatisfied requirements : (%d)! \n",length);
 
 		panic("malloc : bad arg");
 

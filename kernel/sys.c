@@ -44,7 +44,7 @@ pid_t sys_fork()
 int sys_execve(const char *filepath,char * const * argv,char * const * envp)
 {
 	struct task_struct *p = current;
-	if(filepath)
+	if(argv[0])
 	{
 		p->context.ra = (reg64_t)ret_from_sys_call;
 		p->context.sp = (reg64_t)&task_stack[p->pcb_id][STACK_SIZE-1];	
@@ -55,8 +55,8 @@ int sys_execve(const char *filepath,char * const * argv,char * const * envp)
 		p->context.t2 = 0;
 		p->context.s0 = 0;
 		p->context.s1 = 0;
-		p->context.a0 = (reg64_t)argv;	//transfer the arg to filepath/process			
-		p->context.a1 = (reg64_t)envp;
+		p->context.a0 = (reg64_t)(sizeof(argv) / sizeof(char*));	//transfer the arg to filepath/process and sizeof(argv) is argc
+		p->context.a1 = (reg64_t)argv;
 		p->context.a2 = 0;
 		p->context.a3 = 0;
 		p->context.a4 = 0;
@@ -77,11 +77,12 @@ int sys_execve(const char *filepath,char * const * argv,char * const * envp)
 		p->context.t4 = 0;
 		p->context.t5 = 0;
 		p->context.t6 = 0;
-		p->context.epc = (reg64_t)filepath;
+		p->context.epc = (reg64_t)argv[0];
 		p->context.temp = (reg64_t)exit;	//make it over while exit current process
-	}
 		switch_to(0, &(p->context));
-	return -1;
+	}
+	else
+		return -1;
 }
 
 pid_t sys_exit(int error_code)

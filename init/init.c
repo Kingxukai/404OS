@@ -9,7 +9,8 @@ void Init()
 	
 	if(fork() == 0)
 	{
-		execve(task2,NULL,NULL);
+		char *argv[]={task2};
+		execve(NULL,argv,NULL);
 	}
 	while(1)
 	{

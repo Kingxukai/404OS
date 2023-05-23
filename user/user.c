@@ -2,10 +2,14 @@
 #include "../include/usr/printf.h"
 #include "../include/usr/lib.h"
 
-int task3(char* argv,char* envp)
+int task3(int argc,char* argv[])
 {
 	printf("task%d running\n",getpid());
-	printf("argv:%s\nenvp:%s\n",argv,envp);
+	printf("argc:%d\n",argc);
+	for(int i = 0;i < argc;i++)
+	{
+		printf("argv%d:%x\n",i,argv[i]);
+	}
 	printf("my father is %d\n",getppid());
 	return 0;
 }
@@ -39,15 +43,19 @@ int task2()
 	pid_t pid3,pid4,pid5;
 	if((pid3 = fork()) == 0)
 	{
-		execve(task3,"666","/usr/task3");
+		char *argv[]={task3};   
+		char *envp[]={"PATH=/bin", NULL};   
+		execve("/usr/temp", argv, envp);
 	}
 	else if((pid4 = fork()) == 0)
 	{
-		execve(task4,NULL,NULL);
+		char *argv[]={task4};
+		execve(NULL,argv,NULL);
 	}
 	else if((pid5 = fork()) == 0)
 	{
-		execve(task5,NULL,NULL);
+		char *argv[]={task5};
+		execve(NULL,argv,NULL);
 	}
 	else
 	{

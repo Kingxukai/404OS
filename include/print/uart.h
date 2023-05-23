@@ -2,8 +2,7 @@
 #define _UART0_H__
 
 #include "../type.h"
-
-#define UART0 0x10000000L
+#include "../platform.h"
 
 //refer to  <https://www.bilibili.com/video/BV1Q5411w7z5>
 

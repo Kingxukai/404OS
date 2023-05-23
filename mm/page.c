@@ -82,13 +82,13 @@ static inline uint32_t _align_page(uint32_t address)
 
 void Init_page()
 {
-	printf("Initial memory...\n");
+	printk("Initial memory...\n");
 	/* 
 	 * We reserved 8 Page (8 x 4096) to hold the Page structures.
 	 * It should be enough to manage at most 128 MB (8 x 4096 x 4096) 
 	 */
 	_num_pages = (HEAP_SIZE / PAGE_SIZE) - 8;
-	printf("HEAP_START = %x, HEAP_SIZE = %x, num of pages = %d\n", HEAP_START, HEAP_SIZE, _num_pages+8);
+	printk("HEAP_START = %x, HEAP_SIZE = %x, num of pages = %d\n", HEAP_START, HEAP_SIZE, _num_pages+8);
 	
 	_alloc_start = _align_page(HEAP_START + 8 * PAGE_SIZE);
 	_alloc_end = _alloc_start + (PAGE_SIZE * _num_pages);
@@ -99,11 +99,11 @@ void Init_page()
 		page++;	
 	}
 
-	printf("TEXT:   0x%x -> 0x%x\n", TEXT_START, TEXT_END);
-	printf("RODATA: 0x%x -> 0x%x\n", RODATA_START, RODATA_END);
-	printf("DATA:   0x%x -> 0x%x\n", DATA_START, DATA_END);
-	printf("BSS:    0x%x -> 0x%x\n", BSS_START, BSS_END);
-	printf("HEAP:   0x%x -> 0x%x\n", _alloc_start, _alloc_end);
+	printk("TEXT:   0x%x -> 0x%x\n", TEXT_START, TEXT_END);
+	printk("RODATA: 0x%x -> 0x%x\n", RODATA_START, RODATA_END);
+	printk("DATA:   0x%x -> 0x%x\n", DATA_START, DATA_END);
+	printk("BSS:    0x%x -> 0x%x\n", BSS_START, BSS_END);
+	printk("HEAP:   0x%x -> 0x%x\n", _alloc_start, _alloc_end);
 }
 
 /*

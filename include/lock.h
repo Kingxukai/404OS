@@ -8,7 +8,7 @@
 
 struct file_lock
 {
-	bool state;// 1-used 0-unused
+	bool state;// 1:used 0:unused
 };
 
 void _lockfile(struct file_lock* lock);
