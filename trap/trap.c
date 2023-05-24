@@ -28,6 +28,8 @@ void machine_interrupt_handler()	//handle the char from keyboard
 	if(irq)complete(irq);
 }
 
+static void show_register();
+
 reg64_t trap_handler(reg64_t cause,reg64_t epc,struct reg *context)
 {
 	reg64_t ra;
@@ -106,4 +108,12 @@ void cli()													//close interrupt
 void sti()													//enable interrupt
 {
 	w_mstatus(r_mstatus() | EA);
+}*/
+
+/*
+static void show_register()
+{
+	reg64_t reg;
+	asm volatile("mv %0,a5":"=r"(reg));
+	printk("a5:%x\n",reg);
 }*/

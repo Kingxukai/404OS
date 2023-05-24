@@ -65,12 +65,33 @@
 	ld t6, 240(\base)
 .endm
 
+.macro context_save base
+	sd ra, 0(\base)
+	sd sp, 8(\base)
+	sd s0, 56(\base)
+	sd s1, 64(\base)
+	ld a0, 72(\base)
+	sd s2, 136(\base)
+	sd s3, 144(\base)
+	sd s4, 152(\base)
+	sd s5, 160(\base)
+	sd s6, 168(\base)
+	sd s7, 176(\base)
+	sd s8, 184(\base)
+	sd s9, 192(\base)
+	sd s10, 200(\base)
+	sd s11, 208(\base)
+.endm
+
 .globl switch_to
 .align 4
 switch_to:
 #judge that if a0 is 0
 	beqz a0,1f
-	reg_save a0
+	csrw mscratch,t6
+	mv t6,a0
+	context_save t6
+	csrr t6,mscratch
 	
 1:
 	csrw mscratch,a1

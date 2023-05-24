@@ -39,6 +39,7 @@ int task5()
 
 int task2()
 {
+	uint64_t n = 0;
 	printf("task%d is running\n",getpid());
 	pid_t pid3,pid4,pid5;
 	if((pid3 = fork()) == 0)
@@ -64,6 +65,16 @@ int task2()
 		printf("task%d has created\n",pid5);
 		waitpid(pid4,NULL,0);
 		printf("here is father process\n");
+		pid4 = 0;
+		if((pid4 = fork()) == 0)
+		{
+				char *argv[]={task4};   
+				char *envp[]={"PATH=/bin", NULL}; 
+		}
+		else
+		{
+			printf("task%d has created\n",pid4);
+		}
 	}
 	while(1)
 	{

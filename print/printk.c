@@ -8,9 +8,9 @@
 #endif
 static char buff[BUF_SIZE];
 
-extern struct file_lock* KOUT;
+extern file_lock* KOUT;
 
-extern int _vprintf(struct file_lock* lock,const char* s, va_list vl,char buf[]);
+extern int _vprintf(file_lock* lock,const char* s, va_list vl,char buf[]);
 
 void printk(const char * s, ... )
 {

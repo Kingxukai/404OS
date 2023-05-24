@@ -3,6 +3,7 @@ include common.mk
 SRCS_ASM = \
 	BOOT/boot.S \
 	kernel/switch.S \
+	kernel/lock/atomic.S \
 	mm/mem.S \
 
 SRCS_C = \
@@ -10,7 +11,7 @@ SRCS_C = \
 	kernel/sys.c \
 	kernel/errno.c \
 	kernel/signal.c \
-	kernel/lock/flock.c \
+	kernel/lock/spin_lock.c \
 	kernel/system_call.c \
 	kernel/sched/sched.c \
 	kernel/sched/fork.c \
@@ -21,6 +22,7 @@ SRCS_C = \
 	print/printk.c \
 	print/panic.c \
 	timer/timer.c \
+	timer/time.c \
 	mm/malloc.c \
 	mm/page.c \
 	trap/trap.c \
@@ -67,6 +69,7 @@ clean:
 	rm -rf \
 	BOOT/*.o \
 	init/*.o \
+	driver/*.o \
 	kernel/*.o \
 	kernel/sched/*.o \
 	kernel/lock/*.o \
@@ -75,8 +78,9 @@ clean:
 	mm/*.o \
 	print/*.o \
 	driver/*.o \
+	fs/*.o \
 	user/*.o \
-	include/*.o \
+	include/asm/*.o \
 	*.o \
 	*.bin \
 	*.elf

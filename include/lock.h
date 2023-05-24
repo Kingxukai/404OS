@@ -1,17 +1,17 @@
 #ifndef _LOCK_H__
 #define _LOCK_H__
 
-#define FLOCK(f) _lockfile(f)
-#define UFLOCK(f) _unlockfile(f)
+#define FLOCK(f) spin_lock(f)
+#define UFLOCK(f) spin_unlock(f)
 
 #include "type.h"
 
-struct file_lock
+typedef struct spin_lock
 {
-	bool state;// 1:used 0:unused
-};
+	bool __attribute__((aligned(8))) state;// 1:used 0:unused
+}file_lock;
 
-void _lockfile(struct file_lock* lock);
-void _unlockfile(struct file_lock* lock);
+void spin_lock(struct spin_lock* lock);
+void spin_unlock(struct spin_lock* lock);
 
 #endif

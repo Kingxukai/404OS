@@ -108,7 +108,7 @@ static int _vsnprintf(char * out, size_t n, const char* s, va_list vl)
 #define BUF_SIZE 1000	
 static char out_buf[BUF_SIZE]; // buffer for _vprintf()
 
-int _vprintf(struct file_lock* lock,const char* s, va_list vl,char buf[])
+int _vprintf(file_lock* lock,const char* s, va_list vl,char buf[])
 {
 	FLOCK(lock);
 	int res = _vsnprintf(NULL, -1, s, vl);
@@ -122,7 +122,7 @@ int _vprintf(struct file_lock* lock,const char* s, va_list vl,char buf[])
 	return res;
 }
 
-extern struct file_lock* STDOUT;
+extern file_lock* STDOUT;
 
 int printf(const char* s, ...)
 {

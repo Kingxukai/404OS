@@ -157,3 +157,10 @@ comment:Unexpectedly, I encountered a problem if I put printf in while(1),and ne
 22:
     **add printk and put the header into folder**
     time:2023-05-22 19:09:56 by wxk 
+    
+23:
+		**add spin_lock**
+		time:2023-05-24 19:18:02 by wxk
+```
+comment:atomic instructuins MUST be aligned without which it will casuse a serial of unexpected problem
+```
