@@ -25,9 +25,12 @@ SRCS_C = \
 	timer/time.c \
 	mm/malloc.c \
 	mm/page.c \
+	mm/mm.c \
 	trap/trap.c \
 	trap/plic.c \
 	driver/uart.c \
+	driver/disk.c \
+	driver/virtio.c \
 	user/user.c
 
 OBJS = $(SRCS_ASM:.S=.o)

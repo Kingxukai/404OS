@@ -98,7 +98,7 @@ In the next step I'll try to correct it
 
     comment:All right,I finally found the problem, which troubled me. When it comes to fork, we always say it will return two value,one is new pid,and another is 0. But how can I get it? Acutually, the reason why fork can return two value is that the new process almost copy the father process's context,including ra,stack,tp,gp...And we set a0 to 0 and mepc+4,so the new process won't execute 'ecall' and return 0 while father process have to execute ecall to invoke copy_process to get a new pid to return. Don't forget to copy the stack of father process,because the child process will execute the same step of father process.
     
-    solution,in last comment, I said that there's a problem that the local variable will be edited but using 'register'. I try to solve the problem through GDB. And I noticed that the s0 of new process unexpected to be 0, so I thought that's the compiler's problem. After a moment,I found that the child process can't execute the same step because of different stack space. oh!!!That's the reason, copying the stack space of father is neccessary.
+    solution:in last comment, I said that there's a problem that the local variable will be edited but using 'register'. I try to solve the problem through GDB. And I noticed that the s0 of new process unexpected to be 0, so I thought that's the compiler's problem. After a moment,I found that the child process can't execute the same step because of different stack space. oh!!!That's the reason, copying the stack space of father is neccessary.
 
 14:
    **add "syscall:execve and exit"**
@@ -163,4 +163,12 @@ comment:Unexpectedly, I encountered a problem if I put printf in while(1),and ne
 		time:2023-05-24 19:18:02 by wxk
 ```
 comment:atomic instructuins MUST be aligned without which it will casuse a serial of unexpected problem
+```
+
+24:
+		**add driver of virtio**
+		time:2023-05-28 17:35:37 by wxk
+
+```
+solution:I've read a lot spec of VIRTIO 1.1 and the realization of xv6 in driver,which gives a hand to me, and helps a lot.
 ```

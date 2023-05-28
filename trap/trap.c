@@ -1,5 +1,6 @@
 #include "../include/trap.h"
 #include "../include/print/uart.h"
+#include "../include/disk/virtio.h"
 #include "../include/print/printk.h"
 #include "../include/timer.h"
 #include "../include/asm/riscv64.h"
@@ -16,12 +17,16 @@ void Init_trap()
 	//w_mstatus((reg64_t)0x1800);			//here we temporarily set next privilege as 11(machine)
 }
 
-void machine_interrupt_handler()	//handle the char from keyboard
+void machine_interrupt_handler()	//handle plic interrupt request
 {
 	uint32_t irq = claim();  
-	if(irq == UART0_IRQ)
+	if(irq == UART0_IRQ)	//interrupt request of keyboard
 	{
 		uart_console();
+	}
+	else if(irq == VIRTIO0_IRQ)	//interrupt request of virtio
+	{
+		virtio_disk_interrupt_handler();
 	}
 	else if(irq)printk("unknown interrupt\n");
 	

@@ -1,5 +1,5 @@
-#ifndef _UART0_H__
-#define _UART0_H__
+#ifndef _UART_H__
+#define _UART_H__
 
 #include "../type.h"
 #include "../platform.h"
@@ -7,8 +7,6 @@
 //refer to  <https://www.bilibili.com/video/BV1Q5411w7z5>
 
 #define UART_REG(reg) ((volatile uint8_t *)(UART0 + reg))
-
-#define UART0_IRQ 10
 
 #define RHR 0	// Receive Holding Register (read mode)
 #define THR 0	// Transmit Holding Register (write mode)

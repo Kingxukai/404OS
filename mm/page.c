@@ -99,11 +99,11 @@ void Init_page()
 		page++;	
 	}
 
-	printk("TEXT:   0x%x -> 0x%x\n", TEXT_START, TEXT_END);
-	printk("RODATA: 0x%x -> 0x%x\n", RODATA_START, RODATA_END);
-	printk("DATA:   0x%x -> 0x%x\n", DATA_START, DATA_END);
-	printk("BSS:    0x%x -> 0x%x\n", BSS_START, BSS_END);
-	printk("HEAP:   0x%x -> 0x%x\n", _alloc_start, _alloc_end);
+	printk("\tTEXT:   0x%x -> 0x%x\n", TEXT_START, TEXT_END);
+	printk("\tRODATA: 0x%x -> 0x%x\n", RODATA_START, RODATA_END);
+	printk("\tDATA:   0x%x -> 0x%x\n", DATA_START, DATA_END);
+	printk("\tBSS:    0x%x -> 0x%x\n", BSS_START, BSS_END);
+	printk("\tHEAP:   0x%x -> 0x%x\n", _alloc_start, _alloc_end);
 }
 
 /*

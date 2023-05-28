@@ -9,6 +9,8 @@ extern void Init_page();
 extern void Init_sched();
 extern void Init_plic();
 extern void Init_block_desc();
+extern void Init_buffer();
+extern void Init_virtio();
 
 void kernel_start(reg64_t hartid)
 {
@@ -30,6 +32,8 @@ void kernel_start(reg64_t hartid)
 	Init_trap();
 	Init_sched();
  	Init_plic();
+ 	Init_buffer();
+ 	Init_virtio();
  	Init_timer();
  	printk("Initialed All!\n");
  	move_to_user_mode();
