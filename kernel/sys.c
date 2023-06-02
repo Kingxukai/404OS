@@ -5,8 +5,9 @@
 #include "../include/errno.h"
 #include "../include/usr/lib.h"
 #include "../include/usr/unistd.h"
-
-reg64_t ret_from_sys_call();
+#include "../include/platform.h"
+#include "../include/fs/fat32_disk.h"
+#include "../include/fs/elf.h"
 
 void do_syscall(struct reg *context)										//syscall executing function
 {
@@ -44,9 +45,43 @@ pid_t sys_fork()
 int sys_execve(const char *filepath,char * const * argv,char * const * envp)
 {
 	struct task_struct *p = current;
+	struct inode* ip;
+	struct elfhdr elf;
+	struct proghdr ph;
+	if( (ip = name_to_i(filepath)) == 0)
+	{
+		return -1;
+	}
+	
+	fat32_inode_lock(ip);
+	
+	if (fat32_inode_read(ip, 0, (uint64_t)&elf, 0, sizeof(elf)) != sizeof(elf))
+     goto bad;
+
+  if (elf.magic != ELF_MAGIC)
+     goto bad;
+     
+  // Load program into memory.
+  for (int i = 0, off = elf.phoff; i < elf.phnum; i++, off += sizeof(ph)) 
+  {
+  	if (fat32_inode_read(ip, 0, (uint64_t)&ph, off, sizeof(ph)) != sizeof(ph))
+  		goto bad;
+  	if (ph.type != ELF_PROG_LOAD)
+  		continue;
+  	if (ph.memsz < ph.filesz)
+  		goto bad;
+  	if (ph.vaddr + ph.memsz < ph.vaddr)
+  		goto bad;
+  	if (ph.vaddr % PAGE_SIZE != 0)
+  		goto bad;
+  }
+  
+  fat32_inode_unlock_put(ip);
+  ip = NULL;
+	
 	if(argv[0])
 	{
-		p->context.ra = (reg64_t)ret_from_sys_call;
+		p->context.ra = (reg64_t)exit;//make it over while exit current process
 		p->context.sp = (reg64_t)&task_stack[p->pcb_id][STACK_SIZE-1];	
 		p->context.gp = 0;
 		p->context.tp = 0;
@@ -77,12 +112,17 @@ int sys_execve(const char *filepath,char * const * argv,char * const * envp)
 		p->context.t4 = 0;
 		p->context.t5 = 0;
 		p->context.t6 = 0;
-		p->context.epc = (reg64_t)argv[0];
-		p->context.temp = (reg64_t)exit;	//make it over while exit current process
+		p->context.epc = (reg64_t)elf.entry;
+		p->context.temp = 0;	
 		switch_to(0, &(p->context));
 	}
 	else
+		goto bad;
+	bad:
+		if(ip)
+			fat32_inode_unlock_put(ip);
 		return -1;
+			
 }
 
 pid_t sys_exit(int error_code)
@@ -119,11 +159,7 @@ pid_t sys_waitpid(pid_t pid,uint64_t* stat_addr,int options)
 			current->state = TASK_WAIT;
 			current->in_Queue = 0;
 			
-			struct reg* context = (struct reg*)malloc(sizeof(struct reg));
-			memcpy((reg8_t *)&(current->context),(reg8_t *)context,sizeof(struct reg));
 			schedule();
-			memcpy((reg8_t *)context,(reg8_t *)&(current->context),sizeof(struct reg));
-			free(context);
 			
 			if(!(current->signal &= (~SIG_CHLD)))
 				goto repeat;
@@ -133,4 +169,9 @@ pid_t sys_waitpid(pid_t pid,uint64_t* stat_addr,int options)
 				}
 		}
 	return -ECHILD;
+}
+
+int sys_shutdown()
+{
+	ADDR(SYS_CTL_ADDR) = SYS_CTL(SYS_PASS);
 }

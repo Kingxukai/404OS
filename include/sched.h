@@ -5,6 +5,7 @@
 #include "kernel.h"
 #include "type.h"
 #include "signal.h"
+#include "fs/param.h"
 
 #define TASK_RUNNING 0	//process state value
 #define TASK_READY 1
@@ -17,7 +18,7 @@
 #define LOW 1
 
 #define MAX_TASK 64	//max PCB num
-#define STACK_SIZE 1024
+#define STACK_SIZE 1024 * 2
 
 void schedule();
 void Init_sched();
@@ -90,6 +91,10 @@ struct task_struct
 	struct sigaction sigaction[32];
 	
 	int exit_code;
+	
+	struct inode* _cwd;	//current work direct
+	struct file *_ofile[NOFILE];// Open files
+	
 	struct reg context;
 };
 
@@ -108,6 +113,8 @@ struct task_struct
 /*signal*/								 0, \
 /*sigaction*/							 {{},}, \
 /*exit code*/							 0, \
+/*current work direct*/		 NULL, \
+/*open files*/						 NULL, \
 /*register initialization*/{ \
 /*return address of function*/0, \
 /*task stack pointer*/				(reg64_t)&task_stack[0][STACK_SIZE-1], \

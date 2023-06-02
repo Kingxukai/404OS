@@ -172,3 +172,18 @@ comment:atomic instructuins MUST be aligned without which it will casuse a seria
 ```
 solution:I've read a lot spec of VIRTIO 1.1 and the realization of xv6 in driver,which gives a hand to me, and helps a lot.
 ```
+
+25:
+		**fix the bug in issue 21**
+		time:2023-05-31 02:53:53 by wxk
+		
+```
+comment:in previous version, I take reg_save and reg_restore in switch_to, and return to ret_from_exception, which will cause the value of a6~a3 changed while returning to ret_from_exception. This time, I use stack to save the register which is callee saving, because the invoking of switch_to is always active to invoke.
+```
+
+26:
+		**modify the execve**
+		time:2023-06-02 15:11:35 by wxk
+```
+comment:Because of lack of time,I have to ref other team's code of FAT32 file system, and I modify my execve,so that is can properly execute in disk.
+```

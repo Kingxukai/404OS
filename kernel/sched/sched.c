@@ -97,7 +97,7 @@ static void alter_state()
 	while(--i)
 	{
 		if(!*--p)continue;
-		if((*p)->state == TASK_WAIT)
+		if(((*p)->state == TASK_WAIT) && ( (*p)->signal & ~(SIG_STOP)))
 		{
 			(*p)->state  = TASK_READY;
 		}
@@ -149,8 +149,32 @@ void Dect_stack(reg64_t sp)
 	reg64_t L = (reg64_t)&task_stack[current->pcb_id][0];
 	if(sp > T || sp < L )
 	{
-		printk("$SP:0X%x STACK:0X%x~0X%x\n",sp,L,T);
+		printkGreen("in task%d:\n",current->pid);
+		printkGreen("$SP:0X%x STACK:0X%x~0X%x\n",sp,L,T);
 		panic("STACK OVERFLOW!\n");
+	}
+}
+
+void sleep()
+{
+	current->state = TASK_WAIT;
+	current->signal |= SIG_STOP;
+	schedule();
+}
+
+void wakeup()
+{
+	struct task_struct **p = &TASK[MAX_TASK];
+	int i = MAX_TASK;
+	while(--i)
+	{
+		if(!*--p)continue;
+		if(!(*p)->signal)continue;
+		if(((*p)->signal & SIG_STOP) == SIG_STOP)
+		{
+			(*p)->signal &= ~(SIG_STOP);//消除STOP位
+			(*p)->signal |= SIG_CONT;//恢复进程继续执行
+		}
 	}
 }
 

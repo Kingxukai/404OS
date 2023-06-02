@@ -1,5 +1,7 @@
 #include "../include/kernel.h"
 #include "../include/asm/riscv64.h"
+#include "../include/usr/unistd.h"
+
 static void show_hello();
 
 extern void Init_trap();
@@ -18,24 +20,25 @@ void kernel_start(reg64_t hartid)
 
 	{
 		show_hello();	// show hello 404
-		printk("PLATFORM:%s\n",PLATFORM);
-		printk("ARCH:%s\n",ARCH);
-		printk("hart%d OK!!!\n",hartid);
+		printkRed("PLATFORM:%s\n",PLATFORM);
+		printkRed("ARCH:%s\n",ARCH);
+		printkRed("hart%d OK!!!\n",hartid);
 	}
-	else printk("hart%d OK!!!\n",hartid);
+	else printkRed("hart%d OK!!!\n",hartid);
 	
-	printk("Loading...\n");
-	printk("\nInitial...\n");
+	printkGreen("Loading...\n");
+	printkYellow("\nInitial...\n");
 	Init_page();
 	Init_block_desc();
 	Init_uart();
 	Init_trap();
 	Init_sched();
  	Init_plic();
+ 	Init_timer();
  	Init_buffer();
  	Init_virtio();
- 	Init_timer();
- 	printk("Initialed All!\n");
+
+ 	printkYellow("system initialed All!\n");
  	move_to_user_mode();
 	if(!fork())Init();
 	while(1){}
@@ -43,21 +46,21 @@ void kernel_start(reg64_t hartid)
 
 static void show_hello()
 {
-	printk("\t                __________\n");
-	printk("\t|           |  |                                        ________ \n");
-	printk("\t|           |  |              |           |            /        \\ \n");
-	printk("\t|           |  |              |           |           /          \\ \n");
-	printk("\t|___________|  |__________    |           |          |            | \n");
-	printk("\t|           |  |              |           |          |            | \n");
-	printk("\t|           |  |              |           |          |            | \n");
-	printk("\t|           |  |              |           |           \\          / \n");
-	printk("\t|           |  |__________    |_________  |_________   \\________/  \n\n\n");
+	printkGreen("\t                __________\n");
+	printkGreen("\t|           |  |                                        ________ \n");
+	printkGreen("\t|           |  |              |           |            /        \\ \n");
+	printkGreen("\t|           |  |              |           |           /          \\ \n");
+	printkGreen("\t|___________|  |__________    |           |          |            | \n");
+	printkYellow("\t|           |  |              |           |          |            | \n");
+	printkYellow("\t|           |  |              |           |          |            | \n");
+	printkYellow("\t|           |  |              |           |           \\          / \n");
+	printkYellow("\t|           |  |__________    |_________  |_________   \\________/  \n\n\n");
 	
-	printk("\t\t\t            ________\n");
-	printk("\t\t\t|       |  |        |  |       |\n");
-	printk("\t\t\t|       |  |        |  |       |\n");
-	printk("\t\t\t|_______|  |        |  |_______|\n");
-	printk("\t\t\t        |  |        |          | \n");
-	printk("\t\t\t        |  |        |          | \n");
-	printk("\t\t\t        |  |________|          | \n");
+	printkWhite("\t\t\t            ________\n");
+	printkWhite("\t\t\t|       |  |        |  |       |\n");
+	printkWhite("\t\t\t|       |  |        |  |       |\n");
+	printkWhite("\t\t\t|_______|  |        |  |_______|\n");
+	printkRed("\t\t\t        |  |        |          | \n");
+	printkRed("\t\t\t        |  |        |          | \n");
+	printkRed("\t\t\t        |  |________|          | \n");
 }

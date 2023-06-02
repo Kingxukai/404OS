@@ -6,6 +6,8 @@
 #include "../include/asm/riscv64.h"
 #include "../include/sched.h"
 
+int MODE;
+
 extern void trap_vector(void);
 extern void do_syscall(struct reg *context);
 extern void ret_from_sys_call();
@@ -37,8 +39,6 @@ static void show_register();
 
 reg64_t trap_handler(reg64_t cause,reg64_t epc,struct reg *context)
 {
-	reg64_t ra;
-	asm volatile("mv %0,ra":"=r"(ra));
 	if(cause & 0x8000000000000000)		//interrupt
 	{
 		switch(cause & 0xfff)
@@ -52,7 +52,6 @@ reg64_t trap_handler(reg64_t cause,reg64_t epc,struct reg *context)
 				{
 					//printk("\nMachine timer interrupt\n");
 					timer_interrupt_handler();
-					ra = context->ra;
 					break;
 				}
 			case 11:
@@ -99,11 +98,19 @@ reg64_t trap_handler(reg64_t cause,reg64_t epc,struct reg *context)
 		NO_ERROR:
 		epc += 4;												//make epc point to next 4 address to avoid infinte loop
 	}
-	asm volatile("addi sp,sp,64");
-	asm volatile("mv a0,%0"::"r"(epc));
-	asm volatile("mv ra,%0"::"r"(ra));
-	asm volatile("ret");
+	return epc;
 }
+
+void set_mode(int mode)
+{
+	MODE = mode;
+}
+
+int get_mode()
+{
+	return MODE;
+}
+
 /*
 void cli()													//close interrupt
 {

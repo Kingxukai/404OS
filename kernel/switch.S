@@ -68,19 +68,35 @@
 .macro context_save base
 	sd ra, 0(\base)
 	sd sp, 8(\base)
-	sd s0, 56(\base)
-	sd s1, 64(\base)
-	ld a0, 72(\base)
-	sd s2, 136(\base)
-	sd s3, 144(\base)
-	sd s4, 152(\base)
-	sd s5, 160(\base)
-	sd s6, 168(\base)
-	sd s7, 176(\base)
-	sd s8, 184(\base)
-	sd s9, 192(\base)
-	sd s10, 200(\base)
-	sd s11, 208(\base)
+	sd s0, 16(\base)
+	sd s1, 24(\base)
+	sd s2, 32(\base)
+	sd s3, 40(\base)
+	sd s4, 48(\base)
+	sd s5, 56(\base)
+	sd s6, 64(\base)
+	sd s7, 72(\base)
+	sd s8, 80(\base)
+	sd s9, 88(\base)
+	sd s10, 96(\base)
+	sd s11, 104(\base)
+.endm
+
+.macro context_restore base
+	ld ra, 0(\base)
+	ld sp, 8(\base)
+	ld s0, 16(\base)
+	ld s1, 24(\base)
+	ld s2, 32(\base)
+	ld s3, 40(\base)
+	ld s4, 48(\base)
+	ld s5, 56(\base)
+	ld s6, 64(\base)
+	ld s7, 72(\base)
+	ld s8, 80(\base)
+	ld s9, 88(\base)
+	ld s10, 96(\base)
+	ld s11, 104(\base)
 .endm
 
 .globl switch_to
@@ -88,51 +104,33 @@
 switch_to:
 #judge that if a0 is 0
 	beqz a0,1f
-	csrw mscratch,t6
-	mv t6,a0
+	addi sp,sp,-104
+	sd sp,256(a0)
+	mv t6,sp
 	context_save t6
-	csrr t6,mscratch
 	
-1:
+1:	
 	csrw mscratch,a1
+	csrr t6,mscratch
 
-	mv t6,a1
-	ld t5,248(t6)
-	csrw mepc,t5
-	reg_restore t6
+	ld t5,256(t6)
+	beqz t5,2f
+	mv sp,t5
 	
-#it's a necessary step which is avoid restoring the context again as we return from switch_to to ret_from_sys_call
-#rather than ret_from_exception
-
-#save the value of t5
-	csrrw t6,mscratch,t6
-	addi sp,sp,-8
+	mv t6,sp
+	context_restore t6
+	addi sp,sp,104
 	
-#use t5 to save addr of ret_from_sys_call and then put it to context.ra
-	sd t5,(sp)
-	la t5,ret_from_sys_call
-	
-	sd t5,(t6)
-
-#resotre the value of t5
-	ld t5,(sp)
-	addi sp,sp,8
-	
-	csrrw t6,mscratch,t6
-
 	ret
+	
+2:j ret_from_sys_call
 
 .global trap_vector
-.global ret_from_sys_call
 .align 4
 #hardware auto disable interrupt
 trap_vector:
 	csrrw t6,mscratch,t6
-	
-#this step is aim to save ra in context.temp and the addr of ret_from_exception and reload it to ra after timer_interrupt_handler() in trap_handler()
 
-	sd ra,256(t6)
-	la ra,ret_from_exception
 	reg_save t6	
 	mv t5,t6
 	csrr t6,mscratch
@@ -144,6 +142,9 @@ trap_vector:
 	
 #alarm if stack overflow
 
+	li a0,3
+	call set_mode
+
 	mv a0,sp
 	call Dect_stack
 
@@ -154,17 +155,17 @@ trap_vector:
 	call trap_handler
 
 ret_from_exception:
-	csrw mepc,a0
-	
 	csrr t6,mscratch
+	sd a0,248(t6)
+
+ret_from_sys_call:	
+	li a0,0
+	call set_mode
+	csrr t6,mscratch
+	ld t5,248(t6)
+	csrw mepc,t5
 	reg_restore t6
 
-#without reg_resotre	
-
-ret_from_sys_call:
-	csrr t6,mscratch
-	ld ra,256(t6)
-	sd ra,(t6)
 #enable interrupt
 
 	mret

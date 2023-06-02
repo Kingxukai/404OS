@@ -39,23 +39,22 @@ int task5()
 
 int task2()
 {
-	uint64_t n = 0;
 	printf("task%d is running\n",getpid());
 	pid_t pid3,pid4,pid5;
 	if((pid3 = fork()) == 0)
 	{
-		char *argv[]={task3};   
+		char *argv[]={(char *)task3};   
 		char *envp[]={"PATH=/bin", NULL};   
 		execve("/usr/temp", argv, envp);
 	}
 	else if((pid4 = fork()) == 0)
 	{
-		char *argv[]={task4};
+		char *argv[]={(char *)task4};
 		execve(NULL,argv,NULL);
 	}
 	else if((pid5 = fork()) == 0)
 	{
-		char *argv[]={task5};
+		char *argv[]={(char *)task5};
 		execve(NULL,argv,NULL);
 	}
 	else
@@ -68,17 +67,21 @@ int task2()
 		pid4 = 0;
 		if((pid4 = fork()) == 0)
 		{
-				char *argv[]={task4};   
-				char *envp[]={"PATH=/bin", NULL}; 
+				char *argv[]={(char *)task4};   
+				char *envp[]={"PATH=/bin"}; 
+				execve(NULL,argv,envp);
 		}
 		else
 		{
 			printf("task%d has created\n",pid4);
 		}
 	}
-	while(1)
+	int n =10000;
+	for(int i = 0;i<n;i+=10)
 	{
+		printf("%d %d %d %d %d %d %d %d %d %d\n",i,i+1,i+2,i+3,i+4,i+5,i+6,i+7,i+8,i+9);
 	}
+	shutdown();//主动关机
 	return 0;
 }
 

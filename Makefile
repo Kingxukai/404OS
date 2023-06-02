@@ -11,6 +11,8 @@ SRCS_C = \
 	kernel/sys.c \
 	kernel/errno.c \
 	kernel/signal.c \
+	kernel/ctype.c \
+	kernel/errno.c \
 	kernel/lock/spin_lock.c \
 	kernel/system_call.c \
 	kernel/sched/sched.c \
@@ -21,6 +23,7 @@ SRCS_C = \
 	print/printf.c \
 	print/printk.c \
 	print/panic.c \
+	string/string.c \
 	timer/timer.c \
 	timer/time.c \
 	mm/malloc.c \
@@ -29,8 +32,14 @@ SRCS_C = \
 	trap/trap.c \
 	trap/plic.c \
 	driver/uart.c \
-	driver/disk.c \
+	driver/buffer.c \
 	driver/virtio.c \
+	fs/fat32_disk.c \
+	fs/fat32_file.c \
+	fs/fat32_inode.c \
+	fs/fat32_stack.c \
+	fs/fd.c \
+	fs/ops.c \
 	user/user.c
 
 OBJS = $(SRCS_ASM:.S=.o)
@@ -80,10 +89,10 @@ clean:
 	trap/*.o \
 	mm/*.o \
 	print/*.o \
+	string/*.o \
 	driver/*.o \
 	fs/*.o \
 	user/*.o \
-	include/asm/*.o \
 	*.o \
 	*.bin \
 	*.elf

@@ -23,7 +23,7 @@ void complete(uint64_t irq)
 void Init_plic()
 {
 	printk("Initial plic...\n");
-	uint64_t hart = r_tp();
+	uint64_t hart = r_mhartid();
 	*(uint32_t *)PLIC_PRIORITY(UART0_IRQ) = 1;
 	*(uint32_t *)PLIC_PRIORITY(VIRTIO0_IRQ) = 1;
 	

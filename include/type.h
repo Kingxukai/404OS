@@ -24,6 +24,10 @@ typedef reg64_t (*sys_func)();				//sys_call function
 
 typedef uint32_t sigset_t;				//32bit siganl bit map
 
+typedef int64_t ssize_t;
+
+typedef long time_t;
+
 #ifndef NULL
 #define NULL (void *)(0)
 #endif

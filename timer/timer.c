@@ -69,7 +69,7 @@ void Init_timer()
 	
 	w_mie(r_mie() | MTIE);
 	
-	timer_selfadd();
+	//timer_selfadd();
 }
 
 void timer_interrupt_handler()

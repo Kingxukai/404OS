@@ -15,5 +15,4 @@ void spin_lock(struct spin_lock* lock)
 void spin_unlock(struct spin_lock* lock)
 {
 	if(spin_atomic_lock(&lock->state,0))return;
-	else panic("illegal unlock operation!\n");
 }

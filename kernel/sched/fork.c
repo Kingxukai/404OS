@@ -5,9 +5,8 @@
 #include "../../include/usr/lib.h"
 
 void switch_to(struct reg* last, struct reg* next);
-reg64_t ret_from_sys_call();
 
-uint8_t task_stack[MAX_TASK][STACK_SIZE];			//each task occupy 1024B stack size
+uint8_t task_stack[MAX_TASK][STACK_SIZE];			//each task occupy (1024 * 2)B stack size
 
 extern struct task_struct *current;
 
@@ -28,7 +27,7 @@ int find_new_id()
 	return MAX_TASK;
 }
 
-void memcpy(reg8_t* from, reg8_t* to, uint64_t size)
+void memcpy(uint32_t* from, uint32_t* to, uint64_t size)
 {
 	while(size--)
 	{
@@ -75,9 +74,17 @@ pid_t copy_process()
 		p->sigaction[i].sa_mask = current->sigaction[i].sa_mask;
 		p->sigaction[i].sa_flags = current->sigaction[i].sa_flags;
 	}
+	
+	p->_cwd = current->_cwd;//继承工作目录
+	
+	for(int i=0;i<NOFILE;i++)
+	{
+		p->_ofile[i] = current->_ofile[i];
+	}
+	
 	p->exit_code = 0;
 
-	p->context.ra = (reg64_t)ret_from_sys_call;
+	p->context.ra = current->context.ra;
 	p->context.sp = (reg64_t)&task_stack[p->pcb_id][STACK_SIZE-1];	//if just alloc the new process a new stack,what will happen? yes,the local variable will disapear because it pointing to a new space with none data while new task executing. SO,we need to copy mm.
 	copy_memory(p->context.sp);
 	p->context.sp = p->context.sp - ((reg64_t)(&task_stack[current->pcb_id][STACK_SIZE-1]) - (current->context.sp));//get the relative address
@@ -86,7 +93,7 @@ pid_t copy_process()
 	p->context.t0 = current->context.t0;
 	p->context.t1 = current->context.t1;
 	p->context.t2 = current->context.t2;
-	p->context.s0 = (reg64_t)&task_stack[p->pcb_id][STACK_SIZE-1] - (current->context.sp - current->context.s0);
+	p->context.s0 = (reg64_t)&task_stack[p->pcb_id][STACK_SIZE-1] - ((reg64_t)(&task_stack[current->pcb_id][STACK_SIZE-1]) - current->context.s0);
 	p->context.s1 = current->context.s1;
 	p->context.a0 = 0;										//so the return value of fork in new process is 0
 	p->context.a1 = current->context.a1;
@@ -111,7 +118,7 @@ pid_t copy_process()
 	p->context.t5 = current->context.t5;
 	p->context.t6 = current->context.t6;
 	p->context.epc = current->context.epc + 4;	//don't ecall again to avoid endless loop
-	p->context.temp = current->context.temp; //make sure this process will return to the same address
+	p->context.temp = 0;
 	
 	return p->pid;
 }

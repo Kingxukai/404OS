@@ -9,4 +9,5 @@ pid_t fork(); //3
 int execve(const char *filepath,char * const * argv,char * const * envp);//4
 pid_t exit(int error_code);	//5
 pid_t waitpid(pid_t pid,uint64_t* stat_addr,int options);	//6
+int shutdown();	//7
 #endif

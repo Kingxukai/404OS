@@ -10,6 +10,13 @@
 
 #define ADDR(addr) *((uint32_t *)addr)
 
+/*VIRT_TEST*/
+#define SYS_CTL_ADDR 0x100000
+#define SYS_FAIL 0
+#define SYS_PASS 1
+#define SYS_RESET 2
+#define SYS_CTL(n) (0x3333 + n * 0x2222)
+
 /*IRQ*/
 #define UART0_IRQ 10
 #define VIRTIO0_IRQ 1

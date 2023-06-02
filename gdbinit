@@ -1,5 +1,5 @@
 set disassemble-next-line on
-b Init_virtio
+b execve
 set output-radix 16
 target remote : 1234
 c

@@ -122,9 +122,12 @@ static inline void asm_ret()
 	asm volatile("ret");
 }
 
+extern void timer_selfadd();
+
 static inline void move_to_user_mode()
 {
 	asm volatile("csrw mepc,ra");
+	timer_selfadd();
 	asm volatile("mv sp,%0"::"r"(&task_stack[0][STACK_SIZE-1]));
 	asm volatile("mret");
 }

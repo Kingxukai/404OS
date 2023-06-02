@@ -13,4 +13,7 @@ extern void trap_vector();
 #define MTIE (1<<7)			//control machine timer interrupt
 #define MEIE (1<<11)		//control machine externel interrupt
 
+#define U_MODE 0
+#define M_MODE 3
+
 #endif
