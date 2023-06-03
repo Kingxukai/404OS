@@ -46,12 +46,11 @@ OBJS = $(SRCS_ASM:.S=.o)
 OBJS += $(SRCS_C:.c=.o)
 
 .DEFAULT_GOAL := all
-all: 404OS.elf
+all: kernel-qemu
 
-# start.o must be the first in dependency!
-404OS.elf: ${OBJS}
-	${CC} ${CFLAGS} -T 404OS.ld -o 404OS.elf $^
-	${OBJCOPY} -O binary 404OS.elf 404OS.bin
+kernel-qemu: ${OBJS}
+	${CC} ${CFLAGS} -T 404OS.ld -o kernel-qemu $^
+	${OBJCOPY} -O binary kernel-qemu os.bin
 
 %.o : %.c
 	${CC} ${CFLAGS} -c -o $@ $<
@@ -63,18 +62,18 @@ run: all
 	@${QEMU} -M ? | grep virt >/dev/null || exit
 	@echo "Press Ctrl-A and then X to exit QEMU"
 	@echo "------------------------------------"
-	@${QEMU} ${QFLAGS} -kernel 404OS.elf
+	@${QEMU} ${QFLAGS} -kernel kernel-qemu
 
 .PHONY : debug
 debug: all
 	@echo "Press Ctrl-C and then input 'quit' to exit GDB and QEMU"
 	@echo "-------------------------------------------------------"
-	@${QEMU} ${QFLAGS} -kernel 404OS.elf -s -S &
-	@${GDB} 404OS.elf -q -x gdbinit
+	@${QEMU} ${QFLAGS} -kernel kernel-qemu -s -S &
+	@${GDB} kernel-qemu -q -x gdbinit
 
 .PHONY : code
 code: all
-	@${OBJDUMP} -S 404OS.elf | less
+	@${OBJDUMP} -S kernel-qemu | less
 
 .PHONY : clean
 clean:
@@ -95,5 +94,5 @@ clean:
 	user/*.o \
 	*.o \
 	*.bin \
-	*.elf
+	kernel-qemu
 

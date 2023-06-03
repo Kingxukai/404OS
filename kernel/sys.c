@@ -46,7 +46,7 @@ int sys_execve(const char *filepath,char * const * argv,char * const * envp)
 {
 	struct task_struct *p = current;
 	struct inode* ip;
-	struct elf elf;
+	struct elfhdr elf;
 	struct proghdr p_header;
 	if( (ip = name_to_i(filepath)) == NULL)
 	{
@@ -60,10 +60,10 @@ int sys_execve(const char *filepath,char * const * argv,char * const * envp)
 
   if (elf.magic != ELF_MAGIC)
      goto bad;
-     
+  
+  uint32_t* allocated_mem;
   // Load program into memory.
-  uint32_t size = 0;
-  for (int i = 0, off = elf.ph_roff; i < elf.ph_num; i++, off += sizeof(p_header)) 
+  for (int i = 0, off = elf.ph_off; i < elf.ph_num; i++, off += sizeof(p_header)) 
   {
   	if (fat32_inode_read(ip, 0, (uint64_t)&p_header, off, sizeof(p_header)) != sizeof(p_header))
   		goto bad;
@@ -75,57 +75,28 @@ int sys_execve(const char *filepath,char * const * argv,char * const * envp)
   		goto bad;
   	if (p_header.vaddr % PAGE_SIZE != 0)
   		goto bad;
-  	if (lseek(file, elf.ph_off + i * elf.phentsize, SEEK_SET) < 0 || read(file, &p_header, sizeof(p_header)) != sizeof(p_header)) 
-    {
-        return NULL;
+  		
+  	// Allocate memory using malloc.
+    allocated_mem = (uint32_t *)malloc(p_header.memsz);
+    if (allocated_mem == NULL)
+        goto bad;
+
+    // Read data from ELF file into allocated memory.
+    if (fat32_inode_read(ip, 0, (uint64_t)allocated_mem, p_header.off, p_header.filesz) != p_header.filesz) {
+        free(allocated_mem);
+        goto bad;
     }
 
-    if (p_header.type != PT_LOAD) 
-    {
-        continue;
-    }
-
-    uint32_t end = p_header.vaddr + p_header.memsz;
-    if (end > size) 
-    {
-        size = end;
+    // Zero out the remaining memory.
+    if (p_header.memsz - p_header.filesz > 0) {
+        memset((uint8_t *)allocated_mem + p_header.filesz, 0, p_header.memsz - p_header.filesz);
     }
   }
   
   fat32_inode_unlock_put(ip);
   ip = NULL;
-  
-  void* addr = malloc(size);
-	if (addr == NULL) 
-	{
-		return NULL;
-	}
 	
-	lseek(file, 0, SEEK_SET);
-	for (int i = 0; i < elf.e_phnum; i++) 
-	{
-		  Elf64_Phdr ph;
-		  if (lseek(file, elf.ph_off + i * elf.phentsize, SEEK_SET) < 0 || read(file, &ph, sizeof(ph)) != sizeof(ph)) 
-		  {
-		      free(addr);
-		      return NULL;
-		  }
-
-		  if (ph.p_type != PT_LOAD) 
-		  {
-		      continue;
-		  }
-
-		  if (lseek(file, ph.p_offset, SEEK_SET) < 0 || read(file, (void*)(addr + ph.p_vaddr), ph.p_filesz) != ph.p_filesz) 
-		  {
-		      free(addr);
-		      return NULL;
-		  }
-
-		  memset((void*)(addr + ph.vaddr + ph.filesz), 0, ph.memsz - ph.filesz);
-	}
-	
-	elf.entry = (uint32_t)addr;
+	elf.entry = (uint32_t)allocated_mem;
 
 	
 	if(argv[0])
