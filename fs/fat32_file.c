@@ -232,7 +232,8 @@ ssize_t fat32_getdents(struct inode *dp, char *buf, uint32_t len) {
     while (!ISEOF(iter_n)) {
         first_sector = FirstSectorofCluster(iter_n);
         // sectors in a cluster
-        for (int s = 0; s < (dp->i_sb->sectors_per_block); s++) {
+        for (int s = 0; s < (dp->i_sb->sectors_per_block); s++)
+        {
             // uint32_t sec_pos = DEBUG_SECTOR(dp, first_sector + s); // debug
             // printf("%d\n",sec_pos); // debug
             bp = bread(dp->i_dev, first_sector + s);
@@ -242,7 +243,8 @@ ssize_t fat32_getdents(struct inode *dp, char *buf, uint32_t len) {
             // FCB in a sector
             while (idx < FCB_PER_BLOCK) {
                 // long dirctory item push into the stack
-                if (NAME0_FREE_ALL(fcb_s[idx].DIR_Name[0])) {
+                if (NAME0_FREE_ALL(fcb_s[idx].DIR_Name[0])) 
+                {
                     brelse(bp);
                     goto finish;
                 }
@@ -251,7 +253,8 @@ ssize_t fat32_getdents(struct inode *dp, char *buf, uint32_t len) {
                     off++;
                 }
                 // pop stack
-                if (!LONG_NAME_BOOL(fcb_l[idx].LDIR_Attr) && !NAME0_FREE_BOOL(fcb_s[idx].DIR_Name[0])) {
+                if (!LONG_NAME_BOOL(fcb_l[idx].LDIR_Attr) && !NAME0_FREE_BOOL(fcb_s[idx].DIR_Name[0])) 
+                {
                     memset(name_buf, 0, sizeof(name_buf));
                     uint16_t long_valid = fat32_longname_popstack(&fcb_stack, fcb_s[idx].DIR_Name, name_buf);
 
@@ -259,7 +262,8 @@ ssize_t fat32_getdents(struct inode *dp, char *buf, uint32_t len) {
                     //     Log("ready\n");
                     // }
                     // if long directory is invalid
-                    if (!long_valid) {
+                    if (!long_valid) 
+                    {
                         fat32_short_name_parser(fcb_s[idx], name_buf);
                     }
                     // speciall judgement for the first long directory in the data region

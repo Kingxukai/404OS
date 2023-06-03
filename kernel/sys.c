@@ -46,9 +46,9 @@ int sys_execve(const char *filepath,char * const * argv,char * const * envp)
 {
 	struct task_struct *p = current;
 	struct inode* ip;
-	struct elfhdr elf;
-	struct proghdr ph;
-	if( (ip = name_to_i(filepath)) == 0)
+	struct elf elf;
+	struct proghdr p_header;
+	if( (ip = name_to_i(filepath)) == NULL)
 	{
 		return -1;
 	}
@@ -62,22 +62,71 @@ int sys_execve(const char *filepath,char * const * argv,char * const * envp)
      goto bad;
      
   // Load program into memory.
-  for (int i = 0, off = elf.phoff; i < elf.phnum; i++, off += sizeof(ph)) 
+  uint32_t size = 0;
+  for (int i = 0, off = elf.ph_roff; i < elf.ph_num; i++, off += sizeof(p_header)) 
   {
-  	if (fat32_inode_read(ip, 0, (uint64_t)&ph, off, sizeof(ph)) != sizeof(ph))
+  	if (fat32_inode_read(ip, 0, (uint64_t)&p_header, off, sizeof(p_header)) != sizeof(p_header))
   		goto bad;
-  	if (ph.type != ELF_PROG_LOAD)
+  	if (p_header.type != ELF_PROG_LOAD)
   		continue;
-  	if (ph.memsz < ph.filesz)
+  	if (p_header.memsz < p_header.filesz)
   		goto bad;
-  	if (ph.vaddr + ph.memsz < ph.vaddr)
+  	if (p_header.vaddr + p_header.memsz < p_header.vaddr)
   		goto bad;
-  	if (ph.vaddr % PAGE_SIZE != 0)
+  	if (p_header.vaddr % PAGE_SIZE != 0)
   		goto bad;
+  	if (lseek(file, elf.ph_off + i * elf.phentsize, SEEK_SET) < 0 || read(file, &p_header, sizeof(p_header)) != sizeof(p_header)) 
+    {
+        return NULL;
+    }
+
+    if (p_header.type != PT_LOAD) 
+    {
+        continue;
+    }
+
+    uint32_t end = p_header.vaddr + p_header.memsz;
+    if (end > size) 
+    {
+        size = end;
+    }
   }
   
   fat32_inode_unlock_put(ip);
   ip = NULL;
+  
+  void* addr = malloc(size);
+	if (addr == NULL) 
+	{
+		return NULL;
+	}
+	
+	lseek(file, 0, SEEK_SET);
+	for (int i = 0; i < elf.e_phnum; i++) 
+	{
+		  Elf64_Phdr ph;
+		  if (lseek(file, elf.ph_off + i * elf.phentsize, SEEK_SET) < 0 || read(file, &ph, sizeof(ph)) != sizeof(ph)) 
+		  {
+		      free(addr);
+		      return NULL;
+		  }
+
+		  if (ph.p_type != PT_LOAD) 
+		  {
+		      continue;
+		  }
+
+		  if (lseek(file, ph.p_offset, SEEK_SET) < 0 || read(file, (void*)(addr + ph.p_vaddr), ph.p_filesz) != ph.p_filesz) 
+		  {
+		      free(addr);
+		      return NULL;
+		  }
+
+		  memset((void*)(addr + ph.vaddr + ph.filesz), 0, ph.memsz - ph.filesz);
+	}
+	
+	elf.entry = (uint32_t)addr;
+
 	
 	if(argv[0])
 	{
@@ -118,10 +167,10 @@ int sys_execve(const char *filepath,char * const * argv,char * const * envp)
 	}
 	else
 		goto bad;
-	bad:
-		if(ip)
-			fat32_inode_unlock_put(ip);
-		return -1;
+bad:
+	if(ip)
+		fat32_inode_unlock_put(ip);
+	return -1;
 			
 }
 

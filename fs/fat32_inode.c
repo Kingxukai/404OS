@@ -846,56 +846,65 @@ uint8_t ChkSum(uint8_t *pFcbName) {
     return Sum;
 }
 
-struct inode *fat32_inode_dirlookup(struct inode *ip, const char *name, uint32_t *poff) {
-    if (!DIR_BOOL((ip->fat32_i.Attr)))
+struct inode *fat32_inode_dirlookup(struct inode *ip, const char *name, uint32_t *poff) 
+{
+    if (!DIR_BOOL((ip->fat32_i.Attr)))//如果不是目录
         panic("dirlookup not DIR");
     struct buffer *bp;
     struct inode *ip_search;
     FAT_entry_t iter_n = ip->fat32_i.cluster_start;
 
     char name_buf[NAME_LONG_MAX];
-    memset(name_buf, 0, sizeof(name_buf));
+    memset(name_buf, 0, sizeof(name_buf));//初始化为0
     Stack_t fcb_stack;
     stack_init(&fcb_stack);
 
     int first_sector;
     uint32_t off = 0;
     // FAT seek cluster chains
-    while (!ISEOF(iter_n)) {
-        first_sector = FirstSectorofCluster(iter_n);
+    while (!ISEOF(iter_n))//不是文件结束
+    {
+        first_sector = FirstSectorofCluster(iter_n);//得到簇的第一个扇区
         // sectors in a cluster
-        for (int s = 0; s < (ip->i_sb->sectors_per_block); s++) {
-            bp = bread(ip->i_dev, first_sector + s);
+        for (int s = 0; s < (ip->i_sb->sectors_per_block); s++) //遍历每个扇区
+        {
+            bp = bread(ip->i_dev, first_sector + s);//读一个扇区对应的buf
 
             dirent_s_t *fcb_s = (dirent_s_t *)(bp->data);
             dirent_l_t *fcb_l = (dirent_l_t *)(bp->data);
             int idx = 0;
             // FCB in a sector
-            while (idx < FCB_PER_BLOCK) {
+            while (idx < FCB_PER_BLOCK) //遍历一个块中的FCB
+            {
                 // long dirctory item push into the stack
                 // the first long directory in the data region
-                if (NAME0_FREE_ALL(fcb_s[idx].DIR_Name[0])) {
+                if (NAME0_FREE_ALL(fcb_s[idx].DIR_Name[0])) //如果目录项的开头首字母是空
+                {
                     brelse(bp);
                     stack_free(&fcb_stack);
-                    return 0;
+                    return NULL;
                 }
-                while (LONG_NAME_BOOL(fcb_l[idx].LDIR_Attr) && idx < FCB_PER_BLOCK) {
+                while (LONG_NAME_BOOL(fcb_l[idx].LDIR_Attr) && idx < FCB_PER_BLOCK) 
+                {
                     // printf("%d, %d, %d\n",LONG_NAME_BOOL(fcb_l[idx].LDIR_Attr), first_long_dir(ip), idx < FCB_PER_BLOCK);
                     stack_push(&fcb_stack, fcb_l[idx++]);
-                    off++;
+                    off++;//入栈，偏移量++
                 }
 
                 // pop stack
-                if (!LONG_NAME_BOOL(fcb_l[idx].LDIR_Attr) && !NAME0_FREE_BOOL(fcb_s[idx].DIR_Name[0]) && idx < FCB_PER_BLOCK) {
+                if (!LONG_NAME_BOOL(fcb_l[idx].LDIR_Attr) && !NAME0_FREE_BOOL(fcb_s[idx].DIR_Name[0]) && idx < FCB_PER_BLOCK) 
+                {//如果name[0] == 0XE5||0X00
                     memset(name_buf, 0, sizeof(name_buf));
                     uint16_t long_valid = fat32_longname_popstack(&fcb_stack, fcb_s[idx].DIR_Name, name_buf);
 
                     // if the long directory is invalid
-                    if (!long_valid) {
+                    if (!long_valid) 
+                    {
                         fat32_short_name_parser(fcb_s[idx], name_buf);
                     }
                     //  search for?
-                    if (fat32_namecmp(name, name_buf) == 0) {
+                    if (fat32_namecmp(name, name_buf) == 0) 
+                    {
                         // inode matches path element
                         if (poff)
                             *poff = off;
@@ -909,15 +918,15 @@ struct inode *fat32_inode_dirlookup(struct inode *ip, const char *name, uint32_t
                         return ip_search;
                     }
                 }
-                idx++;
+                idx++;//FCB下标+1
                 off++;
             }
             brelse(bp);
         }
-        iter_n = fat32_next_cluster(iter_n);
+        iter_n = fat32_next_cluster(iter_n);//下一个簇
     }
     stack_free(&fcb_stack);
-    return 0;
+    return NULL;
 }
 
 // direntory link (hard link)
@@ -942,7 +951,7 @@ struct inode *fat32_inode_create(char *path, uint8_t type, short major, short mi
 
     // without parent fat_entry
     if ((dp = name_to_i_parent(path, name)) == 0)
-        return 0;
+        return NULL;
     fat32_inode_lock(dp);
     // fat32_inode_load_from_disk(dp);
 
@@ -956,13 +965,13 @@ struct inode *fat32_inode_create(char *path, uint8_t type, short major, short mi
         //      return ip;
         fat32_inode_unlock_put(ip);
         return ip;
-        // return 0;
+        // return NULL;
     }
 
     // haven't exited
     if ((ip = fat32_inode_alloc(dp, name, type)) == 0) {
         fat32_inode_unlock_put(dp);
-        return 0;
+        return NULL;
     }
 #ifdef __DEBUG_FS__
     if (type == T_FILE)
@@ -1319,7 +1328,7 @@ int fat32_isdirempty(struct inode *ip)
                 if (!NAME0_FREE_BOOL(diernt_s_tmp[i].DIR_Name[0])) {
                     if (fat32_namecmp((char *)diernt_s_tmp[i].DIR_Name, ".") && fat32_namecmp((char *)diernt_s_tmp[i].DIR_Name, "..")) {
                         brelse(bp); // !!!!
-                        return 0;
+                        return NULL;
                     }
                 }
             }

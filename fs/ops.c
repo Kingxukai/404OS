@@ -35,7 +35,7 @@ struct file *filealloc(void) //分配一个file，返回该file指针
         }
     }
     spin_unlock(&_ftable.lock);
-    return 0;
+    return NULL;
 }
 
 void generic_fileclose(struct file *f) //关闭一个file,参数：file指针
@@ -127,7 +127,7 @@ struct inode *find_inode(char *path, int dirfd, char *name) {
         if (ip == 0) 
         {
             // spin_unlock(&p->tlock);
-            return 0;
+            return NULL;
         } 
         else 
         {
@@ -143,7 +143,7 @@ struct inode *find_inode(char *path, int dirfd, char *name) {
         if (dirfd < 0 || dirfd >= NOFILE || (f = p->_ofile[dirfd]) == 0) 
         {
             // spin_unlock(&p->tlock);
-            return 0;
+            return NULL;
         }
         struct inode *oldcwd = p->_cwd;
         p->_cwd = f->f_tp.f_inode;//当前进程的工作目录设定为文件结点
@@ -151,7 +151,7 @@ struct inode *find_inode(char *path, int dirfd, char *name) {
         if (ip == 0) 
         {
             // spin_unlock(&p->tlock);
-            return 0;
+            return NULL;
         }
         p->_cwd = oldcwd;
         // spin_unlock(&p->tlock);
@@ -160,7 +160,8 @@ struct inode *find_inode(char *path, int dirfd, char *name) {
     return ip;
 }
 
-static char *skepelem(char *path, char *name) {
+static char *skepelem(char *path, char *name) 
+{
 // Examples:
 //   skepelem("a/bb/c", name) = "bb/c", setting name = "a"
 //   skepelem("///a//bb", name) = "bb", setting name = "a"
@@ -174,21 +175,35 @@ static char *skepelem(char *path, char *name) {
     int len;
 
     while (*path == '/' || *path == '.')
+    {
         path++;
+    }
+    
     if (*path == 0)
-        return 0;
+        return NULL;
+        
     s = path;
+    
     while (*path != '/' && *path != 0)
+    {
         path++;
+    }
     len = path - s;
+    
     if (len >= PATH_LONG_MAX)
+    {
         memmove(name, s, PATH_LONG_MAX);
-    else {
+    }
+    else 
+    {
         memmove(name, s, len);
         name[len] = 0;
     }
+    
     while (*path == '/')
+    {
         path++;
+    }
     return path;
 }
 
@@ -213,7 +228,7 @@ static struct inode *inode_namex(char *path, int nameeparent, char *name) {
         ip = cwd->i_op->idup(cwd);//得到一个当前进程工作目录的结点
     }
 
-    while ((path = skepelem(path, name)) != 0) //得到一个相对路径
+    while ((path = skepelem(path, name)) != NULL) //得到一个相对路径
     {
         // fat32_inode_lock(ip);
         ip->i_op->ilock(ip);
@@ -223,7 +238,7 @@ static struct inode *inode_namex(char *path, int nameeparent, char *name) {
         {
             // fat32_inode_unlock_put(ip);
             ip->i_op->iunlock_put(ip);
-            return 0;
+            return NULL;
         }
         if (nameeparent && *path == '\0') 
         {
@@ -233,11 +248,11 @@ static struct inode *inode_namex(char *path, int nameeparent, char *name) {
             return ip;
         }
         // if ((next = fat32_inode_dirlookup(ip, name, 0)) == 0) {
-        if ((next = ip->i_op->idirlookup(ip,name,0) ) == 0) //没找到
+        if ((next = ip->i_op->idirlookup(ip,name,0) ) == NULL) //没找到
         {
             // fat32_inode_unlock_put(ip);
             ip->i_op->iunlock_put(ip);
-            return 0;
+            return NULL;
         }
         // fat32_inode_unlock_put(ip);
         ip->i_op->iunlock_put(ip);
@@ -248,7 +263,7 @@ static struct inode *inode_namex(char *path, int nameeparent, char *name) {
     {
         // fat32_inode_put(ip);
         ip->i_op->iput(ip);
-        return 0;
+        return NULL;
     }
 
     if (!ip->i_op) 

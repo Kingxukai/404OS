@@ -3,7 +3,6 @@
 
 #include "../type.h"
 #include "../sched.h"
-#define STACK_SIZE 1024
 
 static inline reg64_t r_mhartid()
 {
@@ -128,6 +127,9 @@ static inline void move_to_user_mode()
 {
 	asm volatile("csrw mepc,ra");
 	timer_selfadd();
+	#ifndef STACK_SIZE
+	#define STACK_SIZE 1024*2
+	#endif
 	asm volatile("mv sp,%0"::"r"(&task_stack[0][STACK_SIZE-1]));
 	asm volatile("mret");
 }

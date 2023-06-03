@@ -8,7 +8,8 @@
 extern struct _superblock fat32_sb;
 
 // initialize superblock obj and root inode obj.
-int fat32_fs_mount(int dev, struct _superblock *sb) {
+int fat32_fs_mount(int dev, struct _superblock *sb) 
+{
     /* superblock initialization */
     sb->s_op = TODO();
     sb->s_dev = dev;

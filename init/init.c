@@ -20,8 +20,20 @@ void Init()
 	inode_table_init();
 	fat32_fs_mount(ROOTDEV, &fat32_sb);//挂载到根结点
 	current->_cwd = fat32_inode_dup(fat32_sb.root);
-	char *argv[] = {"init", 0};
-  execve("/init", argv, NULL);
+  
+  int p1;
+  
+  if((p1 = fork()) == 0)
+  {
+  	char *argv1[] = {"getpid",0};
+  	execve("/getpid",argv1,NULL);
+  }
+  else
+  {
+  	printf("here is init process\n");
+  	printf("task%d has created\n",p1);
+  }
+  
 	while(1)
 	{
 	

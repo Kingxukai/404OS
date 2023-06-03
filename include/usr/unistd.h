@@ -3,11 +3,11 @@
 #include "../type.h"
 
 uint64_t gethid();	//0
-pid_t getpid();	//1
-pid_t getppid();	//2
-pid_t fork(); //3
+int getpid();	//1
+int getppid();	//2
+int fork(); //3
 int execve(const char *filepath,char * const * argv,char * const * envp);//4
-pid_t exit(int error_code);	//5
-pid_t waitpid(pid_t pid,uint64_t* stat_addr,int options);	//6
+int exit(int error_code);	//5
+int waitpid(int pid,unsigned long* stat_addr,int options);	//6
 int shutdown();	//7
 #endif

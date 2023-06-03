@@ -5,12 +5,12 @@
 #include "riscv64.h"
 
 #define NR_gethid 0
-#define NR_getpid 1
-#define NR_getppid 2
-#define NR_fork 3
-#define NR_execve 4
-#define NR_exit	5
-#define NR_waitpid 6
+#define NR_getpid 172
+#define NR_getppid 173
+#define NR_fork 220
+#define NR_execve 221
+#define NR_exit	93
+#define NR_waitpid 260
 #define NR_shutdown 7
 
 #define _syscall0(type,name) \
