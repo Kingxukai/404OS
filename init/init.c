@@ -32,6 +32,8 @@ void Init()
   {
   	printf("here is init process\n");
   	printf("task%d has created\n",p1);
+  	waitpid(p1,NULL,NULL);
+  	shutdown();//must shutdown while travel all test watchpoint
   }
   
 	while(1)
