@@ -1,16 +1,22 @@
 #include "../include/type.h"
 #include "../include/ctype.h"
 
-void strncpy(char *from,char* to,int n)
+char *strncpy(char *s, const char *t, int n) 
 {
-	memcpy(from,to,(uint64_t)n);
-	*(to+n) = 0;
+    char *os;
+
+    os = s;
+    while (n-- > 0 && (*s++ = *t++) != 0)
+        ;
+    while (n-- > 0)
+        *s++ = 0;
+    return os;
 }
 
 int strlen(char* s)
 {
 	int total = 0;
-	while(*s)
+	while(*(s++))
 	{
 		total++;
 	}
@@ -68,6 +74,11 @@ void *memmove(void *dst, const void *src, int n)
         }
 
     return dst;
+}
+
+void* memcpy(void *dst, const void *src, int n)
+{
+	return memmove(dst, src, n);
 }
 
 void str_toupper(char *str) {

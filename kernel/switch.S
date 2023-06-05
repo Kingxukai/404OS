@@ -110,8 +110,8 @@ switch_to:
 	context_save t6
 	
 1:	
-	csrw mscratch,a1
-	csrr t6,mscratch
+	csrw sscratch,a1
+	csrr t6,sscratch
 
 	ld t5,256(t6)
 	beqz t5,2f
@@ -129,45 +129,45 @@ switch_to:
 .align 4
 #hardware auto disable interrupt
 trap_vector:
-	csrrw t6,mscratch,t6
+	csrrw t6,sscratch,t6
 
 	reg_save t6	
 	mv t5,t6
-	csrr t6,mscratch
+	csrr t6,sscratch
 	sd t6,240(t5)
-	csrr t6,mepc
+	csrr t6,sepc
 	sd t6,248(t5)
 	
-	csrw mscratch,t5
+	csrw sscratch,t5
 	
 #alarm if stack overflow
 
-	li a0,3
+	li a0,1
 	call set_mode
 
 	mv a0,sp
 	call Dect_stack
 
-	csrr a0,mcause
-	csrr a1,mepc
-	csrr a2,mscratch
+	csrr a0,scause
+	csrr a1,sepc
+	csrr a2,sscratch
 	
 	call trap_handler
 
 ret_from_exception:
-	csrr t6,mscratch
+	csrr t6,sscratch
 	sd a0,248(t6)
 
 ret_from_sys_call:	
 	li a0,0
 	call set_mode
-	csrr t6,mscratch
+	csrr t6,sscratch
 	ld t5,248(t6)
-	csrw mepc,t5
+	csrw sepc,t5
 	reg_restore t6
 
 #enable interrupt
 
-	mret
+	sret
 
 .end

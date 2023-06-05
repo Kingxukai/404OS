@@ -27,16 +27,6 @@ int find_new_id()
 	return MAX_TASK;
 }
 
-void memcpy(uint32_t* from, uint32_t* to, uint64_t size)
-{
-	while(size--)
-	{
-		*to = *from;
-		to++;
-		from++;
-	}
-}
-
 static void copy_memory(reg64_t sp)
 {
 	reg8_t *old_addr_start = (reg64_t)&task_stack[current->pcb_id][STACK_SIZE - 1];

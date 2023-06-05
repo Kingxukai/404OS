@@ -17,11 +17,8 @@ extern void Init_virtio();
 void kernel_start(reg64_t hartid)
 {
 	if(!hartid)
-
 	{
 		show_hello();	// show hello 404
-		printkRed("PLATFORM:%s\n",PLATFORM);
-		printkRed("ARCH:%s\n",ARCH);
 		printkRed("hart%d OK!!!\n",hartid);
 	}
 	else printkRed("hart%d OK!!!\n",hartid);

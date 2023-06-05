@@ -154,6 +154,7 @@ struct inode *fat32_root_inode_init(struct _superblock *sb)
     root_ip->parent = root_ip;
     root_ip->fat32_i.cluster_start = 2;
     root_ip->fat32_i.parent_off = 0;
+    memset(root_ip->fat32_i.fname, 0, NAME_LONG_MAX);
     root_ip->fat32_i.fname[0] = '/';
     root_ip->fat32_i.fname[1] = '\0';
 
@@ -823,7 +824,8 @@ uint16_t fat32_longname_popstack(Stack_t *fcb_stack, uint8_t *fcb_s_name, char *
         }
         uint8_t checksum = ChkSum(fcb_s_name);
         if (fcb_l_tmp.LDIR_Chksum != checksum) {
-            panic("check sum error");
+            //panic("check sum error");
+            return 0;
         }
         char l_tmp[14];
         memset(l_tmp, 0, sizeof(l_tmp));
@@ -878,38 +880,40 @@ struct inode *fat32_inode_dirlookup(struct inode *ip, const char *name, uint32_t
             {
                 // long dirctory item push into the stack
                 // the first long directory in the data region
-                if (NAME0_FREE_ALL(fcb_s[idx].DIR_Name[0])) //如果目录项的开头首字母是空
+                if (NAME0_FREE_ALL(fcb_s[idx].DIR_Name[0])) //如果目录项的开头首字母是0
                 {
                     brelse(bp);
                     stack_free(&fcb_stack);
                     return NULL;
                 }
-                while (LONG_NAME_BOOL(fcb_l[idx].LDIR_Attr) && idx < FCB_PER_BLOCK) 
+                while (LONG_NAME_BOOL(fcb_l[idx].LDIR_Attr) && idx < FCB_PER_BLOCK) //长文件名，入栈
                 {
                     // printf("%d, %d, %d\n",LONG_NAME_BOOL(fcb_l[idx].LDIR_Attr), first_long_dir(ip), idx < FCB_PER_BLOCK);
                     stack_push(&fcb_stack, fcb_l[idx++]);
                     off++;//入栈，偏移量++
                 }
 
-                // pop stack
+                // pop stack 首先检查了目录项是否是长目录项，并检查了短文件名的首个字符是否是 0xE5 或 0x00。
                 if (!LONG_NAME_BOOL(fcb_l[idx].LDIR_Attr) && !NAME0_FREE_BOOL(fcb_s[idx].DIR_Name[0]) && idx < FCB_PER_BLOCK) 
                 {//如果name[0] == 0XE5||0X00
                     memset(name_buf, 0, sizeof(name_buf));
+                    //如果都不是，则调用了函数 fat32_longname_popstack 从 fcb_stack 中弹出一个长目录项，然后将目录项的所有名称部分都复制到 name_buf 字符数组中。
                     uint16_t long_valid = fat32_longname_popstack(&fcb_stack, fcb_s[idx].DIR_Name, name_buf);
 
                     // if the long directory is invalid
-                    if (!long_valid) 
+                    if (!long_valid) //如果弹出的长目录项是无效的，则调用函数 fat32_short_name_parser 从短文件名中解析出名称，复制到 name_buf 中。
                     {
                         fat32_short_name_parser(fcb_s[idx], name_buf);
                     }
+
                     //  search for?
-                    if (fat32_namecmp(name, name_buf) == 0) 
+                    if (fat32_namecmp(name, name_buf) == 0) //然后，将 name_buf 中的名称与传入的 name 进行比较，如果匹配，则认为已找到所需的 inode，将它们的位置指针赋值给 poff，释放缓冲区，然后调用函数 fat32_inode_get 获取 inode。
                     {
                         // inode matches path element
                         if (poff)
                             *poff = off;
                         brelse(bp);
-
+                        //函数 fat32_inode_get 将返回找到的 inode，该 inode 携带了所需的路径信息和文件的一些元数据信息。
                         ip_search = fat32_inode_get(ip->i_dev, SECTOR_TO_FATINUM(first_sector + s, idx), name, off);
                         ip_search->parent = ip;
                         ip_search->i_nlink = 1;

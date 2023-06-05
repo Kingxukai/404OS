@@ -15,7 +15,7 @@ extern void ret_from_sys_call();
 void Init_trap()
 {
 	printk("Initial trap...\n");
-	w_mtvec((reg64_t)trap_vector);
+	w_stvec((reg64_t)trap_vector);
 	//w_mstatus((reg64_t)0x1800);			//here we temporarily set next privilege as 11(machine)
 }
 
@@ -43,20 +43,20 @@ reg64_t trap_handler(reg64_t cause,reg64_t epc,struct reg *context)
 	{
 		switch(cause & 0xfff)
 		{
-			case 3:
+			case 1:
 				{
-					printk("Machine software interrupt\n");
+					printk("supervisor software interrupt\n");
 					break;
 				}
-			case 7:
+			case 5:
 				{
-					//printk("\nMachine timer interrupt\n");
+					//printk("supervisor timer interrupt\n");
 					timer_interrupt_handler();
 					break;
 				}
-			case 11:
+			case 9:
 				{
-					//printk("Machine external interrupt\n");
+					//printk("supervisor external interrupt\n");
 					machine_interrupt_handler();
 					break;
 				}
@@ -81,7 +81,12 @@ reg64_t trap_handler(reg64_t cause,reg64_t epc,struct reg *context)
 				do_syscall(context);
 				goto NO_ERROR;
 			}
-			case 9:printk("Environment call from S-mode\n");goto NO_ERROR;;
+			case 9:
+			{
+				printk("Environment call from S-mode\n");
+				panic("OOPS!!! it's forbiddened temporily ecall from S-mode\n");
+				goto NO_ERROR;
+			}
 			case 11:
 			{
 				printk("Environment call from M-mode\n");
@@ -93,7 +98,7 @@ reg64_t trap_handler(reg64_t cause,reg64_t epc,struct reg *context)
 			case 15:printk("Store/AMO page fault\n");break;
 			default:printk("unknow fault\n");break;
 		}
-		printk("\nmcause:0x%x\nmepc:0x%x\n",cause,epc);
+		printk("\nscause:0x%x\nsepc:0x%x\n",cause,epc);
 		panic("encounter error\n");			//except cause=8/9/11
 		NO_ERROR:
 		epc += 4;												//make epc point to next 4 address to avoid infinte loop

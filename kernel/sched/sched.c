@@ -100,6 +100,7 @@ static void alter_state()
 		if(((*p)->state == TASK_WAIT) && ( (*p)->signal & ~(SIG_STOP)))
 		{
 			(*p)->state  = TASK_READY;
+			(*p)->signal = 0;
 		}
 	}
 }
@@ -134,7 +135,7 @@ void schedule()
 void Init_sched()
 {
 	printk("Initial sched...\n");
-	w_mscratch((reg64_t)&(TASK[0]->context));
+	w_sscratch((reg64_t)&(TASK[0]->context));
 	
 	for(int i=1;i<MAX_TASK;i++)		//clear the TASK
 	{

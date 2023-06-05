@@ -6,6 +6,7 @@
 #include "../include/fs/fat32_mem.h"
 #include "../include/fs/fs.h"
 #include "../include/fs/param.h"
+#include "../include/fs/stat.h"
 
 extern void inode_table_init();
 
@@ -26,7 +27,10 @@ void Init()
   if((p1 = fork()) == 0)
   {
   	char *argv1[] = {"getpid",0};
-  	execve("/getpid",argv1,NULL);
+  	if(execve("/getpid",argv1,NULL) == -1 )
+  	{
+  		printfRed("error in execving %s\n",argv1[0]);
+  	};
   }
   else
   {

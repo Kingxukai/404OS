@@ -19,7 +19,7 @@ void do_syscall(struct reg *context)										//syscall executing function
 
 uint64_t sys_gethid()	
 {
-	return r_mhartid();
+	return r_tp();
 }
 
 pid_t sys_getpid()

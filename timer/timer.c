@@ -3,6 +3,7 @@
 #include "../include/trap.h"
 #include "../include/asm/riscv64.h"
 #include "../include/usr/lib.h"
+#include "../include/sbi.h"
 
 extern void cli();				//defined in trap/trap.c
 extern void sti();
@@ -58,16 +59,15 @@ void do_timer()
 void timer_selfadd()
 {
 	jiffies++;
-	uint64_t hart = r_mhartid();
-	*(uint64_t*)CLIENT_MTIMERCMP(hart) = *(uint64_t*)CLIENT_MTIMER + CLOCK_PIECE;
+	SET_TIMER();
 }
 
 void Init_timer()
 {
 	printk("Initial timer...\n");
-	w_mstatus(r_mstatus() | EA);
+	w_sstatus(r_sstatus() | EA);
 	
-	w_mie(r_mie() | MTIE);
+	w_sie(r_sie() | STIE);
 	
 	//timer_selfadd();
 }

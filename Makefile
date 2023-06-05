@@ -1,10 +1,10 @@
 include common.mk
 
 SRCS_ASM = \
-	BOOT/boot.S \
 	kernel/switch.S \
 	kernel/lock/atomic.S \
 	mm/mem.S \
+	BOOT/boot.S
 
 SRCS_C = \
 	kernel/kernel.c \

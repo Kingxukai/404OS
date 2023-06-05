@@ -4,8 +4,8 @@
 void* _malloc_(uint32_t size);
 void _free_(void*,int size);
 void *memset(void *dest, int c, uint64_t n);
-void memcpy(uint32_t* from, uint32_t* to, uint64_t size);
-void strncpy(char *from,char* to,int n);
+void* memcpy(void *dst, const void *src, int n);
+char *strncpy(char *s, const char *t, int n);
 int strlen(char* s);
 int strncmp(char* s1,char* s2, int n);
 int strcmp(char* s1,char* s2);

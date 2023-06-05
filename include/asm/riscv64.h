@@ -4,56 +4,49 @@
 #include "../type.h"
 #include "../sched.h"
 
-static inline reg64_t r_mhartid()
+static inline void w_sscratch(reg64_t reg)
+{
+	asm volatile("csrw sscratch,%0"::"r"(reg));
+}
+
+static inline	reg64_t r_ssctrach()
 {
 	reg64_t reg;
-	asm volatile("csrr %0, mhartid" : "=r" (reg) );
+	asm volatile("csrr %0,sscratch":"=r"(reg));
 	return reg;
 }
 
-static inline void w_mscratch(reg64_t reg)
+static inline	void w_sepc(reg64_t reg)
 {
-	asm volatile("csrw mscratch,%0"::"r"(reg));
+	asm volatile("csrw sepc,%0"::"r"(reg));
 }
 
-static inline	reg64_t r_msctrach()
+static inline void w_stvec(reg64_t reg)
+{
+	asm volatile("csrw stvec,%0"::"r"(reg));
+}
+
+static inline void w_sie(reg64_t reg)
+{
+	asm volatile("csrw sie,%0"::"r"(reg));
+}
+
+static inline	reg64_t r_sie()
 {
 	reg64_t reg;
-	asm volatile("csrr %0,mscratch":"=r"(reg));
+	asm volatile("csrr %0,sie":"=r"(reg));
 	return reg;
 }
 
-static inline	void w_mepc(reg64_t reg)
+static inline void w_sstatus(reg64_t reg)
 {
-	asm volatile("csrw mepc,%0"::"r"(reg));
+	asm volatile("csrw sstatus,%0"::"r"(reg));
 }
 
-static inline void w_mtvec(reg64_t reg)
-{
-	asm volatile("csrw mtvec,%0"::"r"(reg));
-}
-
-static inline void w_mie(reg64_t reg)
-{
-	asm volatile("csrw mie,%0"::"r"(reg));
-}
-
-static inline	reg64_t r_mie()
+static inline	reg64_t r_sstatus()
 {
 	reg64_t reg;
-	asm volatile("csrr %0,mie":"=r"(reg));
-	return reg;
-}
-
-static inline void w_mstatus(reg64_t reg)
-{
-	asm volatile("csrw mstatus,%0"::"r"(reg));
-}
-
-static inline	reg64_t r_mstatus()
-{
-	reg64_t reg;
-	asm volatile("csrr %0,mstatus":"=r"(reg));
+	asm volatile("csrr %0,sstatus":"=r"(reg));
 	return reg;
 }
 
@@ -64,10 +57,10 @@ static inline reg64_t r_tp()
 	return reg;
 }
 
-static inline reg64_t r_mip()
+static inline reg64_t r_sip()
 {
 	reg64_t reg;
-	asm volatile("csrr %0, mip" : "=r"(reg));
+	asm volatile("csrr %0, sip" : "=r"(reg));
 	return reg;
 }
 
@@ -125,13 +118,13 @@ extern void timer_selfadd();
 
 static inline void move_to_user_mode()
 {
-	asm volatile("csrw mepc,ra");
+	asm volatile("csrw sepc,ra");
 	timer_selfadd();
 	#ifndef STACK_SIZE
 	#define STACK_SIZE 1024*2
 	#endif
 	asm volatile("mv sp,%0"::"r"(&task_stack[0][STACK_SIZE-1]));
-	asm volatile("mret");
+	asm volatile("sret");
 }
 
 #endif
