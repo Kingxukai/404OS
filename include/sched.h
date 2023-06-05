@@ -18,7 +18,7 @@
 #define LOW 1
 
 #define MAX_TASK 64	//max PCB num
-#define STACK_SIZE 1024 * 2
+#define STACK_SIZE 1024 * 4
 
 void schedule();
 void Init_sched();

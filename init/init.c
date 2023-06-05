@@ -22,21 +22,39 @@ void Init()
 	fat32_fs_mount(ROOTDEV, &fat32_sb);//挂载到根结点
 	current->_cwd = fat32_inode_dup(fat32_sb.root);
   
-  int p1;
+  //fat32_inode_create("/getpid",T_FILE, 1,2);
   
-  if((p1 = fork()) == 0)
+  int n = 2;
+  int pid[n];
+  
+  if((pid[0] = fork()) == 0)
   {
-  	char *argv1[] = {"getpid",0};
-  	if(execve("/getpid",argv1,NULL) == -1 )
+  	char *argv[] = {"getpid", NULL};
+  	if(execve("/getpid", argv, NULL) == -1 )
   	{
-  		printfRed("error in execving %s\n",argv1[0]);
+  		printfRed("error in execving %s\n",argv[0]);
+  	};
+  }
+  else if((pid[1] = fork()) == 0)
+  {
+  	char *argv[] = {"getppid", NULL};
+  	if(execve("/getppid", argv, NULL) == -1 )
+  	{
+  		printfRed("error in execving %s\n",argv[0]);
   	};
   }
   else
   {
   	printf("here is init process\n");
-  	printf("task%d has created\n",p1);
-  	waitpid(p1,NULL,NULL);
+  	for(int i = 0;i < n;i++)
+  	{
+  		printf("task%d has created\n",pid[i]);
+  	}
+  	for(int i = 0;i < n;i++)
+  	{
+  		 waitpid(pid[i],NULL,NULL);
+  	}
+  	
   	shutdown();//must shutdown while travel all test watchpoint
   }
   

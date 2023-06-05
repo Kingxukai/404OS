@@ -38,7 +38,7 @@ static void print_rawstr(const char *c, uint32_t len) {
 
 static void print_short_dir(const dirent_s_t *buf) {
     printf("(short) ");
-    printf("name: ", buf->DIR_Name);
+    printf("name: ");
     print_rawstr((char *)buf->DIR_Name, FAT_SFN_LENGTH);
     printf("  ");
     printf("attr: %#x\t", buf->DIR_Attr);
@@ -874,6 +874,10 @@ struct inode *fat32_inode_dirlookup(struct inode *ip, const char *name, uint32_t
 
             dirent_s_t *fcb_s = (dirent_s_t *)(bp->data);
             dirent_l_t *fcb_l = (dirent_l_t *)(bp->data);
+            
+            print_short_dir(fcb_s);
+            print_long_dir(fcb_l);
+
             int idx = 0;
             // FCB in a sector
             while (idx < FCB_PER_BLOCK) //遍历一个块中的FCB
@@ -881,7 +885,7 @@ struct inode *fat32_inode_dirlookup(struct inode *ip, const char *name, uint32_t
                 // long dirctory item push into the stack
                 // the first long directory in the data region
                 if (NAME0_FREE_ALL(fcb_s[idx].DIR_Name[0])) //如果目录项的开头首字母是0
-                {
+                {//找不到
                     brelse(bp);
                     stack_free(&fcb_stack);
                     return NULL;
@@ -954,7 +958,7 @@ struct inode *fat32_inode_create(char *path, uint8_t type, short major, short mi
     char name[NAME_LONG_MAX];
 
     // without parent fat_entry
-    if ((dp = name_to_i_parent(path, name)) == 0)
+    if ((dp = name_to_i_parent(path, name)) == NULL)
         return NULL;
     fat32_inode_lock(dp);
     // fat32_inode_load_from_disk(dp);

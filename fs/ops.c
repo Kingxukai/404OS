@@ -220,7 +220,7 @@ static struct inode *inode_namex(char *path, int nameeparent, char *name) {
     }
     else if (strncmp(path, "..", 2) == 0) //如果是指向父节点
     {
-        ip = cwd->parent->i_op->idup(cwd->parent);//得到一个当前进程的工作目录下的父进程的结点
+        ip = cwd->parent->i_op->idup(cwd->parent);//得到一个当前进程的工作目录下的父结点
     } 
     else 
     {

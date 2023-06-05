@@ -170,6 +170,11 @@ pid_t sys_waitpid(pid_t pid,uint64_t* stat_addr,int options)
 				{
 					current->time += (*p)->time;
 					release(*p);
+					return (*p)->pid;
+				}
+				else if((*p)->state == TASK_STOP)
+				{
+					return (*p)->pid;
 				}
 				else flag = 1;
 			}

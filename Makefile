@@ -1,5 +1,7 @@
 include common.mk
 
+FSIMG = fsimg
+
 SRCS_ASM = \
 	kernel/switch.S \
 	kernel/lock/atomic.S \
@@ -40,10 +42,25 @@ SRCS_C = \
 	fs/fat32_stack.c \
 	fs/fd.c \
 	fs/ops.c \
-	user/user.c
 
 OBJS = $(SRCS_ASM:.S=.o)
 OBJS += $(SRCS_C:.c=.o)
+
+MNT_DIR=build/mnt
+$(shell mkdir -p $(MNT_DIR))
+
+oscompU=user
+FILE= mnt text.txt \
+    chdir close dup2 dup \
+    fstat getcwd mkdir_ write \
+    openat open read test_echo \
+	getdents unlink pipe \
+    brk clone execve exit fork \
+    getpid getppid sleep times \
+    gettimeofday mmap munmap \
+    uname wait waitpid yield \
+    mount umount
+TESTFILE=$(addprefix $(oscompU)/build/riscv64/, $(FILE))  
 
 .DEFAULT_GOAL := all
 all: kernel-qemu
@@ -75,6 +92,25 @@ debug: all
 code: all
 	@${OBJDUMP} -S kernel-qemu | less
 
+.PHONY	:	img
+img: user sdcard.img
+
+user: oscomp
+	@echo "$(YELLOW)build user:$(RESET)"
+	@cp README.md $(FSIMG)/
+
+oscomp:
+	@make -C $(oscompU) -e all CHAPTER=7
+	@cp -r $(TESTFILE) $(FSIMG)/
+
+.PHONY	:	dep
+sdcard.img: dep
+	@dd if=/dev/zero of=$@ bs=1M count=128
+	@mkfs.vfat -F 32 -s 2 -a $@ 
+	@sudo mount -t vfat $@ $(MNT_DIR)
+	@sudo cp -r $(FSIMG)/* $(MNT_DIR)/
+	@sync $(MNT_DIR) && sudo umount -v $(MNT_DIR)
+
 .PHONY : clean
 clean:
 	rm -rf \
@@ -91,8 +127,10 @@ clean:
 	string/*.o \
 	driver/*.o \
 	fs/*.o \
-	user/*.o \
+	user_test/*.o \
 	*.o \
 	*.bin \
+	sdcard.img \
+	$(FSIMG)/* \
 	kernel-qemu
 

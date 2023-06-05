@@ -121,7 +121,7 @@ static inline void move_to_user_mode()
 	asm volatile("csrw sepc,ra");
 	timer_selfadd();
 	#ifndef STACK_SIZE
-	#define STACK_SIZE 1024*2
+	#define STACK_SIZE 1024*4
 	#endif
 	asm volatile("mv sp,%0"::"r"(&task_stack[0][STACK_SIZE-1]));
 	asm volatile("sret");

@@ -6,7 +6,7 @@
 
 void switch_to(struct reg* last, struct reg* next);
 
-uint8_t task_stack[MAX_TASK][STACK_SIZE];			//each task occupy (1024 * 2)B stack size
+uint8_t task_stack[MAX_TASK][STACK_SIZE];			//each task occupy (1024 * 4)B stack size
 
 extern struct task_struct *current;
 
