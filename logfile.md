@@ -187,3 +187,10 @@ comment:in previous version, I take reg_save and reg_restore in switch_to, and r
 ```
 comment:Because of lack of time,I have to ref other team's code of FAT32 file system, and I modify my execve,so that is can properly execute in disk.
 ```
+
+27:
+		**add S-mode and add 'make img'**
+		time:2023-06-05 22:21:10 by wxk
+```
+comment:thanks for the help of team LostWakeUp and their code source, which really help me a lot. Their addr:gitlab:https://gitlab.eduxiji.net/202310336101112/LostWakeup
+```
