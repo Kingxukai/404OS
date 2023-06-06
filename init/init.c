@@ -24,7 +24,7 @@ void Init()
   
   //fat32_inode_create("/getpid",T_FILE, 1,2);
   
-  int n = 2;
+  int n = 1;
   int pid[n];
   
   if((pid[0] = fork()) == 0)
@@ -35,14 +35,14 @@ void Init()
   		printfRed("error in execving %s\n",argv[0]);
   	};
   }
-  else if((pid[1] = fork()) == 0)
+  /*else if((pid[1] = fork()) == 0)
   {
   	char *argv[] = {"getppid", NULL};
   	if(execve("/getppid", argv, NULL) == -1 )
   	{
   		printfRed("error in execving %s\n",argv[0]);
   	};
-  }
+  }*/
   else
   {
   	printf("here is init process\n");

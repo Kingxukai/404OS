@@ -1,5 +1,5 @@
 set disassemble-next-line on
-b fat32_inode_dirlookup
+b *0x8026a200
 set output-radix 16
 target remote : 1234
 c

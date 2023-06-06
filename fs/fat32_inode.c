@@ -874,14 +874,13 @@ struct inode *fat32_inode_dirlookup(struct inode *ip, const char *name, uint32_t
 
             dirent_s_t *fcb_s = (dirent_s_t *)(bp->data);
             dirent_l_t *fcb_l = (dirent_l_t *)(bp->data);
-            
-            print_short_dir(fcb_s);
-            print_long_dir(fcb_l);
 
             int idx = 0;
             // FCB in a sector
             while (idx < FCB_PER_BLOCK) //遍历一个块中的FCB
             {
+            		print_short_dir(&fcb_s[idx]);
+            		print_long_dir(&fcb_l[idx]);
                 // long dirctory item push into the stack
                 // the first long directory in the data region
                 if (NAME0_FREE_ALL(fcb_s[idx].DIR_Name[0])) //如果目录项的开头首字母是0

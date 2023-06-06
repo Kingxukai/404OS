@@ -1,7 +1,5 @@
 include common.mk
 
-FSIMG = fsimg
-
 SRCS_ASM = \
 	kernel/switch.S \
 	kernel/lock/atomic.S \
@@ -48,6 +46,8 @@ OBJS += $(SRCS_C:.c=.o)
 
 MNT_DIR=build/mnt
 $(shell mkdir -p $(MNT_DIR))
+
+FSIMG = fsimg
 
 oscompU=user
 FILE= mnt text.txt \

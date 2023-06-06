@@ -31,7 +31,7 @@ void Init_buffer(void)
 	}
 }
 
-static struct buffer* bget(uint8_t dev, uint8_t block_no)
+static struct buffer* bget(uint32_t dev, uint32_t block_no)
 {
 	spin_lock(&buffer_cache.lock);
 	
@@ -62,7 +62,7 @@ static struct buffer* bget(uint8_t dev, uint8_t block_no)
 	panic("no free buffer to get\n");
 }
 
-struct buffer* bread(uint8_t dev, uint8_t block_no)
+struct buffer* bread(uint32_t dev, uint32_t block_no)
 {
 	struct buffer* buf = bget(dev,block_no);//调用buffer_get()来获取一个struct buffer*的指针
 	if(!buf->valid)//如果该块是新获取的

@@ -12,9 +12,12 @@ struct buffer
 	int valid;
 	int disk;
 	uint32_t dev;
-	uint8_t block_no;
+	uint32_t block_no;
 	uint64_t refcnt;
-	uint8_t data[BUFFER_SIZE];
+	#ifndef BLOCK_SIZE
+	#define BLOCK_SIZE 512
+	#endif
+	uint8_t data[BLOCK_SIZE];
 	int dirty;
 	struct buffer* next;
 	struct buffer* last;

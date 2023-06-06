@@ -61,42 +61,59 @@ int sys_execve(const char *filepath,char * const * argv,char * const * envp)
   if (elf.magic != ELF_MAGIC)
      goto bad;
   
-  uint32_t* allocated_mem;
-  // Load program into memory.
-  for (int i = 0, off = elf.ph_off; i < elf.ph_num; i++, off += sizeof(p_header)) 
-  {
-  	if (fat32_inode_read(ip, 0, (uint64_t)&p_header, off, sizeof(p_header)) != sizeof(p_header))
-  		goto bad;
-  	if (p_header.type != ELF_PROG_LOAD)
-  		continue;
-  	if (p_header.memsz < p_header.filesz)
-  		goto bad;
-  	if (p_header.vaddr + p_header.memsz < p_header.vaddr)
-  		goto bad;
-  	if (p_header.vaddr % PAGE_SIZE != 0)
-  		goto bad;
-  		
-  	// Allocate memory using malloc.
-    allocated_mem = (uint32_t *)malloc(p_header.memsz);
-    if (allocated_mem == NULL)
-        goto bad;
+	#define MAX_PROG_HEADERS 64 // 预先设置一个足够大的程序头部数量上限
 
-    // Read data from ELF file into allocated memory.
-    if (fat32_inode_read(ip, 0, (uint64_t)allocated_mem, p_header.off, p_header.filesz) != p_header.filesz) {
-        free(allocated_mem);
-        goto bad;
-    }
+	uint32_t** allocated_mems = (uint32_t **)malloc(MAX_PROG_HEADERS * sizeof(uint32_t *));
+	if (allocated_mems == NULL)
+	{
+		  goto bad;
+	}
 
-    // Zero out the remaining memory.
-    if (p_header.memsz - p_header.filesz > 0) {
-        memset((uint8_t *)allocated_mem + p_header.filesz, 0, p_header.memsz - p_header.filesz);
-    }
-  }
+	int allocated_count = 0;
+	// Load program into memory.
+	for (int i = 0, off = elf.ph_off; i < elf.ph_num; i++, off += sizeof(p_header))
+	{
+		  if (fat32_inode_read(ip, 0, (uint64_t)&p_header, off, sizeof(p_header)) != sizeof(p_header))
+		      goto bad;
+		  if (p_header.type != ELF_PROG_LOAD)
+		      continue;
+		  if (p_header.memsz < p_header.filesz)
+		      goto bad;
+		  if (p_header.vaddr + p_header.memsz < p_header.vaddr)
+		      goto bad;
+		  if (p_header.vaddr % PAGE_SIZE != 0)
+		      goto bad;
+		      
+		  // Allocate memory using malloc.
+		  uint32_t* allocated_mem = (uint32_t *)malloc(p_header.memsz);
+		  if (allocated_mem == NULL)
+		      goto bad;
+
+		  // Read data from ELF file into allocated memory.
+		  if (fat32_inode_read(ip, 0, (uint64_t)allocated_mem, p_header.off, p_header.filesz) != p_header.filesz) 
+		  {
+		      free(allocated_mem);
+		      goto bad;
+		  }
+
+		  // Zero out the remaining memory.
+		  if (p_header.memsz - p_header.filesz > 0) 
+		  {
+		      memset((uint8_t *)allocated_mem + p_header.filesz, 0, p_header.memsz - p_header.filesz);
+		  }
+
+		  allocated_mems[allocated_count++] = allocated_mem;
+		  if (allocated_count >= MAX_PROG_HEADERS)
+			{
+					panic("huge size of elf,which can't load temporially!!\n");
+			}
+	}
+
   
   fat32_inode_unlock_put(ip);
   ip = NULL;
 	
-	elf.entry = (uint32_t)allocated_mem;
+	elf.entry = (uint32_t)allocated_mems;
 
 	
 	if(argv[0])

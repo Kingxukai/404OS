@@ -126,14 +126,6 @@ void* _malloc_(uint32_t length)
 	 同时将构建一个free(adr)宏函数，来替换_free_(adr,0)，使用更方便
 */
 
-/*
-TEXT:   0x80000000 -> 0x8000531c
-RODATA: 0x80005320 -> 0x80005cd7
-DATA:   0x80006000 -> 0x80006420
-BSS:    0x80006420 -> 0x800268a0
-HEAP:   0x8002f000 -> 0x88000000
-*/
-
 void _free_ (void* obj,int size) 
 {
 		void *page;

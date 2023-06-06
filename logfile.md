@@ -194,3 +194,10 @@ comment:Because of lack of time,I have to ref other team's code of FAT32 file sy
 ```
 comment:thanks for the help of team LostWakeUp and their code source, which really help me a lot. Their addr:gitlab:https://gitlab.eduxiji.net/202310336101112/LostWakeup
 ```
+
+28:
+		**modify the fs's errors**
+		time:2023-06-06 18:55:05 by wxk
+```
+comment:eventually, I find the problem in fs,and modify it. Unfortually, I have to realize the PMP and page allocation because I need to load elf from disk and execute it, and I have only one day left... Good luck to me..
+```
