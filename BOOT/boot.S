@@ -36,6 +36,9 @@ _start:
 	j kernel_start				//the entry of kernel
 	
 park:
+	li t0,0x40010010
+	li t1,0
+	sd t1,(t0)
 	wfi								//wait for interrupt
 	j park	
 	
