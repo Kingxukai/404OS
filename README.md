@@ -53,17 +53,17 @@ School_name:Shenyang Aerospace University（SAU）</mark>
 ```
 
 **使用指导**
-确保您已安装riscv64-unknown-elf-gcc、riscv64-unknown-elf-gdb以及QEMU
-clone本项目到本地仓库后：在终端输入
+确保您已安装riscv64-unknown-elf-gcc、riscv64-unknown-elf-gdb以及QEMU \
+clone本项目到本地仓库后：在终端输入 \
 	```
 	make img
 	```
-	构建sdcard镜像；
-	之后输入
+	构建sdcard镜像； \
+	之后输入 \
 	```
 	make
 	```
-	来构建内核；
+	来构建内核； \
 	输入
 	```
 	make run
