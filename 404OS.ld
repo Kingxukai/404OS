@@ -41,5 +41,8 @@ SECTIONS
 	PROVIDE(_memory_end = ORIGIN(ram) + LENGTH(ram));
 
 	PROVIDE(_heap_start = _bss_end);
-	PROVIDE(_heap_size = _memory_end - _heap_start);
+	PROVIDE(_heap_size = 0x2000000);
+	
+	PROVIDE(_user_start = _heap_start + _heap_size);
+	PROVIDE(_user_end = _memory_end);
 }

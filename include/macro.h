@@ -16,4 +16,6 @@
         }                                                                        \
     } while (0)
 
+#define assert(cond) ASSERT(cond)
+
 #endif

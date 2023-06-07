@@ -15,6 +15,8 @@ extern uint32_t BSS_START;
 extern uint32_t BSS_END;
 extern uint32_t HEAP_START;
 extern uint32_t HEAP_SIZE;
+extern uint32_t USER_START;
+extern uint32_t USER_END;
 
 /*
  * _alloc_start points to the actual start address of heap pool
@@ -88,7 +90,7 @@ void Init_page()
 	 * It should be enough to manage at most 128 MB (8 x 4096 x 4096) 
 	 */
 	_num_pages = (HEAP_SIZE / PAGE_SIZE) - 8;
-	printk("HEAP_START = %x, HEAP_SIZE = %x, num of pages = %d\n", HEAP_START, HEAP_SIZE, _num_pages+8);
+	printk("HEAP_START = 0x%x, HEAP_SIZE = 0x%x, num of pages = %d\n", HEAP_START, HEAP_SIZE, _num_pages+8);
 	
 	_alloc_start = _align_page(HEAP_START + 8 * PAGE_SIZE);
 	_alloc_end = _alloc_start + (PAGE_SIZE * _num_pages);
@@ -104,6 +106,7 @@ void Init_page()
 	printk("\tDATA:   0x%x -> 0x%x\n", DATA_START, DATA_END);
 	printk("\tBSS:    0x%x -> 0x%x\n", BSS_START, BSS_END);
 	printk("\tHEAP:   0x%x -> 0x%x\n", _alloc_start, _alloc_end);
+	printk("\tUSER:   0x%x -> 0x%x\n", USER_START, USER_END);
 }
 
 /*

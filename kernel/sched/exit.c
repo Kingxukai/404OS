@@ -30,7 +30,7 @@ pid_t do_exit(int error_code)
 		current->order = -1;
 		
 		tell_father(current->father_pid);
-		printk("task%d exit with error_code:%d\n",current->pid,error_code);
+		//printk("task%d exit with error_code:%d\n",current->pid,error_code);
 		schedule();
 	}
 	else

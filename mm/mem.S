@@ -28,3 +28,9 @@ BSS_START: .word _bss_start
 
 .global BSS_END
 BSS_END: .word _bss_end
+
+.global USER_START
+USER_START: .word _user_start
+
+.global USER_END
+USER_END: .word _user_end

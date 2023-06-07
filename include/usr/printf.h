@@ -23,4 +23,7 @@ int printf(const char* s, ...);
 
 #define Info(fmt, ...) printf("[INFO] " fmt "", ##__VA_ARGS__);
 
+#define TEST_START(x) printf("========== START ");printf(x);printf(" ==========\n");
+#define TEST_END(x) printf("========== END ");printf(x);printf(" ==========\n");
+
 #endif

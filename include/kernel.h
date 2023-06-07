@@ -7,7 +7,7 @@
 #include "sched.h"
 #include "trap.h"
 #include "print/printk.h"
-#include "mm.h"
+#include "mm/mm.h"
 
 #define MACHINE_MODE (3 << 11)
 #define USER_MODE (~(3<<11))

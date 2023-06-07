@@ -19,6 +19,7 @@ SRCS_C = \
 	kernel/sched/fork.c \
 	kernel/sched/exit.c \
 	kernel/sched/wait.c \
+	kernel/sched/exec.c \
 	init/init.c \
 	print/printf.c \
 	print/printk.c \
@@ -29,6 +30,7 @@ SRCS_C = \
 	mm/malloc.c \
 	mm/page.c \
 	mm/mm.c \
+	mm/pg.c \
 	trap/trap.c \
 	trap/plic.c \
 	driver/uart.c \
@@ -40,6 +42,7 @@ SRCS_C = \
 	fs/fat32_stack.c \
 	fs/fd.c \
 	fs/ops.c \
+	user_test/user.c \
 
 OBJS = $(SRCS_ASM:.S=.o)
 OBJS += $(SRCS_C:.c=.o)

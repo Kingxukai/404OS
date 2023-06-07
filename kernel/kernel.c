@@ -13,6 +13,8 @@ extern void Init_plic();
 extern void Init_block_desc();
 extern void Init_buffer();
 extern void Init_virtio();
+extern void Init_page_table();
+extern void Init_vm();
 
 void kernel_start(reg64_t hartid)
 {
@@ -34,6 +36,8 @@ void kernel_start(reg64_t hartid)
  	Init_timer();
  	Init_buffer();
  	Init_virtio();
+ 	//Init_page_table();
+ 	//Init_vm();
 
  	printkYellow("system initialed All!\n");
  	move_to_user_mode();
