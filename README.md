@@ -56,6 +56,6 @@ School_name:Shenyang Aerospace University（SAU）</mark>
 
 **内核运行截图**
 
-![1](/home/wxk/Desktop/404OS/oskernel2023-404os/screenshot/kernel_entry.png)
+![1](screenshot/kernel_entry.png)
 
-![1](/home/wxk/Desktop/404OS/oskernel2023-404os/screenshot/runtime.png)
+![1](screenshot/runtime.png)
