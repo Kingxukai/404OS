@@ -15,7 +15,6 @@ int do_execve(const char *filepath,char * const * argv,char * const * envp)
 		elf.entry = argv[0];
 		goto context_restore;
 	}
-	else return 0;
 	if( (ip = name_to_i(filepath)) == NULL)
 	{
 		return -1;

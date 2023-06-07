@@ -28,19 +28,10 @@ void Init()
   
   //fat32_inode_create("/getpid",T_FILE, 1,2);
   
-  int n = 4;
+  int n = 3;
   int pid[n];
   
-  if((pid[0] = fork()) == 0)
-  {
-  	char *argv[] = {"getpid", NULL};
-  	if(execve("/getpid", argv, NULL) == -1 )
-  	{
-  		printfRed("error in execving %s\n",argv[0]);
-  		exit(0);
-  	};
-  }
-  else if((pid[1] = fork()) == 0)
+	if((pid[0] = fork()) == 0)
   {
   	char *argv[] = {test_fork, NULL};
   	if(execve(NULL, argv, NULL) == -1 )
@@ -48,7 +39,7 @@ void Init()
   		printfRed("error in execving %s\n",argv[0]);
   	};
   }
-  else if((pid[2] = fork()) == 0)
+  else if((pid[1] = fork()) == 0)
   {
   	char *argv[] = {test_getppid, NULL};
   	if(execve(NULL, argv, NULL) == -1 )
@@ -56,7 +47,7 @@ void Init()
   		printfRed("error in execving %s\n",argv[0]);
   	};
   }
-  else if((pid[3] = fork()) == 0)
+  else if((pid[2] = fork()) == 0)
   {
   	char *argv[] = {test_getpid, NULL};
   	if(execve(NULL, argv, NULL) == -1 )
@@ -71,10 +62,11 @@ void Init()
   	{
   		printf("task%d has created\n",pid[i]);
   	}
-  	for(int i = 0;i < n;i++)
-  	{
-  		 waitpid(pid[i],NULL,NULL);
-  	}
+  	int error = 0;
+  	waitpid(pid[0],NULL,0);
+  	waitpid(pid[1],NULL,0);
+  	waitpid(pid[2],NULL,0);
+  	waitpid(5,NULL,0);
   	
   	shutdown();//must shutdown while travel all test watchpoint
   }

@@ -1,5 +1,5 @@
 set disassemble-next-line on
-b do_exit
+b *0x80200f70
 set output-radix 16
 target remote : 1234
 c

@@ -76,7 +76,8 @@ pid_t sys_waitpid(pid_t pid,uint64_t* stat_addr,int options)
 			if((*p)->state == TASK_ZOMBINE)
 			{
 				current->time += (*p)->time;
-				*stat_addr = (*p)->exit_code;
+				if(stat_addr)
+					*stat_addr = (*p)->exit_code;
 				pid = (*p)->pid;
 				release(*p);
 				return pid;
