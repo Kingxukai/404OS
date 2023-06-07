@@ -52,7 +52,23 @@ School_name:Shenyang Aerospace University（SAU）</mark>
 3.线程：本内核仅仅只有对进程的管理，未引入线程的概念
 ```
 
-
+**使用指导**
+确保您已安装riscv64-unknown-elf-gcc、riscv64-unknown-elf-gdb以及QEMU
+clone本项目到本地仓库后：在终端输入
+	```
+	make img
+	```
+	构建sdcard镜像；
+	之后输入
+	```
+	make
+	```
+	来构建内核；
+	输入
+	```
+	make run
+	```
+	运行内核
 
 **内核运行截图**
 
