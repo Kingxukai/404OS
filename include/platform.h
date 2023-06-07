@@ -29,10 +29,10 @@
 #define PLIC_BASE 0X0C000000L	
 #define PLIC_PRIORITY(id) (PLIC_BASE + (id) * 4)
 #define PLIC_PENDING(id) (PLIC_BASE + 0x1000 + ((id) / 32) * 4)
-#define PLIC_SENABLE(hart) (PLIC_BASE  + 0x2000 + 0x80 + (hart) * 0x80)
-#define PLIC_STHRESHOLD(hart) (PLIC_BASE  + 0x200000 + 0x1000 + (hart) * 0x1000)
-#define PLIC_SCLAIM(hart) (PLIC_BASE  + 0x200004 + 0x1000 + (hart) * 0x1000)
-#define PLIC_SCOMPLETE(hart) (PLIC_BASE  + 0x200004 + 0x1000 + (hart) * 0x1000)
+#define PLIC_SENABLE(hart) (PLIC_BASE  + 0x2000 + 0x80 + (hart) * 0x100)
+#define PLIC_STHRESHOLD(hart) (PLIC_BASE  + 0x200000 + 0x1000 + (hart) * 0x2000)
+#define PLIC_SCLAIM(hart) (PLIC_BASE  + 0x201004 + (hart) * 0x2000)
+#define PLIC_SCOMPLETE(hart) (PLIC_BASE  + 0x210004 + (hart) * 0x2000)
 
 
 /*CLIENT*/

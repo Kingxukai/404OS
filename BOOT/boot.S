@@ -7,7 +7,6 @@
 
 _start:
 	mv tp,a0				//the value of hartid is in a0, which is an arg of kernel_start
-	bnez tp, park							//temporarily we only allow hart0 to run,and other turn to park
 	mv t0,tp
 	
 	slli t0,t0,10							//hartid * 1024
@@ -34,13 +33,6 @@ _start:
 	csrw sstatus,t0						//set the SPIE
 	
 	j kernel_start				//the entry of kernel
-	
-park:
-	li t0,0x40010010
-	li t1,0
-	sd t1,(t0)
-	wfi								//wait for interrupt
-	j park	
 	
 stack:
 	.skip STACK_SIZE * CPU_NUM				//alloc each hard stack for STACK_SIZE(1024B)
