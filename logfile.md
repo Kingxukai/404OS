@@ -157,47 +157,61 @@ comment:Unexpectedly, I encountered a problem if I put printf in while(1),and ne
 22:
     **add printk and put the header into folder**
     time:2023-05-22 19:09:56 by wxk 
-    
+
 23:
-		**add spin_lock**
-		time:2023-05-24 19:18:02 by wxk
+        **add spin_lock**
+        time:2023-05-24 19:18:02 by wxk
+
 ```
 comment:atomic instructuins MUST be aligned without which it will casuse a serial of unexpected problem
 ```
 
 24:
-		**add driver of virtio**
-		time:2023-05-28 17:35:37 by wxk
+        **add driver of virtio**
+        time:2023-05-28 17:35:37 by wxk
 
 ```
 solution:I've read a lot spec of VIRTIO 1.1 and the realization of xv6 in driver,which gives a hand to me, and helps a lot.
 ```
 
 25:
-		**fix the bug in issue 21**
-		time:2023-05-31 02:53:53 by wxk
-		
+        **fix the bug in issue 21**
+        time:2023-05-31 02:53:53 by wxk
+
 ```
 comment:in previous version, I take reg_save and reg_restore in switch_to, and return to ret_from_exception, which will cause the value of a6~a3 changed while returning to ret_from_exception. This time, I use stack to save the register which is callee saving, because the invoking of switch_to is always active to invoke.
 ```
 
 26:
-		**modify the execve**
-		time:2023-06-02 15:11:35 by wxk
+        **modify the execve**
+        time:2023-06-02 15:11:35 by wxk
+
 ```
 comment:Because of lack of time,I have to ref other team's code of FAT32 file system, and I modify my execve,so that is can properly execute in disk.
 ```
 
 27:
-		**add S-mode and add 'make img'**
-		time:2023-06-05 22:21:10 by wxk
+        **add S-mode and add 'make img'**
+        time:2023-06-05 22:21:10 by wxk
+
 ```
 comment:thanks for the help of team LostWakeUp and their code source, which really help me a lot. Their addr:gitlab:https://gitlab.eduxiji.net/202310336101112/LostWakeup
 ```
 
 28:
-		**modify the fs's errors**
-		time:2023-06-06 18:55:05 by wxk
+        **modify the fs's errors**
+        time:2023-06-06 18:55:05 by wxk
+
 ```
 comment:eventually, I find the problem in fs,and modify it. Unfortually, I have to realize the PMP and page allocation because I need to load elf from disk and execute it, and I have only one day left... Good luck to me..
+```
+
+29:
+
+        **just comment**
+
+        time:2023-06-07 21:28:56 by wxk
+
+```
+comment:Finally, I haven't finish all the kernel to pass the test,beacause of lacking of time.It's a pity,buf I do learned a lot during this magic journey
 ```

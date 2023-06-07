@@ -24,6 +24,8 @@ struct spin_lock start_lock = {1};
 
 void kernel_start(reg64_t hartid)
 {
+	if(!hartid)
+	{
 		show_hello();	// show hello 404
 		printkRed("hart%d OK!!!\n",hartid);
 		printkGreen("Loading...\n");
@@ -38,11 +40,22 @@ void kernel_start(reg64_t hartid)
  		Init_buffer();
  		Init_virtio();
  		__sync_synchronize();
- 		printkYellow("system initialed All!\n");
- 		move_to_user_mode();
+ 		spin_unlock(&start_lock);
+	}
+	else 
+	{
+		setMode(1);
+		uint64_t mask = 1<<0;
+		sbi_send_ipi(&mask);
+		spin_lock(&start_lock);
+		printkRed("hart%d OK!!!\n",hartid);
+		spin_unlock(&start_lock);
+	}
  	//Init_page_table();
  	//Init_vm();
 
+ 	printkYellow("system initialed All!\n");
+ 	move_to_user_mode();
 	if(!fork())Init();
 	while(1){}
 }
